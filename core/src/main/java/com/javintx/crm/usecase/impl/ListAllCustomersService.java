@@ -16,7 +16,7 @@ public class ListAllCustomersService implements ListAllCustomers {
 
 	@Override
 	public List<Customer> get() {
-		return customerReader.getAllCustomers();
+		return customerReader.readAll();
 	}
 
 }

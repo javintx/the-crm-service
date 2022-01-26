@@ -11,5 +11,5 @@ public interface CustomerReader {
 	 *
 	 * @return List of customers.
 	 */
-	List<Customer> getAllCustomers();
+	List<Customer> readAll();
 }

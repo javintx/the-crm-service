@@ -21,23 +21,23 @@ public class ListAllCustomersShould {
 	@Mock
 	private CustomerReader customerReaderMock;
 
-	private ListAllCustomers useCase;
+	private ListAllCustomers listAllCustomers;
 
 	@BeforeEach
 	void setUp() {
-		useCase = new ListAllCustomersService(customerReaderMock);
+		listAllCustomers = new ListAllCustomersService(customerReaderMock);
 	}
 
 	@Test
 	void return_empty_customer_list_if_there_are_no_customers() {
-		assertThat(useCase.get()).isEmpty();
+		assertThat(listAllCustomers.get()).isEmpty();
 	}
 
 	@Test
 	void return_customer_list_if_there_are_customers() {
 		Customer customerMock = mock(Customer.class);
-		when(customerReaderMock.getAllCustomers()).thenReturn(List.of(customerMock));
-		assertThat(useCase.get()).isNotEmpty();
+		when(customerReaderMock.readAll()).thenReturn(List.of(customerMock));
+		assertThat(listAllCustomers.get()).isNotEmpty();
 	}
 
 }
