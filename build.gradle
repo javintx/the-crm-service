@@ -8,7 +8,7 @@ wrapper {
 }
 
 dependencies {
-    implementation project(":app")
+    implementation project(":core")
 }
 
 jar {

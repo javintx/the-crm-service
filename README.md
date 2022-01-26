@@ -31,15 +31,18 @@ charge of the API design and implementation. Here are the requirements for the A
         - List users.
         - Change admin status.
 
-## The project guidelines
+## Assumptions
 
-The code of the project will be in Java with Gradle.
+- None for now
 
 ## Architecture
 
-- Architecture implemented using Test-driven development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development))
-  in Java 11.
-- JUnit5 with Mockito is used for unit tests.
+- Language code: Java 11 with [Gradle](https://gradle.org)
+- Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+- Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
+- Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
+
+
 - The CRM Service application has been done respecting the [SOLID](https://en.wikipedia.org/wiki/SOLID)
   and [KISS](https://en.wikipedia.org/wiki/KISS_principle) principles and applying Clean Code as far as possible.
 
