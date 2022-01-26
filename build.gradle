@@ -1,0 +1,53 @@
+plugins {
+    id "java-library"
+    id "org.sonarqube" version "3.3"
+}
+
+wrapper {
+    gradleVersion = "7.3.3"
+}
+
+dependencies {
+    implementation project(":app")
+}
+
+jar {
+    manifest {
+        attributes("Main-Class": "com.javintx.crm.Application")
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+allprojects {
+    group "com.javintx.crm"
+    version "1.0.0"
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(11)
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "javintx_the-crm-service"
+        property "sonar.organization", "javintx"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
