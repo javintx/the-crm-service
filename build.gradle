@@ -9,6 +9,8 @@ wrapper {
 
 dependencies {
     implementation project(":core")
+    implementation project(":app")
+    implementation project(":persistence")
 }
 
 jar {
@@ -32,7 +34,7 @@ allprojects {
 
 subprojects {
     apply plugin: "java"
-    apply plugin: "jacoco"
+//    apply plugin: "jacoco"
 
     java {
         toolchain {
@@ -40,17 +42,25 @@ subprojects {
         }
     }
 
-    check.finalizedBy(jacocoTestReport)
+//    check.finalizedBy(jacocoTestReport)
 
-    jacocoTestReport {
-        reports {
-            xml.required = true
-            html.required = true
-        }
+//    jacocoTestReport {
+//        reports {
+//            xml.required = true
+//            html.required = true
+//        }
+//    }
+
+    dependencies {
+        testImplementation "org.assertj:assertj-core:3.22.0"
+        testImplementation "org.mockito:mockito-junit-jupiter:4.3.1"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.2"
     }
 
     test {
         useJUnitPlatform()
+        include "**/*Should.class"
     }
 }
 
