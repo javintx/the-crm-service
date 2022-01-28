@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,8 +28,8 @@ class CreateNewCustomerShould {
 
 	@Test
 	void return_new_created_customer() {
-		Customer customerToCreate = mock(Customer.class);
-		Customer expectedCustomer = mock(Customer.class);
+		Customer customerToCreate = new Customer();
+		Customer expectedCustomer = new Customer();
 		when(customerWriterMocked.writes(any(Customer.class))).thenReturn(expectedCustomer);
 
 		Customer customerCreated = createNewCustomer.with(customerToCreate);

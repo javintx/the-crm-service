@@ -1,0 +1,12 @@
+plugins {
+    id "java"
+}
+
+dependencies {
+    implementation project(":core")
+    implementation project(":rest")
+    implementation project(":persistence")
+
+    testImplementation "io.rest-assured:rest-assured:4.4.0"
+    testImplementation "com.sparkjava:spark-core:2.9.3"
+}

@@ -39,6 +39,9 @@ charge of the API design and implementation. Here are the requirements for the A
 
 - Language code: Java 11 with [Gradle](https://gradle.org)
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+    - Persistence layer: First approach with in-memory storage. In the next iteration, it could
+      be [H2](https://www.h2database.com/html/main.html).
+    - Rest API layer: First approach with Spark.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
 

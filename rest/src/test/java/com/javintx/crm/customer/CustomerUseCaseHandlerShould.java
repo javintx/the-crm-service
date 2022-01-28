@@ -1,8 +1,7 @@
-package com.javintx.crm.usecase;
+package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
-import com.javintx.crm.port.out.CustomerReader;
-import com.javintx.crm.usecase.impl.ListAllCustomersService;
+import com.javintx.crm.usecase.ListAllCustomers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,30 +13,29 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
-class ListAllCustomersShould {
+class CustomerUseCaseHandlerShould {
 
 	@Mock
-	private CustomerReader customerReaderMock;
+	private ListAllCustomers listAllCustomersMock;
 
-	private ListAllCustomers listAllCustomers;
+	private CustomerUseCaseHandler customerUseCaseHandler;
 
 	@BeforeEach
-	void setUp() {
-		listAllCustomers = new ListAllCustomersService(customerReaderMock);
+	public void setUp() {
+		customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomersMock);
 	}
 
 	@Test
 	void return_empty_customer_list_if_there_are_no_customers() {
-		assertThat(listAllCustomers.get()).isEmpty();
+		assertThat(customerUseCaseHandler.get()).isEmpty();
 	}
 
 	@Test
 	void return_customer_list_if_there_are_customers() {
 		Customer customerMock = new Customer();
-		when(customerReaderMock.readAll()).thenReturn(List.of(customerMock));
-		assertThat(listAllCustomers.get()).isNotEmpty();
+		when(listAllCustomersMock.get()).thenReturn(List.of(customerMock));
+		assertThat(customerUseCaseHandler.get()).isNotEmpty();
+		assertThat(customerUseCaseHandler.get().get(0)).isInstanceOf(CustomerResponse.class);
 	}
-
 }

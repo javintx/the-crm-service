@@ -1,3 +1,6 @@
 rootProject.name = "the-crm-service"
 include "core"
+include "persistence"
+include "rest"
+include "app"
 

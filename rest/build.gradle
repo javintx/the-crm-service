@@ -1,0 +1,12 @@
+plugins {
+    id "java"
+}
+
+dependencies {
+    implementation project(":core")
+
+    implementation "com.fasterxml.jackson.core:jackson-core:2.13.1"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.13.1"
+
+    implementation "com.sparkjava:spark-core:2.9.3"
+}
