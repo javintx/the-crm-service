@@ -4,6 +4,7 @@ import com.javintx.crm.domain.Customer;
 import com.javintx.crm.usecase.ListAllCustomers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomerUseCaseHandler {
 
@@ -13,7 +14,8 @@ public class CustomerUseCaseHandler {
 		this.listAllCustomers = listAllCustomers;
 	}
 
-	public List<Customer> get() {
-		return listAllCustomers.get();
+	public List<CustomerResponse> get() {
+		List<Customer> customersList = listAllCustomers.get();
+		return customersList.stream().map(CustomerResponse::from).collect(Collectors.toList());
 	}
 }

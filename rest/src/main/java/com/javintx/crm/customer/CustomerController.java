@@ -2,7 +2,7 @@ package com.javintx.crm.customer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.javintx.crm.customer.EndPoints.LIST_ALL_CUSTOMERS;
+import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static spark.Spark.get;
 import static spark.Spark.port;
 

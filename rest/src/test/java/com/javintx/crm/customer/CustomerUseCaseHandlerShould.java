@@ -36,5 +36,6 @@ class CustomerUseCaseHandlerShould {
 		Customer customerMock = new Customer();
 		when(listAllCustomersMock.get()).thenReturn(List.of(customerMock));
 		assertThat(customerUseCaseHandler.get()).isNotEmpty();
+		assertThat(customerUseCaseHandler.get().get(0)).isInstanceOf(CustomerResponse.class);
 	}
 }
