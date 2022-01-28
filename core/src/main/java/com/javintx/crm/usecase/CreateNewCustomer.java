@@ -10,5 +10,5 @@ public interface CreateNewCustomer {
 	 * @param customer Customer to creates.
 	 * @return Customer created.
 	 */
-	Customer with(Customer customer);
+	Customer with(final Customer customer);
 }
