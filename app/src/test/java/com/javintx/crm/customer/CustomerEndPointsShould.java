@@ -2,12 +2,14 @@ package com.javintx.crm.customer;
 
 import com.javintx.crm.Application;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
+import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
@@ -41,6 +43,31 @@ class CustomerEndPointsShould {
 
 	@Test
 	void return_empty_customer_list_if_there_are_no_customers() {
+		given()
+			.when()
+			.get(LIST_ALL_CUSTOMERS.uri)
+			.then()
+			.assertThat()
+			.statusCode(SC_OK)
+			.extract()
+			.response()
+			.asString();
+	}
+
+	@Test
+	void return_customer_list_if_new_customer_is_created() {
+		given()
+			.when()
+			.body("{}")
+			.accept(ContentType.JSON)
+			.post(CREATE_NEW_CUSTOMER.uri)
+			.then()
+			.assertThat()
+			.statusCode(SC_OK)
+			.extract()
+			.response()
+			.asString();
+
 		given()
 			.when()
 			.get(LIST_ALL_CUSTOMERS.uri)

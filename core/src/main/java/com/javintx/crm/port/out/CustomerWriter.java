@@ -4,5 +4,5 @@ import com.javintx.crm.domain.Customer;
 
 public interface CustomerWriter {
 
-	Customer writes(Customer customer);
+	Customer writes(final Customer customer);
 }

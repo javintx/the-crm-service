@@ -8,12 +8,12 @@ public class CreateNewCustomerService implements CreateNewCustomer {
 
 	private final CustomerWriter customerWriter;
 
-	public CreateNewCustomerService(CustomerWriter customerWriter) {
+	public CreateNewCustomerService(final CustomerWriter customerWriter) {
 		this.customerWriter = customerWriter;
 	}
 
 	@Override
-	public Customer with(Customer customer) {
+	public Customer with(final Customer customer) {
 		return customerWriter.writes(customer);
 	}
 }

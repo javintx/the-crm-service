@@ -27,14 +27,15 @@ class CreateNewCustomerShould {
 	}
 
 	@Test
-	void return_new_created_customer() {
+	void create_new_customer() {
 		Customer customerToCreate = new Customer();
-		Customer expectedCustomer = new Customer();
-		when(customerWriterMocked.writes(any(Customer.class))).thenReturn(expectedCustomer);
+		Customer customerExpected = new Customer();
+
+		when(customerWriterMocked.writes(any(Customer.class))).thenReturn(customerExpected);
 
 		Customer customerCreated = createNewCustomer.with(customerToCreate);
 
-		assertThat(customerCreated).isEqualTo(expectedCustomer);
+		assertThat(customerCreated).isEqualTo(customerExpected);
 	}
 
 }

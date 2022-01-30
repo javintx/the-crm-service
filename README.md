@@ -7,6 +7,8 @@
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=javintx_the-crm-service)
 [![SonarCloud Code Smells](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=code_smells)](https://sonarcloud.io/component_measures?id=javintx_the-crm-service&metric=Maintainability&view=list)
 
+---
+
 The objective is to create a REST API to manage customer data for a small shop. It will work as the backend side for a
 CRM interface that is being developed by a different team. As the lead developer of the backend project, you'll be in
 charge of the API design and implementation. Here are the requirements for the API:
@@ -31,21 +33,81 @@ charge of the API design and implementation. Here are the requirements for the A
         - List users.
         - Change admin status.
 
+---
+
 ## Assumptions
 
 - None for now
+
+---
 
 ## Architecture
 
 - Language code: Java 11 with [Gradle](https://gradle.org)
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+    - App: The main application layer. Contains the initialization of the CRM service.
+    - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
     - Persistence layer: First approach with in-memory storage. In the next iteration, it could
       be [H2](https://www.h2database.com/html/main.html).
-    - Rest API layer: First approach with Spark.
+    - Rest API layer: First approach with [SparkJava](https://sparkjava.com).
+        - Authentication: First approach with all call are authenticated. In the next iteration, it could
+          be [OAuth2](https://oauth.net/code/java/).
+        - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
+- End-to-end test: JUnit5 with [RestAssured](https://rest-assured.io).
 
 
 - The CRM Service application has been done respecting the [SOLID](https://en.wikipedia.org/wiki/SOLID)
   and [KISS](https://en.wikipedia.org/wiki/KISS_principle) principles and applying Clean Code as far as possible.
 
+---
+
+## HOW-TO
+
+### Build the project
+
+In the `rootDirectory` execute:
+
+> gradlew clean build
+
+### Execute tests
+
+In the `rootDirectory` execute:
+
+> gradlew clean test
+
+### Obtain JaCoCo report
+
+In the `rootDirectory` execute:
+
+> gradlew clean test jacocoTestReport
+
+### Execute the application
+
+In the `rootDirectory/build/libs` execute:
+
+> java -jar the-crm-service-1.0.0.jar
+
+--- 
+
+## Docker
+
+- To generate a Docker image with "the-crm-service" name after build the project, execute the next command:
+
+> docker build . -t the-crm-service
+
+- To run the Docker image "the-crm-service", execute the next command:
+
+> docker run -p 8080:8080 -d -i --name CRM the-crm-service
+
+The parameter `-p` publish a container's port(s) to the host. The parameter `-d` run container in background and print
+container ID. The parameter `-i` keep STDIN open even if not attached. The parameter `--name` assign a name to the
+container.
+
+---
+
+## Use cases
+
+- List all customers
+- Create new customer

@@ -1,12 +1,16 @@
 package com.javintx.crm;
 
-import com.javintx.crm.customer.CustomerController;
+import com.javintx.crm.application.CustomerController;
+import com.javintx.crm.authentication.Authenticator;
+import com.javintx.crm.authentication.AlwaysTrueAuthenticatorAdapter;
+import com.javintx.crm.customer.CustomerInMemoryAdapter;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
-import com.javintx.crm.port.out.CustomerReader;
+import com.javintx.crm.log.ApiRestLogger;
+import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
+import com.javintx.crm.usecase.CreateNewCustomer;
 import com.javintx.crm.usecase.ListAllCustomers;
+import com.javintx.crm.usecase.impl.CreateNewCustomerService;
 import com.javintx.crm.usecase.impl.ListAllCustomersService;
-
-import java.util.Collections;
 
 public class Application {
 
@@ -24,12 +28,16 @@ public class Application {
 	}
 
 	private static void initializeControllers(int port) {
-		// As long as the implementation is not done
-		final CustomerReader customerReader = Collections::emptyList;
+		final CustomerInMemoryAdapter customerInMemoryAdapter = new CustomerInMemoryAdapter();
 
-		final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerReader);
-		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers);
-		new CustomerController(customerUseCaseHandler, port);
+		final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
+		final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter);
+		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer);
+
+		final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
+		final ApiRestLogger log = new Slf4JApiRestLoggerAdapter(CustomerController.class);
+
+		new CustomerController(port, customerUseCaseHandler, authenticator, log);
 	}
 
 }
