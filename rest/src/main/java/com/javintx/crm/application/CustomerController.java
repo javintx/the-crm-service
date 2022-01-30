@@ -1,5 +1,6 @@
 package com.javintx.crm.application;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.customer.CustomerRequest;
@@ -55,6 +56,8 @@ public class CustomerController {
 	}
 
 	private CustomerResponse handleCreateNewCustomer(final Request request, final Response response) throws IOException {
-		return customerUseCaseHandler.create(objectMapper.createParser(request.body()).readValueAs(CustomerRequest.class));
+		try (JsonParser parser = objectMapper.createParser(request.body())) {
+			return customerUseCaseHandler.create(parser.readValueAs(CustomerRequest.class));
+		}
 	}
 }
