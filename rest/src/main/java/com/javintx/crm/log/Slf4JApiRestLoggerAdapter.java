@@ -12,9 +12,26 @@ public class Slf4JApiRestLoggerAdapter implements ApiRestLogger {
 		log = LoggerFactory.getLogger(clazz);
 	}
 
-	public void apiCall(final Request request, final Response response) {
-		final String message = request.uri();
-		log.info("Received api call: {}", message);
+	public void request(final Request request, final Response response) {
+		final String ip = request.ip();
+		final String protocol = request.protocol();
+		final String method = request.requestMethod();
+		final String host = request.host();
+		final String uri = request.uri();
+
+		log.info("Request from {} --> {} {} {}{}", ip, protocol, method, host, uri);
+	}
+
+	@Override
+	public void response(final Request request, final Response response) {
+		final String ip = request.ip();
+		final String host = request.host();
+		final String uri = request.uri();
+
+		final int status = response.status();
+		final String type = response.type();
+
+		log.info("Response for {} on {}{} --> {} {}", ip, host, uri, status, type);
 	}
 
 }

@@ -6,7 +6,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import spark.Request;
 import spark.Response;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -14,15 +13,36 @@ import static org.mockito.Mockito.verify;
 class Slf4JApiRestLoggerAdapterShould {
 
 	@Test
-	void log_api_call_is_logged_when_has_request() {
+	void request_is_logged() {
 		ApiRestLogger logger = new Slf4JApiRestLoggerAdapter(Slf4JApiRestLoggerAdapterShould.class);
 
 		Request request = mock(Request.class);
 		Response response = mock(Response.class);
 
-		logger.apiCall(request, response);
+		logger.request(request, response);
 
+		verify(request).ip();
+		verify(request).protocol();
+		verify(request).requestMethod();
+		verify(request).host();
 		verify(request).uri();
+	}
+
+	@Test
+	void response_is_logged() {
+		ApiRestLogger logger = new Slf4JApiRestLoggerAdapter(Slf4JApiRestLoggerAdapterShould.class);
+
+		Request request = mock(Request.class);
+		Response response = mock(Response.class);
+
+		logger.response(request, response);
+
+		verify(request).ip();
+		verify(request).host();
+		verify(request).uri();
+
+		verify(response).status();
+		verify(response).type();
 	}
 
 }
