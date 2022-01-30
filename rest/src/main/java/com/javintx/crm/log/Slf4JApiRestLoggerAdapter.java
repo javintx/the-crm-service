@@ -15,7 +15,7 @@ public class Slf4JApiRestLoggerAdapter implements ApiRestLogger {
 	}
 
 	public void apiCall(final Request request, final Response response) {
-		log.info(format("Received api call: %s", request.uri()));
+		log.info("Received api call: {}", request.uri());
 	}
 
 }

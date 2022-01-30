@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-public class AlwaysTrueAuthenticatorAdapterShould {
+class AlwaysTrueAuthenticatorAdapterShould {
 
 	@Test
 	void return_true_is_request_is_authenticated() {

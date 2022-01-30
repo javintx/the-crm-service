@@ -10,7 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class Slf4JApiRestLoggerAdapterShould {
+class Slf4JApiRestLoggerAdapterShould {
 
 	@Test
 	void log_api_call_is_logged() {
