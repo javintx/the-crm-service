@@ -45,9 +45,14 @@ charge of the API design and implementation. Here are the requirements for the A
 
 - Language code: Java 11 with [Gradle](https://gradle.org)
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+    - App: The main application layer. Contains the initialization of the CRM service.
+    - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
     - Persistence layer: First approach with in-memory storage. In the next iteration, it could
       be [H2](https://www.h2database.com/html/main.html).
     - Rest API layer: First approach with [SparkJava](https://sparkjava.com).
+        - Authentication: First approach with all call are authenticated. In the next iteration, it could
+          be [OAuth2](https://oauth.net/code/java/).
+        - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
 - End-to-end test: JUnit5 with [RestAssured](https://rest-assured.io).
@@ -84,7 +89,9 @@ In the `rootDirectory/build/libs` execute:
 
 > java -jar the-crm-service-1.0.0.jar
 
-### Docker
+--- 
+
+## Docker
 
 - To generate a Docker image with "the-crm-service" name after build the project, execute the next command:
 

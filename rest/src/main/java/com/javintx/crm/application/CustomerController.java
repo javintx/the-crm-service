@@ -1,8 +1,11 @@
-package com.javintx.crm.customer;
+package com.javintx.crm.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.javintx.crm.authentication.Authenticator;
+import com.javintx.crm.customer.CustomerRequest;
+import com.javintx.crm.customer.CustomerResponse;
+import com.javintx.crm.customer.CustomerUseCaseHandler;
+import com.javintx.crm.log.ApiRestLogger;
 import spark.Request;
 import spark.Response;
 
@@ -12,21 +15,24 @@ import java.util.List;
 import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
 import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
-import static java.lang.String.format;
 import static org.eclipse.jetty.http.MimeTypes.Type.APPLICATION_JSON;
 import static spark.Spark.before;
 import static spark.Spark.get;
-import static spark.Spark.halt;
 import static spark.Spark.port;
 import static spark.Spark.post;
 
 public class CustomerController {
-	private final Logger log = LoggerFactory.getLogger(CustomerController.class);
+
 	private final CustomerUseCaseHandler customerUseCaseHandler;
+	private final Authenticator authenticator;
+	private final ApiRestLogger log;
+
 	private final ObjectMapper objectMapper;
 
-	public CustomerController(final CustomerUseCaseHandler customerUseCaseHandler, final int portNumber) {
+	public CustomerController(final int portNumber, final CustomerUseCaseHandler customerUseCaseHandler, final Authenticator authenticator, final ApiRestLogger log) {
 		this.customerUseCaseHandler = customerUseCaseHandler;
+		this.authenticator = authenticator;
+		this.log = log;
 		objectMapper = new ObjectMapper();
 		objectMapper.configure(FAIL_ON_EMPTY_BEANS, false);
 		setupServer(portNumber);
@@ -38,22 +44,10 @@ public class CustomerController {
 	}
 
 	private void routes() {
-		before(this::logApiCall);
-		before(this::authenticate);
+		before(log::apiCall);
+		before(authenticator::isAuthenticated);
 		get(LIST_ALL_CUSTOMERS.uri, "*/*", this::handleListAllCustomers, objectMapper::writeValueAsString);
 		post(CREATE_NEW_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
-	}
-
-	private void logApiCall(final Request request, final Response response) {
-		log.info(format("Received api call: %s", request.uri()));
-	}
-
-	private void authenticate(final Request request, final Response response) {
-		boolean authenticated = true;
-		// TODO: Add authentication method
-		if (!authenticated) {
-			halt(401, "You are not welcome here");
-		}
 	}
 
 	private List<CustomerResponse> handleListAllCustomers(final Request request, final Response response) {
