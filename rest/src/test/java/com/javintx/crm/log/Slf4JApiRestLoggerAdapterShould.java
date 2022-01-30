@@ -20,7 +20,7 @@ class Slf4JApiRestLoggerAdapterShould {
 		Request request = mock(Request.class);
 		Response response = mock(Response.class);
 
-		logger.apiCall(request, response);
+		logger.request(request, response);
 
 		verify(request).uri();
 	}

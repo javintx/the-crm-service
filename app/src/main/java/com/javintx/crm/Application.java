@@ -1,8 +1,9 @@
 package com.javintx.crm;
 
+import com.javintx.crm.application.ApplicationController;
 import com.javintx.crm.application.CustomerController;
-import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.authentication.AlwaysTrueAuthenticatorAdapter;
+import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.customer.CustomerInMemoryAdapter;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
 import com.javintx.crm.log.ApiRestLogger;
@@ -35,9 +36,10 @@ public class Application {
 		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer);
 
 		final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
-		final ApiRestLogger log = new Slf4JApiRestLoggerAdapter(CustomerController.class);
+		final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
 
-		new CustomerController(port, customerUseCaseHandler, authenticator, log);
+		new ApplicationController(port, authenticator, applicationLog);
+		new CustomerController(customerUseCaseHandler);
 	}
 
 }
