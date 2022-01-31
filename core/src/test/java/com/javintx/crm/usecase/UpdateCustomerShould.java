@@ -16,11 +16,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateCustomerShould {
+class UpdateCustomerShould {
 
 	@Mock
 	private CustomerReader customerReaderMock;
@@ -41,7 +40,7 @@ public class UpdateCustomerShould {
 		Customer customerExpected = new Customer("id2", "name2", "surname2", "photo2");
 
 		when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
-		when(customerUpdaterMock.update(eq(existingCustomer))).thenReturn(updatedCustomer);
+		when(customerUpdaterMock.update(existingCustomer)).thenReturn(updatedCustomer);
 
 		Customer returnedCustomer = updateCustomer.update(existingCustomer);
 
