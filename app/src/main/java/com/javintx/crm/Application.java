@@ -10,8 +10,10 @@ import com.javintx.crm.log.ApiRestLogger;
 import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
 import com.javintx.crm.usecase.CreateNewCustomer;
 import com.javintx.crm.usecase.ListAllCustomers;
+import com.javintx.crm.usecase.UpdateCustomer;
 import com.javintx.crm.usecase.impl.CreateNewCustomerService;
 import com.javintx.crm.usecase.impl.ListAllCustomersService;
+import com.javintx.crm.usecase.impl.UpdateCustomerService;
 
 public class Application {
 
@@ -33,7 +35,8 @@ public class Application {
 
 		final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
 		final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter);
-		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer);
+		final UpdateCustomer updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer);
 
 		final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
 		final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);

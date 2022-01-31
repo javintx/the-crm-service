@@ -28,8 +28,8 @@ class CreateNewCustomerShould {
 
 	@Test
 	void create_new_customer() {
-		Customer customerToCreate = new Customer();
-		Customer customerExpected = new Customer();
+		Customer customerToCreate = new Customer("id", "name", "surname");
+		Customer customerExpected = new Customer("id", "name", "surname");
 
 		when(customerWriterMocked.writes(any(Customer.class))).thenReturn(customerExpected);
 

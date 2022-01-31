@@ -23,12 +23,24 @@ class CustomerInMemoryAdapterShould {
 	}
 
 	@Test
-	void return_customer_list_if_new_customer_is_created() {
-		Customer customerMock = new Customer();
+	void return_customer_list_with_new_created_customer() {
+		Customer customerMock = new Customer("id", "name", "surname");
 		Customer customerCreated = customerInMemoryAdapter.writes(customerMock);
 		assertThat(customerCreated).isNotNull();
 		assertThat(customerInMemoryAdapter.readAll()).isNotEmpty();
 		assertThat(customerInMemoryAdapter.readAll().get(0)).isEqualTo(customerCreated);
 	}
 
+	@Test
+	void return_customer_list_with_updated_customer() {
+		Customer existingCustomer = new Customer("id", "name", "surname");
+		customerInMemoryAdapter.writes(existingCustomer);
+
+		Customer customerToUpdate = new Customer("id", "name_modified", "surname_modified");
+		Customer updatedCustomer = customerInMemoryAdapter.update(customerToUpdate);
+
+		assertThat(updatedCustomer).isEqualTo(customerToUpdate);
+		assertThat(customerInMemoryAdapter.readAll()).isNotEmpty();
+		assertThat(customerInMemoryAdapter.readAll().get(0)).isEqualTo(updatedCustomer);
+	}
 }

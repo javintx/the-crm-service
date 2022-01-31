@@ -37,7 +37,7 @@ charge of the API design and implementation. Here are the requirements for the A
 
 ## Assumptions
 
-- None for now
+- The persistence was implemented with in-memory datastore.
 
 ---
 
@@ -111,3 +111,4 @@ container.
 
 - List all customers
 - Create new customer
+- Update customer
