@@ -15,6 +15,7 @@ import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static spark.Spark.awaitInitialization;
@@ -132,5 +133,20 @@ class CustomerEndPointsShould {
 		assertThat(jsonPath.getString("name")).isEqualTo("[name_updated]");
 		assertThat(jsonPath.getString("surname")).isEqualTo("[surname_updated]");
 		assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
+	}
+
+	@Test
+	void return_exception_when_update_not_existing_customer() {
+		given()
+			.when()
+			.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
+			.accept(ContentType.JSON)
+			.put(UPDATE_CUSTOMER.uri)
+			.then()
+			.assertThat()
+			.statusCode(SC_NOT_FOUND)
+			.extract()
+			.response()
+			.asString();
 	}
 }
