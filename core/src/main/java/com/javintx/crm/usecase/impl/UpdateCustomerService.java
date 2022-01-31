@@ -24,7 +24,7 @@ public class UpdateCustomerService implements UpdateCustomer {
 
 	private void checkIfExists(final Customer customer) {
 		if (!customerReader.readAll().contains(customer)) {
-			throw new CustomerNotExists(customer);
+			throw new CustomerNotExists(customer.identifier());
 		}
 	}
 }

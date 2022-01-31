@@ -1,6 +1,7 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
+import com.javintx.crm.port.out.CustomerDeleter;
 import com.javintx.crm.port.out.CustomerReader;
 import com.javintx.crm.port.out.CustomerUpdater;
 import com.javintx.crm.port.out.CustomerWriter;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CustomerInMemoryAdapter implements CustomerReader, CustomerWriter, CustomerUpdater {
+public class CustomerInMemoryAdapter implements CustomerReader, CustomerWriter, CustomerUpdater, CustomerDeleter {
 	private final Map<String, Customer> customers;
 
 	public CustomerInMemoryAdapter() {
@@ -31,5 +32,10 @@ public class CustomerInMemoryAdapter implements CustomerReader, CustomerWriter, 
 	@Override
 	public Customer update(final Customer customer) {
 		return customers.replace(customer.identifier(), customer);
+	}
+
+	@Override
+	public void delete(final String customerId) {
+		customers.remove(customerId);
 	}
 }

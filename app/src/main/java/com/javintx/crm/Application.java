@@ -9,9 +9,11 @@ import com.javintx.crm.customer.CustomerUseCaseHandler;
 import com.javintx.crm.log.ApiRestLogger;
 import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
 import com.javintx.crm.usecase.CreateNewCustomer;
+import com.javintx.crm.usecase.DeleteCustomer;
 import com.javintx.crm.usecase.ListAllCustomers;
 import com.javintx.crm.usecase.UpdateCustomer;
 import com.javintx.crm.usecase.impl.CreateNewCustomerService;
+import com.javintx.crm.usecase.impl.DeleteCustomerService;
 import com.javintx.crm.usecase.impl.ListAllCustomersService;
 import com.javintx.crm.usecase.impl.UpdateCustomerService;
 
@@ -34,9 +36,10 @@ public class Application {
 		final CustomerInMemoryAdapter customerInMemoryAdapter = new CustomerInMemoryAdapter();
 
 		final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
-		final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter);
+		final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
 		final UpdateCustomer updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer);
+		final DeleteCustomer deleteCustomer = new DeleteCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+		final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
 
 		final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
 		final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);

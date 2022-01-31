@@ -38,6 +38,7 @@ charge of the API design and implementation. Here are the requirements for the A
 ## Assumptions
 
 - The persistence was implemented with in-memory datastore.
+- When a customer is deleted, it is removed from database.
 
 ---
 
@@ -107,8 +108,22 @@ container.
 
 ---
 
-## Use cases
+## REST API
 
 - List all customers
-- Create new customer
-- Update customer
+    - GET /customer/all
+- Create new customer (with Customer JSON as body)
+    - POST /customer/create
+- Update customer (with Customer JSON as body)
+    - PUT /customer/update
+- Delete customer
+    - DELETE /customer/delete/{customerId} (customerId is a parameter)
+
+### Customer JSON
+
+> {
+> "id": "identifier",
+> "name": "name",
+> "surname": "surname",
+> "photo": "photo"
+> }
