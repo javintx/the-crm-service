@@ -12,8 +12,8 @@ public class IsAdminUserService implements IsAdminUser {
 		}
 
 		@Override
-		public void isAdmin(String userId) {
-				if (userReader.readAll().stream().noneMatch(user -> user.identifier().equals(userId) && user.isAdmin())) {
+		public void isAdmin(final String userId) {
+				if (userId == null || userReader.readAll().stream().noneMatch(user -> user.identifier().equals(userId) && user.isAdmin())) {
 						throw new UserIsNotAdmin(userId);
 				}
 		}

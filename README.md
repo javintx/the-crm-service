@@ -38,6 +38,7 @@ charge of the API design and implementation. Here are the requirements for the A
 ## Assumptions
 
 - The persistence was implemented with in-memory datastore.
+  - The first admin user is in the datastore by default with `admin` id.
 - The authentication was implemented with an always-authenticated adapter.
 - For a customer:
   - The identifier (field id) of a customer is provided in the create customer request.
@@ -45,12 +46,17 @@ charge of the API design and implementation. Here are the requirements for the A
   - When a customer is deleted, it is removed physically from database.
   - The user reference (field userId) must be passed with the customer information, and it will not be validated.
   - The photo field is opened to be whatever.
+  - The header `userId` must be filled with the user identifier to have access to the REST API.
 - For a user:
   - The identifier (field id) of a user is provided in the create customer request.
   - The only field that is not possible to change from a user is the identifier (field id).
   - When a user is deleted, it is removed physically from database. The customer will maintain the latest user id that
     modified it.
   - The mandatory fields for a user will be: id, name and surname.
+  - The header `adminId` must be filled with the user identifier to have access to the REST API.
+- For an admin:
+  - Admin is a user with an activated flag.
+- The headers `userId` and `adminId` are not intended for validation purposes.
 
 ---
 
@@ -123,6 +129,8 @@ container.
 
 ### Customer REST API
 
+The request header `userId` must be filled with the user identifier to have access to the customer REST API.
+
 - List all customers
   - GET /customer/all
 - Create new customer (with [Customer JSON](#customer-json) as body)
@@ -149,7 +157,7 @@ container.
 
 ### User REST API
 
-The request header `adminId` must be filled with the user identifier of and admin to have access to the user REST API.
+The request header `adminId` must be filled with the user identifier of an admin to have access to the user REST API.
 
 - List all users
   - GET /user/all
@@ -180,5 +188,5 @@ The request header `adminId` must be filled with the user identifier of and admi
 - It could be added [OpenAPI](https://www.openapis.org) or [Swagger](https://swagger.io/specification/) to publish the
   REST API in a better way than in this README.md.
 - It could be added a deletion flag for customer or user to do not make a physical delete and keep the historic data.
-- The user reference in the customer could be validated with persistence and could be extracted from user session in the
-  request.
+- The user reference in the customer could be validated with persistence and could be extracted from the request.
+- Check that if the only test are the e2e test, the coverage does not change.

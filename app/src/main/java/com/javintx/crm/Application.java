@@ -26,7 +26,7 @@ import com.javintx.crm.user.UserInMemoryAdapter;
 import com.javintx.crm.user.UserUseCaseHandler;
 import com.javintx.crm.user.impl.CreateNewUserService;
 import com.javintx.crm.user.impl.DeleteUserService;
-import com.javintx.crm.user.impl.IsAdminUserIgnoredService;
+import com.javintx.crm.user.impl.IsAdminUserService;
 import com.javintx.crm.user.impl.ListAllUsersService;
 import com.javintx.crm.user.impl.UpdateUserService;
 
@@ -59,10 +59,8 @@ public class Application {
 				final CreateNewUser createNewUser = new CreateNewUserService(userInMemoryAdapter, userInMemoryAdapter);
 				final UpdateUser updateUser = new UpdateUserService(userInMemoryAdapter, userInMemoryAdapter);
 				final DeleteUser deleteUser = new DeleteUserService(userInMemoryAdapter, userInMemoryAdapter);
-				// TODO: isAdminUser should be the implementation to use after add an admin after server initialization
-				//final IsAdminUser isAdminUser = new IsAdminUserService(userInMemoryAdapter);
-				final IsAdminUser isAdminUserIgnored = new IsAdminUserIgnoredService();
-				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUserIgnored);
+				final IsAdminUser isAdminUser = new IsAdminUserService(userInMemoryAdapter);
+				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
 
 				final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
 				final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);

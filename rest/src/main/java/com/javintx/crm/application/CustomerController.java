@@ -7,6 +7,7 @@ import com.javintx.crm.customer.CustomerResponse;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
 import com.javintx.crm.customer.exception.CustomerAlreadyExists;
 import com.javintx.crm.customer.exception.CustomerNotExists;
+import com.javintx.crm.customer.exception.CustomerNotValid;
 import spark.Request;
 import spark.Response;
 
@@ -19,6 +20,7 @@ import static com.javintx.crm.customer.CustomerEndPoints.DELETE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPointsBindNames.CUSTOMER_ID;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
@@ -42,20 +44,24 @@ public class CustomerController {
 		}
 
 		private void routes() {
-				get(LIST_ALL_CUSTOMERS.uri, "*/*", this::handleListAllCustomers, objectMapper::writeValueAsString);
+				get(LIST_ALL_CUSTOMERS.uri, this::handleListAllCustomers, objectMapper::writeValueAsString);
 				post(CREATE_NEW_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
 				put(UPDATE_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleUpdateCustomer, objectMapper::writeValueAsString);
-				delete(DELETE_CUSTOMER.uri, "*/*", this::handleDeleteCustomer, objectMapper::writeValueAsString);
+				delete(DELETE_CUSTOMER.uri, this::handleDeleteCustomer, objectMapper::writeValueAsString);
 				exceptions();
 		}
 
 		private void exceptions() {
+				exception(CustomerAlreadyExists.class, (e, request, response) -> {
+						response.status(SC_CONFLICT);
+						response.body(e.getMessage());
+				});
 				exception(CustomerNotExists.class, (e, request, response) -> {
 						response.status(SC_NOT_FOUND);
 						response.body(e.getMessage());
 				});
-				exception(CustomerAlreadyExists.class, (e, request, response) -> {
-						response.status(SC_CONFLICT);
+				exception(CustomerNotValid.class, (e, request, response) -> {
+						response.status(SC_BAD_REQUEST);
 						response.body(e.getMessage());
 				});
 		}

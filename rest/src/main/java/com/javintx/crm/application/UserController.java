@@ -6,7 +6,9 @@ import com.javintx.crm.user.UserRequest;
 import com.javintx.crm.user.UserResponse;
 import com.javintx.crm.user.UserUseCaseHandler;
 import com.javintx.crm.user.exception.UserAlreadyExists;
+import com.javintx.crm.user.exception.UserIsNotAdmin;
 import com.javintx.crm.user.exception.UserNotExists;
+import com.javintx.crm.user.exception.UserNotValid;
 import spark.Request;
 import spark.Response;
 
@@ -18,9 +20,12 @@ import static com.javintx.crm.user.UserEndPoints.CREATE_NEW_USER;
 import static com.javintx.crm.user.UserEndPoints.DELETE_USER;
 import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
 import static com.javintx.crm.user.UserEndPoints.UPDATE_USER;
+import static com.javintx.crm.user.UserEndPoints.USER_PATH;
 import static com.javintx.crm.user.UserEndPointsBindNames.ADMIN_ID;
 import static com.javintx.crm.user.UserEndPointsBindNames.USER_ID;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.eclipse.jetty.http.MimeTypes.Type.APPLICATION_JSON;
@@ -44,23 +49,32 @@ public class UserController {
 		}
 
 		private void routes() {
-				before(this::handleIsAdminUser);
-				get(LIST_ALL_USERS.uri, "*/*", this::handleListAllUsers, objectMapper::writeValueAsString);
+				before(USER_PATH.uri, this::handleIsAdminUser);
+				get(LIST_ALL_USERS.uri, this::handleListAllUsers, objectMapper::writeValueAsString);
 				post(CREATE_NEW_USER.uri, APPLICATION_JSON.asString(), this::handleCreateNewUser, objectMapper::writeValueAsString);
 				put(UPDATE_USER.uri, APPLICATION_JSON.asString(), this::handleUpdateUser, objectMapper::writeValueAsString);
-				delete(DELETE_USER.uri, "*/*", this::handleDeleteUser, objectMapper::writeValueAsString);
+				delete(DELETE_USER.uri, this::handleDeleteUser, objectMapper::writeValueAsString);
 				exceptions();
 		}
 
 		private void exceptions() {
-				exception(UserNotExists.class, (e, request, response) -> {
-						response.status(SC_NOT_FOUND);
-						response.body(e.getMessage());
-				});
 				exception(UserAlreadyExists.class, (e, request, response) -> {
 						response.status(SC_CONFLICT);
 						response.body(e.getMessage());
 				});
+				exception(UserIsNotAdmin.class, (e, request, response) -> {
+						response.status(SC_FORBIDDEN);
+						response.body(e.getMessage());
+				});
+				exception(UserNotExists.class, (e, request, response) -> {
+						response.status(SC_NOT_FOUND);
+						response.body(e.getMessage());
+				});
+				exception(UserNotValid.class, (e, request, response) -> {
+						response.status(SC_BAD_REQUEST);
+						response.body(e.getMessage());
+				});
+
 		}
 
 		private void handleIsAdminUser(final Request request, final Response response) {

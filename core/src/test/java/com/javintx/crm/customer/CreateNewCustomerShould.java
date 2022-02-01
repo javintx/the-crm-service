@@ -1,7 +1,6 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.customer.exception.CustomerAlreadyExists;
-import com.javintx.crm.customer.exception.CustomerNotValid;
 import com.javintx.crm.customer.impl.CreateNewCustomerService;
 import com.javintx.crm.domain.Customer;
 import com.javintx.crm.port.out.customer.CustomerReader;

@@ -16,6 +16,7 @@ public class UserInMemoryAdapter implements UserReader, UserWriter, UserUpdater,
 
 		public UserInMemoryAdapter() {
 				users = new HashMap<>();
+				users.put("admin", User.buildAdmin().withId("admin").withName("first admin name").withSurname("first admin surname").build());
 		}
 
 		@Override

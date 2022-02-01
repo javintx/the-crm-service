@@ -113,4 +113,10 @@ class UserUseCaseHandlerShould {
 						() -> userUseCaseHandler.create(userRequest)
 				).isExactlyInstanceOf(UserNotValid.class);
 		}
+
+		@Test
+		void verify_is_admin_user() {
+				userUseCaseHandler.isAdmin("userId");
+				verify(isAdminUserMock).isAdmin("userId");
+		}
 }

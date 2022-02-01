@@ -15,6 +15,8 @@ class UserInMemoryAdapterShould {
 		@BeforeEach
 		public void setUp() {
 				userInMemoryAdapter = new UserInMemoryAdapter();
+				// Removes the first admin created
+				userInMemoryAdapter.delete("admin");
 		}
 
 		@Test
