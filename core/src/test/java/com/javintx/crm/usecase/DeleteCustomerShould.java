@@ -20,33 +20,33 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteCustomerShould {
-	@Mock
-	private CustomerReader customerReaderMock;
-	@Mock
-	private CustomerDeleter customerDeleterMock;
+		@Mock
+		private CustomerReader customerReaderMock;
+		@Mock
+		private CustomerDeleter customerDeleterMock;
 
-	private DeleteCustomer deleteCustomer;
+		private DeleteCustomer deleteCustomer;
 
-	@BeforeEach
-	void setUp() {
-		deleteCustomer = new DeleteCustomerService(customerReaderMock, customerDeleterMock);
-	}
+		@BeforeEach
+		void setUp() {
+				deleteCustomer = new DeleteCustomerService(customerReaderMock, customerDeleterMock);
+		}
 
-	@Test
-	void delete_customer_if_customer_exists() {
-		Customer existingCustomer = new Customer("id", "name", "surname", "photo");
+		@Test
+		void delete_customer_if_customer_exists() {
+				Customer existingCustomer = new Customer("id", "name", "surname", "photo");
 
-		when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
+				when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
 
-		deleteCustomer.delete("id");
+				deleteCustomer.delete("id");
 
-		verify(customerDeleterMock).delete("id");
-	}
+				verify(customerDeleterMock).delete("id");
+		}
 
-	@Test
-	void throw_exception_if_customer_not_exists() {
-		when(customerReaderMock.readAll()).thenReturn(Collections.emptyList());
+		@Test
+		void throw_exception_if_customer_not_exists() {
+				when(customerReaderMock.readAll()).thenReturn(Collections.emptyList());
 
-		assertThatThrownBy(() -> deleteCustomer.delete("id")).isExactlyInstanceOf(CustomerNotExists.class);
-	}
+				assertThatThrownBy(() -> deleteCustomer.delete("id")).isExactlyInstanceOf(CustomerNotExists.class);
+		}
 }

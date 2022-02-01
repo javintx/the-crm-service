@@ -31,54 +31,54 @@ import static spark.Spark.put;
 
 public class CustomerController {
 
-	private final CustomerUseCaseHandler customerUseCaseHandler;
-	private final ObjectMapper objectMapper;
+		private final CustomerUseCaseHandler customerUseCaseHandler;
+		private final ObjectMapper objectMapper;
 
-	public CustomerController(final CustomerUseCaseHandler customerUseCaseHandler) {
-		this.customerUseCaseHandler = customerUseCaseHandler;
-		objectMapper = new ObjectMapper();
-		objectMapper.configure(FAIL_ON_EMPTY_BEANS, false);
-		routes();
-	}
-
-	private void routes() {
-		get(LIST_ALL_CUSTOMERS.uri, "*/*", this::handleListAllCustomers, objectMapper::writeValueAsString);
-		post(CREATE_NEW_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
-		put(UPDATE_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleUpdateCustomer, objectMapper::writeValueAsString);
-		delete(DELETE_CUSTOMER.uri, "*/*", this::handleDeleteCustomer, objectMapper::writeValueAsString);
-		exceptions();
-	}
-
-	private void exceptions() {
-		exception(CustomerNotExists.class, (e, request, response) -> {
-			response.status(SC_NOT_FOUND);
-			response.body(e.getMessage());
-		});
-		exception(CustomerAlreadyExists.class, (e, request, response) -> {
-			response.status(SC_CONFLICT);
-			response.body(e.getMessage());
-		});
-	}
-
-	private List<CustomerResponse> handleListAllCustomers(final Request request, final Response response) {
-		return customerUseCaseHandler.get();
-	}
-
-	private CustomerResponse handleCreateNewCustomer(final Request request, final Response response) throws IOException {
-		try (JsonParser parser = objectMapper.createParser(request.body())) {
-			return customerUseCaseHandler.create(parser.readValueAs(CustomerRequest.class));
+		public CustomerController(final CustomerUseCaseHandler customerUseCaseHandler) {
+				this.customerUseCaseHandler = customerUseCaseHandler;
+				objectMapper = new ObjectMapper();
+				objectMapper.configure(FAIL_ON_EMPTY_BEANS, false);
+				routes();
 		}
-	}
 
-	private CustomerResponse handleUpdateCustomer(final Request request, final Response response) throws IOException {
-		try (JsonParser parser = objectMapper.createParser(request.body())) {
-			return customerUseCaseHandler.update(parser.readValueAs(CustomerRequest.class));
+		private void routes() {
+				get(LIST_ALL_CUSTOMERS.uri, "*/*", this::handleListAllCustomers, objectMapper::writeValueAsString);
+				post(CREATE_NEW_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
+				put(UPDATE_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleUpdateCustomer, objectMapper::writeValueAsString);
+				delete(DELETE_CUSTOMER.uri, "*/*", this::handleDeleteCustomer, objectMapper::writeValueAsString);
+				exceptions();
 		}
-	}
 
-	private String handleDeleteCustomer(final Request request, final Response response) {
-		customerUseCaseHandler.delete(request.params(CUSTOMER_ID.bindName));
-		response.status(SC_OK);
-		return "OK";
-	}
+		private void exceptions() {
+				exception(CustomerNotExists.class, (e, request, response) -> {
+						response.status(SC_NOT_FOUND);
+						response.body(e.getMessage());
+				});
+				exception(CustomerAlreadyExists.class, (e, request, response) -> {
+						response.status(SC_CONFLICT);
+						response.body(e.getMessage());
+				});
+		}
+
+		private List<CustomerResponse> handleListAllCustomers(final Request request, final Response response) {
+				return customerUseCaseHandler.get();
+		}
+
+		private CustomerResponse handleCreateNewCustomer(final Request request, final Response response) throws IOException {
+				try (JsonParser parser = objectMapper.createParser(request.body())) {
+						return customerUseCaseHandler.create(parser.readValueAs(CustomerRequest.class));
+				}
+		}
+
+		private CustomerResponse handleUpdateCustomer(final Request request, final Response response) throws IOException {
+				try (JsonParser parser = objectMapper.createParser(request.body())) {
+						return customerUseCaseHandler.update(parser.readValueAs(CustomerRequest.class));
+				}
+		}
+
+		private String handleDeleteCustomer(final Request request, final Response response) {
+				customerUseCaseHandler.delete(request.params(CUSTOMER_ID.bindName));
+				response.status(SC_OK);
+				return "OK";
+		}
 }

@@ -8,15 +8,15 @@ import java.util.List;
 
 public class ListAllCustomersService implements ListAllCustomers {
 
-	private final CustomerReader customerReader;
+		private final CustomerReader customerReader;
 
-	public ListAllCustomersService(final CustomerReader customerReader) {
-		this.customerReader = customerReader;
-	}
+		public ListAllCustomersService(final CustomerReader customerReader) {
+				this.customerReader = customerReader;
+		}
 
-	@Override
-	public List<Customer> get() {
-		return customerReader.readAll();
-	}
+		@Override
+		public List<Customer> get() {
+				return customerReader.readAll();
+		}
 
 }
