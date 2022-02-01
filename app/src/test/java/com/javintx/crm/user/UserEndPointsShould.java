@@ -133,6 +133,26 @@ class UserEndPointsShould {
 				given()
 						.header(ADMIN_ID.bindName, "admin")
 						.when()
+						.body("{\"name\":\"name\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_USER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_BAD_REQUEST);
+
+				given()
+						.header(ADMIN_ID.bindName, "admin")
+						.when()
+						.body("{\"id\":\"id\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_USER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_BAD_REQUEST);
+
+				given()
+						.header(ADMIN_ID.bindName, "admin")
+						.when()
 						.body("{\"id\":\"id\", \"name\":\"name\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)

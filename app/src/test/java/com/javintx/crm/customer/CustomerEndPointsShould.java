@@ -124,6 +124,24 @@ class CustomerEndPointsShould {
 		void return_exception_when_created_invalid_customer() {
 				given()
 						.when()
+						.body("{\"name\":\"name\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_BAD_REQUEST);
+
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_BAD_REQUEST);
+
+				given()
+						.when()
 						.body("{\"id\":\"id\", \"name\":\"name\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
