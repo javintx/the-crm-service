@@ -34,7 +34,7 @@ class DeleteUserShould {
 
 		@Test
 		void delete_user_if_user_exists() {
-				User existingUser = new User("id", "name", "surname");
+				User existingUser = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 
 				when(userReaderMock.readAll()).thenReturn(List.of(existingUser));
 

@@ -24,11 +24,11 @@ public class UserResponse {
 				if (this == o) return true;
 				if (o == null || getClass() != o.getClass()) return false;
 				UserResponse that = (UserResponse) o;
-				return id.equals(that.id);
+				return id.equals(that.id) && name.equals(that.name) && surname.equals(that.surname);
 		}
 
 		@Override
 		public int hashCode() {
-				return Objects.hash(id);
+				return Objects.hash(id, name, surname);
 		}
 }

@@ -23,7 +23,7 @@ public class UpdateUserService implements UpdateUser {
 		}
 
 		private void checkIfExists(final User user) {
-				if (!userReader.readAll().contains(user)) {
+				if (userReader.readAll().stream().noneMatch(readUser -> readUser.identifier().equals(user.identifier()))) {
 						throw new UserNotExists(user.identifier());
 				}
 		}
