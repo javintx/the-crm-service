@@ -4,16 +4,26 @@ import com.javintx.crm.user.exception.UserNotValid;
 
 import java.util.Objects;
 
-public class User {
+public final class User {
 		private final String id;
 		private final String name;
 		private final String surname;
+		private final boolean isAdmin;
 
-		public User(String id, String name, String surname) {
+		private User(String id, String name, String surname, boolean isAdmin) {
 				this.id = id;
 				this.name = name;
 				this.surname = surname;
+				this.isAdmin = isAdmin;
 				verify();
+		}
+
+		public static UserBuilder buildUser() {
+				return new UserBuilder(false);
+		}
+
+		public static UserBuilder buildAdmin() {
+				return new UserBuilder(true);
 		}
 
 		private void verify() {
@@ -32,6 +42,10 @@ public class User {
 
 		public String surname() {
 				return surname;
+		}
+
+		public boolean isAdmin() {
+				return isAdmin;
 		}
 
 		@Override
@@ -54,5 +68,35 @@ public class User {
 						", name='" + name + '\'' +
 						", surname='" + surname + '\'' +
 						'}';
+		}
+
+		public static class UserBuilder {
+				private final boolean isAdmin;
+				private String id;
+				private String name;
+				private String surname;
+
+				private UserBuilder(final boolean isAdmin) {
+						this.isAdmin = isAdmin;
+				}
+
+				public UserBuilder withId(final String id) {
+						this.id = id;
+						return this;
+				}
+
+				public UserBuilder withName(final String name) {
+						this.name = name;
+						return this;
+				}
+
+				public UserBuilder withSurname(final String surname) {
+						this.surname = surname;
+						return this;
+				}
+
+				public User build() {
+						return new User(id, name, surname, isAdmin);
+				}
 		}
 }

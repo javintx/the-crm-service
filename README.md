@@ -149,6 +149,8 @@ container.
 
 ### User REST API
 
+The request header `adminId` must be filled with the user identifier of and admin to have access to the user REST API.
+
 - List all users
   - GET /user/all
 - Create new user (with [User JSON](#user-json) as body)

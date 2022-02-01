@@ -4,7 +4,6 @@ import com.javintx.crm.domain.User;
 import com.javintx.crm.port.out.user.UserReader;
 import com.javintx.crm.port.out.user.UserWriter;
 import com.javintx.crm.user.exception.UserAlreadyExists;
-import com.javintx.crm.user.exception.UserNotValid;
 import com.javintx.crm.user.impl.CreateNewUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +35,8 @@ class CreateNewUserShould {
 
 		@Test
 		void create_new_user() {
-				User userToCreate = new User("id", "name", "surname");
-				User userExpected = new User("id", "name", "surname");
+				User userToCreate = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User userExpected = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 
 				when(userWriterMocked.writes(any(User.class))).thenReturn(userExpected);
 
@@ -48,8 +47,8 @@ class CreateNewUserShould {
 
 		@Test
 		void throw_exception_when_create_new_user_that_exists() {
-				User userToCreate = new User("id", "name", "surname");
-				User user = new User("id", "name", "surname");
+				User userToCreate = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User user = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 
 				when(userReaderMocked.readAll()).thenReturn(List.of(user));
 

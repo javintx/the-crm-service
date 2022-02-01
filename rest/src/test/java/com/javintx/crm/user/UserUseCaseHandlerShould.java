@@ -27,12 +27,14 @@ class UserUseCaseHandlerShould {
 		private UpdateUser updateUserMock;
 		@Mock
 		private DeleteUser deleteUserMock;
+		@Mock
+		private IsAdminUser isAdminUserMock;
 
 		private UserUseCaseHandler userUseCaseHandler;
 
 		@BeforeEach
 		public void setUp() {
-				userUseCaseHandler = new UserUseCaseHandler(listAllUsersMock, createNewUserMock, updateUserMock, deleteUserMock);
+				userUseCaseHandler = new UserUseCaseHandler(listAllUsersMock, createNewUserMock, updateUserMock, deleteUserMock, isAdminUserMock);
 		}
 
 		@Test
@@ -42,7 +44,7 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_user_list_if_there_are_users() {
-				User user = new User("id", "name", "surname");
+				User user = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 				when(listAllUsersMock.get()).thenReturn(List.of(user));
 
 				List<UserResponse> userResponseList = userUseCaseHandler.get();
@@ -59,7 +61,7 @@ class UserUseCaseHandlerShould {
 				userRequest.setName("name");
 				userRequest.setSurname("name");
 
-				User userExpected = new User("id", "name", "surname");
+				User userExpected = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 				when(createNewUserMock.with(any(User.class))).thenReturn(userExpected);
 
 				UserResponse userResponse = userUseCaseHandler.create(userRequest);
@@ -74,7 +76,7 @@ class UserUseCaseHandlerShould {
 				userRequest.setName("name");
 				userRequest.setSurname("name");
 
-				User userExpected = new User("id", "name", "surname");
+				User userExpected = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
 
 				UserResponse userResponse = userUseCaseHandler.update(userRequest);

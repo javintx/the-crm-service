@@ -18,11 +18,13 @@ import static com.javintx.crm.user.UserEndPoints.CREATE_NEW_USER;
 import static com.javintx.crm.user.UserEndPoints.DELETE_USER;
 import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
 import static com.javintx.crm.user.UserEndPoints.UPDATE_USER;
+import static com.javintx.crm.user.UserEndPointsBindNames.ADMIN_ID;
 import static com.javintx.crm.user.UserEndPointsBindNames.USER_ID;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.eclipse.jetty.http.MimeTypes.Type.APPLICATION_JSON;
+import static spark.Spark.before;
 import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
@@ -42,6 +44,7 @@ public class UserController {
 		}
 
 		private void routes() {
+				before(this::handleIsAdminUser);
 				get(LIST_ALL_USERS.uri, "*/*", this::handleListAllUsers, objectMapper::writeValueAsString);
 				post(CREATE_NEW_USER.uri, APPLICATION_JSON.asString(), this::handleCreateNewUser, objectMapper::writeValueAsString);
 				put(UPDATE_USER.uri, APPLICATION_JSON.asString(), this::handleUpdateUser, objectMapper::writeValueAsString);
@@ -58,6 +61,10 @@ public class UserController {
 						response.status(SC_CONFLICT);
 						response.body(e.getMessage());
 				});
+		}
+
+		private void handleIsAdminUser(final Request request, final Response response) {
+				userUseCaseHandler.isAdmin(request.headers(ADMIN_ID.bindName));
 		}
 
 		private List<UserResponse> handleListAllUsers(final Request request, final Response response) {

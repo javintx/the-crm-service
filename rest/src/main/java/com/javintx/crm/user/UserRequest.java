@@ -20,6 +20,10 @@ public class UserRequest {
 		}
 
 		public User toDomain() {
-				return new User(id, name, surname);
+				return User.buildUser()
+						.withId(id)
+						.withName(name)
+						.withSurname(surname)
+						.build();
 		}
 }

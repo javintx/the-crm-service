@@ -10,15 +10,18 @@ public class UserUseCaseHandler {
 		private final CreateNewUser createNewUser;
 		private final UpdateUser updateUser;
 		private final DeleteUser deleteUser;
+		private final IsAdminUser isAdminUser;
 
 		public UserUseCaseHandler(final ListAllUsers listAllUsers,
 																												final CreateNewUser createNewUser,
 																												final UpdateUser updateUser,
-																												final DeleteUser deleteUser) {
+																												final DeleteUser deleteUser,
+																												final IsAdminUser isAdminUser) {
 				this.listAllUsers = listAllUsers;
 				this.createNewUser = createNewUser;
 				this.updateUser = updateUser;
 				this.deleteUser = deleteUser;
+				this.isAdminUser = isAdminUser;
 		}
 
 		public List<UserResponse> get() {
@@ -36,5 +39,9 @@ public class UserUseCaseHandler {
 
 		public void delete(final String userId) {
 				deleteUser.delete(userId);
+		}
+
+		public void isAdmin(final String userId) {
+				isAdminUser.isAdmin(userId);
 		}
 }

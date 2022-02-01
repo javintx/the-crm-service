@@ -13,6 +13,7 @@ import java.util.Random;
 import static com.javintx.crm.user.UserEndPoints.CREATE_NEW_USER;
 import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
 import static com.javintx.crm.user.UserEndPoints.UPDATE_USER;
+import static com.javintx.crm.user.UserEndPointsBindNames.ADMIN_ID;
 import static com.javintx.crm.user.UserEndPointsBindNames.USER_ID;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
@@ -27,6 +28,7 @@ class UserEndPointsShould {
 
 		private static final int MAX_RANGE_PORT = 60000;
 		private static final int MIN_RANGE_PORT = 30000;
+
 		private static final String DELETE_URI = format("/user/delete/{%s}", USER_ID.bindName);
 
 		private static int port() {
@@ -50,6 +52,7 @@ class UserEndPointsShould {
 		@Test
 		void return_empty_user_list_if_there_are_no_users() {
 				String response = given()
+						.header(ADMIN_ID.bindName, "isAdmin")
 						.when()
 						.get(LIST_ALL_USERS.uri)
 						.then()

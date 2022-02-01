@@ -24,7 +24,7 @@ class UserInMemoryAdapterShould {
 
 		@Test
 		void return_user_list_with_new_created_user() {
-				User userMock = new User("id", "name", "surname");
+				User userMock = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 				User userCreated = userInMemoryAdapter.writes(userMock);
 				assertThat(userCreated).isNotNull();
 				assertThat(userInMemoryAdapter.readAll()).isNotEmpty();
@@ -33,10 +33,10 @@ class UserInMemoryAdapterShould {
 
 		@Test
 		void return_user_list_with_updated_user() {
-				User existingUser = new User("id", "name", "surname");
+				User existingUser = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 				userInMemoryAdapter.writes(existingUser);
 
-				User userToUpdate = new User("id", "name_modified", "surname_modified");
+				User userToUpdate = User.buildUser().withId("id").withName("name_modified").withSurname("surname_modified").build();
 				User updatedUser = userInMemoryAdapter.update(userToUpdate);
 
 				assertThat(updatedUser.identifier()).isEqualTo(userToUpdate.identifier());
@@ -46,7 +46,7 @@ class UserInMemoryAdapterShould {
 
 		@Test
 		void return_user_list_without_deleted_user() {
-				User existingUser = new User("id", "name", "surname");
+				User existingUser = User.buildUser().withId("id").withName("name").withSurname("surname").build();
 				userInMemoryAdapter.writes(existingUser);
 
 				userInMemoryAdapter.delete("id");
