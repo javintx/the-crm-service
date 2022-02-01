@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,16 +21,16 @@ class UserUseCaseHandlerShould {
 		private ListAllUsers listAllUsersMock;
 		@Mock
 		private CreateNewUser createNewUserMock;
-//		@Mock
-//		private UpdateUser updateUserMock;
-//		@Mock
-//		private DeleteUser deleteUserMock;
+		@Mock
+		private UpdateUser updateUserMock;
+		@Mock
+		private DeleteUser deleteUserMock;
 
 		private UserUseCaseHandler userUseCaseHandler;
 
 		@BeforeEach
 		public void setUp() {
-				userUseCaseHandler = new UserUseCaseHandler(listAllUsersMock, createNewUserMock);//, updateUserMock, deleteUserMock);
+				userUseCaseHandler = new UserUseCaseHandler(listAllUsersMock, createNewUserMock, updateUserMock, deleteUserMock);
 		}
 
 		@Test
@@ -60,25 +61,24 @@ class UserUseCaseHandlerShould {
 				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
 		}
 
-//		@Test
-//		void return_user_updated_when_updates_user_and_exists() {
-//				UserRequest userRequestMock = new UserRequest();
-//				userRequestMock.setId("id");
-//				userRequestMock.setName("name");
-//				userRequestMock.setSurname("name");
-//				userRequestMock.setPhoto("photo");
-//
-//				User userExpected = new User("id", "name", "surname", "photo");
-//				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
-//
-//				UserResponse userResponse = userUseCaseHandler.update(userRequestMock);
-//
-//				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
-//		}
-//
-//		@Test
-//		void verify_deleted_user() {
-//				userUseCaseHandler.delete("userId");
-//				verify(deleteUserMock).delete("userId");
-//		}
+		@Test
+		void return_user_updated_when_updates_user_and_exists() {
+				UserRequest userRequestMock = new UserRequest();
+				userRequestMock.setId("id");
+				userRequestMock.setName("name");
+				userRequestMock.setSurname("name");
+
+				User userExpected = new User("id", "name", "surname");
+				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
+
+				UserResponse userResponse = userUseCaseHandler.update(userRequestMock);
+
+				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
+		}
+
+		@Test
+		void verify_deleted_user() {
+				userUseCaseHandler.delete("userId");
+				verify(deleteUserMock).delete("userId");
+		}
 }

@@ -1,9 +1,9 @@
 package com.javintx.crm.customer.impl;
 
-import com.javintx.crm.port.out.customer.CustomerDeleter;
-import com.javintx.crm.port.out.customer.CustomerReader;
 import com.javintx.crm.customer.DeleteCustomer;
 import com.javintx.crm.customer.exception.CustomerNotExists;
+import com.javintx.crm.port.out.customer.CustomerDeleter;
+import com.javintx.crm.port.out.customer.CustomerReader;
 
 public class DeleteCustomerService implements DeleteCustomer {
 

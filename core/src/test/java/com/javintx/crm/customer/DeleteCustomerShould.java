@@ -1,10 +1,10 @@
 package com.javintx.crm.customer;
 
+import com.javintx.crm.customer.exception.CustomerNotExists;
+import com.javintx.crm.customer.impl.DeleteCustomerService;
 import com.javintx.crm.domain.Customer;
 import com.javintx.crm.port.out.customer.CustomerDeleter;
 import com.javintx.crm.port.out.customer.CustomerReader;
-import com.javintx.crm.customer.exception.CustomerNotExists;
-import com.javintx.crm.customer.impl.DeleteCustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

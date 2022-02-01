@@ -29,12 +29,12 @@ class ListAllUsersShould {
 		}
 
 		@Test
-		void return_empty_customer_list_if_there_are_no_customers() {
+		void return_empty_user_list_if_there_are_no_users() {
 				assertThat(listAllUsers.get()).isEmpty();
 		}
 
 		@Test
-		void return_customer_list_if_there_are_customers() {
+		void return_user_list_if_there_are_users() {
 				User userMock = new User("id", "name", "surname");
 				when(userReaderMock.readAll()).thenReturn(List.of(userMock));
 				assertThat(listAllUsers.get()).isNotEmpty();

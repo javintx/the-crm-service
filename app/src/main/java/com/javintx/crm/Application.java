@@ -18,11 +18,15 @@ import com.javintx.crm.customer.impl.UpdateCustomerService;
 import com.javintx.crm.log.ApiRestLogger;
 import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
 import com.javintx.crm.user.CreateNewUser;
+import com.javintx.crm.user.DeleteUser;
 import com.javintx.crm.user.ListAllUsers;
+import com.javintx.crm.user.UpdateUser;
 import com.javintx.crm.user.UserInMemoryAdapter;
 import com.javintx.crm.user.UserUseCaseHandler;
 import com.javintx.crm.user.impl.CreateNewUserService;
+import com.javintx.crm.user.impl.DeleteUserService;
 import com.javintx.crm.user.impl.ListAllUsersService;
+import com.javintx.crm.user.impl.UpdateUserService;
 
 public class Application {
 
@@ -51,7 +55,9 @@ public class Application {
 
 				final ListAllUsers listAllUsers = new ListAllUsersService(userInMemoryAdapter);
 				final CreateNewUser createNewUser = new CreateNewUserService(userInMemoryAdapter, userInMemoryAdapter);
-				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser);
+				final UpdateUser updateUser = new UpdateUserService(userInMemoryAdapter, userInMemoryAdapter);
+				final DeleteUser deleteUser = new DeleteUserService(userInMemoryAdapter, userInMemoryAdapter);
+				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser);
 
 				final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
 				final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);

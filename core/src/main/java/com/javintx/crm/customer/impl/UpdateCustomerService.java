@@ -1,10 +1,10 @@
 package com.javintx.crm.customer.impl;
 
+import com.javintx.crm.customer.UpdateCustomer;
 import com.javintx.crm.customer.exception.CustomerNotExists;
 import com.javintx.crm.domain.Customer;
 import com.javintx.crm.port.out.customer.CustomerReader;
 import com.javintx.crm.port.out.customer.CustomerUpdater;
-import com.javintx.crm.customer.UpdateCustomer;
 
 public class UpdateCustomerService implements UpdateCustomer {
 

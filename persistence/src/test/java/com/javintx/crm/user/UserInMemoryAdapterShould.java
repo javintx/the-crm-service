@@ -31,26 +31,26 @@ class UserInMemoryAdapterShould {
 				assertThat(userInMemoryAdapter.readAll().get(0)).isEqualTo(userCreated);
 		}
 
-//		@Test
-//		void return_user_list_with_updated_user() {
-//				User existingCustomer = new User("id", "name", "surname");
-//				userInMemoryAdapter.writes(existingCustomer);
-//
-//				User userToUpdate = new User("id", "name_modified", "surname_modified");
-//				User updatedCustomer = userInMemoryAdapter.update(userToUpdate);
-//
-//				assertThat(updatedCustomer).isEqualTo(userToUpdate);
-//				assertThat(userInMemoryAdapter.readAll()).isNotEmpty();
-//				assertThat(userInMemoryAdapter.readAll().get(0)).isEqualTo(updatedCustomer);
-//		}
-//
-//		@Test
-//		void return_user_list_without_deleted_user() {
-//				User existingCustomer = new User("id", "name", "surname");
-//				userInMemoryAdapter.writes(existingCustomer);
-//
-//				userInMemoryAdapter.delete("id");
-//
-//				assertThat(userInMemoryAdapter.readAll()).isEmpty();
-//		}
+		@Test
+		void return_user_list_with_updated_user() {
+				User existingUser = new User("id", "name", "surname");
+				userInMemoryAdapter.writes(existingUser);
+
+				User userToUpdate = new User("id", "name_modified", "surname_modified");
+				User updatedUser = userInMemoryAdapter.update(userToUpdate);
+
+				assertThat(updatedUser).isEqualTo(userToUpdate);
+				assertThat(userInMemoryAdapter.readAll()).isNotEmpty();
+				assertThat(userInMemoryAdapter.readAll().get(0)).isEqualTo(updatedUser);
+		}
+
+		@Test
+		void return_user_list_without_deleted_user() {
+				User existingUser = new User("id", "name", "surname");
+				userInMemoryAdapter.writes(existingUser);
+
+				userInMemoryAdapter.delete("id");
+
+				assertThat(userInMemoryAdapter.readAll()).isEmpty();
+		}
 }

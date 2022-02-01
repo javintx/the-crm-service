@@ -8,10 +8,17 @@ import java.util.stream.Collectors;
 public class UserUseCaseHandler {
 		private final ListAllUsers listAllUsers;
 		private final CreateNewUser createNewUser;
+		private final UpdateUser updateUser;
+		private final DeleteUser deleteUser;
 
-		public UserUseCaseHandler(final ListAllUsers listAllUsers, final CreateNewUser createNewUser) {
+		public UserUseCaseHandler(final ListAllUsers listAllUsers,
+																												final CreateNewUser createNewUser,
+																												final UpdateUser updateUser,
+																												final DeleteUser deleteUser) {
 				this.listAllUsers = listAllUsers;
 				this.createNewUser = createNewUser;
+				this.updateUser = updateUser;
+				this.deleteUser = deleteUser;
 		}
 
 		public List<UserResponse> get() {
@@ -23,11 +30,11 @@ public class UserUseCaseHandler {
 				return UserResponse.from(createNewUser.with(user.toDomain()));
 		}
 
-//		public UserResponse update(final UserRequest user) {
-//				return UserResponse.from(updateUser.update(user.toDomain()));
-//		}
-//
-//		public void delete(final String userId) {
-//				deleteUser.delete(userId);
-//		}
+		public UserResponse update(final UserRequest user) {
+				return UserResponse.from(updateUser.update(user.toDomain()));
+		}
+
+		public void delete(final String userId) {
+				deleteUser.delete(userId);
+		}
 }
