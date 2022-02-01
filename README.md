@@ -38,15 +38,19 @@ charge of the API design and implementation. Here are the requirements for the A
 ## Assumptions
 
 - The persistence was implemented with in-memory datastore.
+- The authentication was implemented with an always-authenticated adapter.
 - For a customer:
   - The identifier (field id) of a customer is provided in the create customer request.
   - The only field that is not possible to change from a customer is the identifier (field id).
   - When a customer is deleted, it is removed physically from database.
+  - The user reference (field userId) must be passed with the customer information, and it will not be validated.
+  - The photo field is opened to be whatever.
 - For a user:
   - The identifier (field id) of a user is provided in the create customer request.
   - The only field that is not possible to change from a user is the identifier (field id).
   - When a user is deleted, it is removed physically from database. The customer will maintain the latest user id that
     modified it.
+  - The mandatory fields for a user will be: id, name and surname.
 
 ---
 
@@ -56,11 +60,9 @@ charge of the API design and implementation. Here are the requirements for the A
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
   - App: The main application layer. Contains the initialization of the CRM service.
   - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
-  - Persistence layer: First approach with in-memory storage. In the next iteration, it could
-    be [H2](https://www.h2database.com/html/main.html).
+  - Persistence layer: First approach with in-memory storage.
   - Rest API layer: First approach with [SparkJava](https://sparkjava.com). Pending to publish API.
-    - Authentication: First approach with all call are authenticated. In the next iteration, it could
-      be [OAuth2](https://oauth.net/code/java/).
+    - Authentication: First approach with all call are authenticated.
     - CORS is activated.
     - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
@@ -119,25 +121,19 @@ container.
 
 ## REST API
 
+### Customer REST API
+
 - List all customers
   - GET /customer/all
 - Create new customer (with [Customer JSON](#customer-json) as body)
   - POST /customer/create
+  - Could throw exception if customer already exists
 - Update customer (with [Customer JSON](#customer-json) as body)
   - PUT /customer/update
+  - Could throw exception if customer does not exist
 - Delete customer
   - DELETE /customer/delete/{customerId} (customerId is a path parameter)
-
----
-
-- List all users
-  - GET /user/all
-- Create new user (with [User JSON](#user-json) as body)
-  - POST /user/create
-- Update user (with [User JSON](#user-json) as body)
-  - PUT /user/update
-- Delete user
-  - DELETE /user/delete/{userId} (userId is a path parameter)
+  - Could throw exception if customer does not exist
 
 ### Customer JSON
 
@@ -145,8 +141,25 @@ container.
 > "id": "identifier",
 > "name": "name",
 > "surname": "surname",
-> "photo": "photo"
+> "photo": "photo",
+> "userId": "userId"
 > }
+
+---
+
+### User REST API
+
+- List all users
+  - GET /user/all
+- Create new user (with [User JSON](#user-json) as body)
+  - POST /user/create
+  - Could throw exception if user already exists
+- Update user (with [User JSON](#user-json) as body)
+  - PUT /user/update
+  - Could throw exception if user does not exist
+- Delete user
+  - DELETE /user/delete/{userId} (userId is a path parameter)
+  - Could throw exception if user does not exist
 
 ### User JSON
 
@@ -156,8 +169,14 @@ container.
 > "surname": "surname",
 > }
 
+---
+
 ## Improvements
 
+- The authentication layer could implement an adapter for [OAuth2](https://oauth.net/code/java/).
+- The persistence layer could implement an adapter for [H2](https://www.h2database.com/html/main.html).
 - It could be added [OpenAPI](https://www.openapis.org) or [Swagger](https://swagger.io/specification/) to publish the
   REST API in a better way than in this README.md.
 - It could be added a deletion flag for customer or user to do not make a physical delete and keep the historic data.
+- The user reference in the customer could be validated with persistence and could be extracted from user session in the
+  request.

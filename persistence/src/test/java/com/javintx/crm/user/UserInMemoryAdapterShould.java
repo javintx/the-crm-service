@@ -39,9 +39,9 @@ class UserInMemoryAdapterShould {
 				User userToUpdate = new User("id", "name_modified", "surname_modified");
 				User updatedUser = userInMemoryAdapter.update(userToUpdate);
 
-				assertThat(updatedUser).isEqualTo(userToUpdate);
+				assertThat(updatedUser.identifier()).isEqualTo(userToUpdate.identifier());
 				assertThat(userInMemoryAdapter.readAll()).isNotEmpty();
-				assertThat(userInMemoryAdapter.readAll().get(0)).isEqualTo(updatedUser);
+				assertThat(userInMemoryAdapter.readAll().get(0).identifier()).isEqualTo(updatedUser.identifier());
 		}
 
 		@Test

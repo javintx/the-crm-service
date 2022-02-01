@@ -23,7 +23,7 @@ public class UpdateCustomerService implements UpdateCustomer {
 		}
 
 		private void checkIfExists(final Customer customer) {
-				if (!customerReader.readAll().contains(customer)) {
+				if (customerReader.readAll().stream().noneMatch(readCustomer -> readCustomer.identifier().equals(customer.identifier()))) {
 						throw new CustomerNotExists(customer.identifier());
 				}
 		}

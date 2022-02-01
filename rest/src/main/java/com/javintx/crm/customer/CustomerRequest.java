@@ -7,6 +7,7 @@ public class CustomerRequest {
 		private String name;
 		private String surname;
 		private String photo;
+		private String userId;
 
 		public void setId(String id) {
 				this.id = id;
@@ -24,7 +25,11 @@ public class CustomerRequest {
 				this.photo = photo;
 		}
 
+		public void setUserId(String userId) {
+				this.userId = userId;
+		}
+
 		public Customer toDomain() {
-				return new Customer(id, name, surname, photo);
+				return new Customer(id, name, surname, photo, userId);
 		}
 }

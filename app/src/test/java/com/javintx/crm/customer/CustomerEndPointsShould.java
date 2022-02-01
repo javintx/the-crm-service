@@ -66,7 +66,7 @@ class CustomerEndPointsShould {
 		void return_customer_list_with_new_created_customer() {
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -88,6 +88,7 @@ class CustomerEndPointsShould {
 				assertThat(jsonPath.getString("name")).isEqualTo("[name]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
 				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
+				assertThat(jsonPath.getString("userId")).isEqualTo("[userId]");
 
 				deleteCustomer("id");
 		}
@@ -96,7 +97,7 @@ class CustomerEndPointsShould {
 		void return_exception_when_created_existing_customer() {
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -108,7 +109,7 @@ class CustomerEndPointsShould {
 
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.put(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -122,7 +123,7 @@ class CustomerEndPointsShould {
 		void return_customer_list_with_updated_customer() {
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -131,7 +132,7 @@ class CustomerEndPointsShould {
 
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
+						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.put(UPDATE_CUSTOMER.uri)
 						.then()
@@ -152,6 +153,7 @@ class CustomerEndPointsShould {
 				assertThat(jsonPath.getString("name")).isEqualTo("[name_updated]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[surname_updated]");
 				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
+				assertThat(jsonPath.getString("userId")).isEqualTo("[userId]");
 
 				deleteCustomer("id");
 		}
@@ -160,7 +162,7 @@ class CustomerEndPointsShould {
 		void return_exception_when_update_not_existing_customer() {
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
+						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.put(UPDATE_CUSTOMER.uri)
 						.then()
@@ -172,7 +174,7 @@ class CustomerEndPointsShould {
 		void return_customer_list_without_deleted_customer() {
 				given()
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()

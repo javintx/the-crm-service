@@ -24,7 +24,7 @@ class CustomerInMemoryAdapterShould {
 
 		@Test
 		void return_customer_list_with_new_created_customer() {
-				Customer customerMock = new Customer("id", "name", "surname");
+				Customer customerMock = new Customer("id", "name", "surname", "photo", "userId");
 				Customer customerCreated = customerInMemoryAdapter.writes(customerMock);
 				assertThat(customerCreated).isNotNull();
 				assertThat(customerInMemoryAdapter.readAll()).isNotEmpty();
@@ -33,20 +33,20 @@ class CustomerInMemoryAdapterShould {
 
 		@Test
 		void return_customer_list_with_updated_customer() {
-				Customer existingCustomer = new Customer("id", "name", "surname");
+				Customer existingCustomer = new Customer("id", "name", "surname", "photo", "userId");
 				customerInMemoryAdapter.writes(existingCustomer);
 
-				Customer customerToUpdate = new Customer("id", "name_modified", "surname_modified");
+				Customer customerToUpdate = new Customer("id", "name_modified", "surname_modified", "photo_modified", "userId_modified");
 				Customer updatedCustomer = customerInMemoryAdapter.update(customerToUpdate);
 
-				assertThat(updatedCustomer).isEqualTo(customerToUpdate);
+				assertThat(updatedCustomer.identifier()).isEqualTo(customerToUpdate.identifier());
 				assertThat(customerInMemoryAdapter.readAll()).isNotEmpty();
-				assertThat(customerInMemoryAdapter.readAll().get(0)).isEqualTo(updatedCustomer);
+				assertThat(customerInMemoryAdapter.readAll().get(0).identifier()).isEqualTo(updatedCustomer.identifier());
 		}
 
 		@Test
 		void return_customer_list_without_deleted_customer() {
-				Customer existingCustomer = new Customer("id", "name", "surname");
+				Customer existingCustomer = new Customer("id", "name", "surname", "photo", "userId");
 				customerInMemoryAdapter.writes(existingCustomer);
 
 				customerInMemoryAdapter.delete("id");

@@ -4,6 +4,7 @@ import com.javintx.crm.domain.User;
 import com.javintx.crm.port.out.user.UserReader;
 import com.javintx.crm.port.out.user.UserWriter;
 import com.javintx.crm.user.exception.UserAlreadyExists;
+import com.javintx.crm.user.exception.UserNotValid;
 import com.javintx.crm.user.impl.CreateNewUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

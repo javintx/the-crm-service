@@ -35,9 +35,9 @@ class UpdateCustomerShould {
 
 		@Test
 		void return_update_customer_if_customer_exists() {
-				Customer existingCustomer = new Customer("id1", "name1", "surname1", "photo1");
-				Customer updatedCustomer = new Customer("id2", "name2", "surname2", "photo2");
-				Customer customerExpected = new Customer("id2", "name2", "surname2", "photo2");
+				Customer existingCustomer = new Customer("id1", "name1", "surname1", "photo1", "userId1");
+				Customer updatedCustomer = new Customer("id2", "name2", "surname2", "photo2", "userId2");
+				Customer customerExpected = new Customer("id2", "name2", "surname2", "photo2", "userId2");
 
 				when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
 				when(customerUpdaterMock.update(existingCustomer)).thenReturn(updatedCustomer);
@@ -49,14 +49,16 @@ class UpdateCustomerShould {
 				assertThat(returnedCustomer.name()).isEqualTo(customerExpected.name());
 				assertThat(returnedCustomer.surname()).isEqualTo(customerExpected.surname());
 				assertThat(returnedCustomer.photo()).isEqualTo(customerExpected.photo());
+				assertThat(returnedCustomer.userReference()).isEqualTo(customerExpected.userReference());
 		}
 
 		@Test
 		void throw_exception_if_customer_not_exists() {
-				Customer customer = new Customer("id", "name", "surname");
+				Customer customer = new Customer("id", "name", "surname", "photo", "userId");
 
 				when(customerReaderMock.readAll()).thenReturn(Collections.emptyList());
 
 				assertThatThrownBy(() -> updateCustomer.update(customer)).isExactlyInstanceOf(CustomerNotExists.class);
 		}
+
 }
