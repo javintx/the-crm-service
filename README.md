@@ -40,6 +40,7 @@ charge of the API design and implementation. Here are the requirements for the A
 - The persistence was implemented with in-memory datastore.
   - The first admin user is in the datastore by default with `admin` id.
 - The authentication was implemented with an always-authenticated adapter.
+  - There is no authentication end point to generate the authentication token or similar.
 - For a customer:
   - The identifier (field id) of a customer is provided in the create customer request.
   - The only field that is not possible to change from a customer is the identifier (field id).
@@ -184,6 +185,7 @@ The request header `adminId` must be filled with the user identifier of an admin
 ## Improvements
 
 - The authentication layer could implement an adapter for [OAuth2](https://oauth.net/code/java/).
+  - It should be generated an end point to generate the authorization token.
 - The persistence layer could implement an adapter for [H2](https://www.h2database.com/html/main.html).
 - It could be added [OpenAPI](https://www.openapis.org) or [Swagger](https://swagger.io/specification/) to publish the
   REST API in a better way than in this README.md.
