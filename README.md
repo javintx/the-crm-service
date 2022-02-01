@@ -38,9 +38,15 @@ charge of the API design and implementation. Here are the requirements for the A
 ## Assumptions
 
 - The persistence was implemented with in-memory datastore.
-- The identifier (field id) of a customer is provided in the create customer request.
-- The only field that is not possible to change from a customer is the identifier (field id).
-- When a customer is deleted, it is removed physically from database.
+- For a customer:
+  - The identifier (field id) of a customer is provided in the create customer request.
+  - The only field that is not possible to change from a customer is the identifier (field id).
+  - When a customer is deleted, it is removed physically from database.
+- For a user:
+  - The identifier (field id) of a user is provided in the create customer request.
+  - The only field that is not possible to change from a user is the identifier (field id).
+  - When a user is deleted, it is removed physically from database. The customer will maintain the latest user id that
+    modified it.
 
 ---
 
@@ -115,12 +121,23 @@ container.
 
 - List all customers
   - GET /customer/all
-- Create new customer (with Customer JSON as body)
+- Create new customer (with [Customer JSON](#customer-json) as body)
   - POST /customer/create
-- Update customer (with Customer JSON as body)
+- Update customer (with [Customer JSON](#customer-json) as body)
   - PUT /customer/update
 - Delete customer
   - DELETE /customer/delete/{customerId} (customerId is a path parameter)
+
+---
+
+- List all users
+  - GET /user/all
+- Create new user (with [User JSON](#user-json) as body)
+  - POST /user/create
+- Update user (with [User JSON](#user-json) as body)
+  - PUT /user/update
+- Delete user
+  - DELETE /user/delete/{userId} (userId is a path parameter)
 
 ### Customer JSON
 
@@ -130,3 +147,17 @@ container.
 > "surname": "surname",
 > "photo": "photo"
 > }
+
+### User JSON
+
+> {
+> "id": "identifier",
+> "name": "name",
+> "surname": "surname",
+> }
+
+## Improvements
+
+- It could be added [OpenAPI](https://www.openapis.org) or [Swagger](https://swagger.io/specification/) to publish the
+  REST API in a better way than in this README.md.
+- It could be added a deletion flag for customer or user to do not make a physical delete and keep the historic data.

@@ -1,10 +1,6 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
-import com.javintx.crm.usecase.CreateNewCustomer;
-import com.javintx.crm.usecase.DeleteCustomer;
-import com.javintx.crm.usecase.ListAllCustomers;
-import com.javintx.crm.usecase.UpdateCustomer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
