@@ -43,4 +43,14 @@ class CustomerInMemoryAdapterShould {
 		assertThat(customerInMemoryAdapter.readAll()).isNotEmpty();
 		assertThat(customerInMemoryAdapter.readAll().get(0)).isEqualTo(updatedCustomer);
 	}
+
+	@Test
+	void return_customer_list_without_deleted_customer() {
+		Customer existingCustomer = new Customer("id", "name", "surname");
+		customerInMemoryAdapter.writes(existingCustomer);
+
+		customerInMemoryAdapter.delete("id");
+
+		assertThat(customerInMemoryAdapter.readAll()).isEmpty();
+	}
 }

@@ -2,6 +2,7 @@ package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
 import com.javintx.crm.usecase.CreateNewCustomer;
+import com.javintx.crm.usecase.DeleteCustomer;
 import com.javintx.crm.usecase.ListAllCustomers;
 import com.javintx.crm.usecase.UpdateCustomer;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,12 +27,14 @@ class CustomerUseCaseHandlerShould {
 	private CreateNewCustomer createNewCustomerMock;
 	@Mock
 	private UpdateCustomer updateCustomerMock;
+	@Mock
+	private DeleteCustomer deleteCustomerMock;
 
 	private CustomerUseCaseHandler customerUseCaseHandler;
 
 	@BeforeEach
 	public void setUp() {
-		customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomersMock, createNewCustomerMock, updateCustomerMock);
+		customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomersMock, createNewCustomerMock, updateCustomerMock, deleteCustomerMock);
 	}
 
 	@Test
@@ -75,5 +79,11 @@ class CustomerUseCaseHandlerShould {
 		CustomerResponse customerResponse = customerUseCaseHandler.update(customerRequestMock);
 
 		assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
+	}
+
+	@Test
+	void verify_deleted_customer() {
+		customerUseCaseHandler.delete("customerId");
+		verify(deleteCustomerMock).delete("customerId");
 	}
 }

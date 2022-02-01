@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javintx.crm.customer.CustomerRequest;
 import com.javintx.crm.customer.CustomerResponse;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
+import com.javintx.crm.usecase.exception.CustomerAlreadyExists;
 import com.javintx.crm.usecase.exception.CustomerNotExists;
 import spark.Request;
 import spark.Response;
@@ -14,10 +15,15 @@ import java.util.List;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
 import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
+import static com.javintx.crm.customer.CustomerEndPoints.DELETE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
+import static com.javintx.crm.customer.CustomerEndPointsBindNames.CUSTOMER_ID;
+import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.eclipse.jetty.http.MimeTypes.Type.APPLICATION_JSON;
+import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -39,12 +45,17 @@ public class CustomerController {
 		get(LIST_ALL_CUSTOMERS.uri, "*/*", this::handleListAllCustomers, objectMapper::writeValueAsString);
 		post(CREATE_NEW_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
 		put(UPDATE_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleUpdateCustomer, objectMapper::writeValueAsString);
+		delete(DELETE_CUSTOMER.uri, "*/*", this::handleDeleteCustomer, objectMapper::writeValueAsString);
 		exceptions();
 	}
 
 	private void exceptions() {
 		exception(CustomerNotExists.class, (e, request, response) -> {
 			response.status(SC_NOT_FOUND);
+			response.body(e.getMessage());
+		});
+		exception(CustomerAlreadyExists.class, (e, request, response) -> {
+			response.status(SC_CONFLICT);
 			response.body(e.getMessage());
 		});
 	}
@@ -63,5 +74,11 @@ public class CustomerController {
 		try (JsonParser parser = objectMapper.createParser(request.body())) {
 			return customerUseCaseHandler.update(parser.readValueAs(CustomerRequest.class));
 		}
+	}
+
+	private String handleDeleteCustomer(final Request request, final Response response) {
+		customerUseCaseHandler.delete(request.params(CUSTOMER_ID.bindName));
+		response.status(SC_OK);
+		return "OK";
 	}
 }

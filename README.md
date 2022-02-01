@@ -38,6 +38,9 @@ charge of the API design and implementation. Here are the requirements for the A
 ## Assumptions
 
 - The persistence was implemented with in-memory datastore.
+- The identifier (field id) of a customer is provided in the create customer request.
+- The only field that is not possible to change from a customer is the identifier (field id).
+- When a customer is deleted, it is removed physically from database.
 
 ---
 
@@ -49,9 +52,10 @@ charge of the API design and implementation. Here are the requirements for the A
     - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
     - Persistence layer: First approach with in-memory storage. In the next iteration, it could
       be [H2](https://www.h2database.com/html/main.html).
-    - Rest API layer: First approach with [SparkJava](https://sparkjava.com).
+    - Rest API layer: First approach with [SparkJava](https://sparkjava.com). Pending to publish API.
         - Authentication: First approach with all call are authenticated. In the next iteration, it could
           be [OAuth2](https://oauth.net/code/java/).
+        - CORS is activated.
         - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
@@ -107,8 +111,22 @@ container.
 
 ---
 
-## Use cases
+## REST API
 
 - List all customers
-- Create new customer
-- Update customer
+    - GET /customer/all
+- Create new customer (with Customer JSON as body)
+    - POST /customer/create
+- Update customer (with Customer JSON as body)
+    - PUT /customer/update
+- Delete customer
+    - DELETE /customer/delete/{customerId} (customerId is a path parameter)
+
+### Customer JSON
+
+> {
+> "id": "identifier",
+> "name": "name",
+> "surname": "surname",
+> "photo": "photo"
+> }
