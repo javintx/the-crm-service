@@ -1,10 +1,6 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
-import com.javintx.crm.usecase.CreateNewCustomer;
-import com.javintx.crm.usecase.DeleteCustomer;
-import com.javintx.crm.usecase.ListAllCustomers;
-import com.javintx.crm.usecase.UpdateCustomer;
 
 import java.util.List;
 import java.util.stream.Collectors;

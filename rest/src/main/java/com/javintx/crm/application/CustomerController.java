@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javintx.crm.customer.CustomerRequest;
 import com.javintx.crm.customer.CustomerResponse;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
-import com.javintx.crm.usecase.exception.CustomerAlreadyExists;
-import com.javintx.crm.usecase.exception.CustomerNotExists;
+import com.javintx.crm.customer.exception.CustomerAlreadyExists;
+import com.javintx.crm.customer.exception.CustomerNotExists;
 import spark.Request;
 import spark.Response;
 

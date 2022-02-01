@@ -1,10 +1,10 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
-import com.javintx.crm.port.out.CustomerDeleter;
-import com.javintx.crm.port.out.CustomerReader;
-import com.javintx.crm.port.out.CustomerUpdater;
-import com.javintx.crm.port.out.CustomerWriter;
+import com.javintx.crm.port.out.customer.CustomerDeleter;
+import com.javintx.crm.port.out.customer.CustomerReader;
+import com.javintx.crm.port.out.customer.CustomerUpdater;
+import com.javintx.crm.port.out.customer.CustomerWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
