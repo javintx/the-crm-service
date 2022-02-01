@@ -15,23 +15,23 @@ charge of the API design and implementation. Here are the requirements for the A
 
 - The API should be only accessible by a registered user by providing an authentication mechanism.
 - A user can only:
-    - List all customers in the database.
-    - Get full customer information, including a photo URL.
-    - Create a new customer:
-        - A customer should have at least name, surname, id and a photo field.
-        - Name, surname and id are required fields.
-        - Image uploads should be able to be managed.
-        - The customer should have a reference to the user who created it.
-    - Update an existing customer.
-        - The customer should hold a reference to the last user who modified it.
-    - Delete an existing customer.
+  - List all customers in the database.
+  - Get full customer information, including a photo URL.
+  - Create a new customer:
+    - A customer should have at least name, surname, id and a photo field.
+    - Name, surname and id are required fields.
+    - Image uploads should be able to be managed.
+    - The customer should have a reference to the user who created it.
+  - Update an existing customer.
+    - The customer should hold a reference to the last user who modified it.
+  - Delete an existing customer.
 - An admin can also:
-    - Manage users:
-        - Create users.
-        - Delete users.
-        - Update users.
-        - List users.
-        - Change admin status.
+  - Manage users:
+    - Create users.
+    - Delete users.
+    - Update users.
+    - List users.
+    - Change admin status.
 
 ---
 
@@ -48,15 +48,15 @@ charge of the API design and implementation. Here are the requirements for the A
 
 - Language code: Java 11 with [Gradle](https://gradle.org)
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
-    - App: The main application layer. Contains the initialization of the CRM service.
-    - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
-    - Persistence layer: First approach with in-memory storage. In the next iteration, it could
-      be [H2](https://www.h2database.com/html/main.html).
-    - Rest API layer: First approach with [SparkJava](https://sparkjava.com). Pending to publish API.
-        - Authentication: First approach with all call are authenticated. In the next iteration, it could
-          be [OAuth2](https://oauth.net/code/java/).
-        - CORS is activated.
-        - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
+  - App: The main application layer. Contains the initialization of the CRM service.
+  - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
+  - Persistence layer: First approach with in-memory storage. In the next iteration, it could
+    be [H2](https://www.h2database.com/html/main.html).
+  - Rest API layer: First approach with [SparkJava](https://sparkjava.com). Pending to publish API.
+    - Authentication: First approach with all call are authenticated. In the next iteration, it could
+      be [OAuth2](https://oauth.net/code/java/).
+    - CORS is activated.
+    - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
 - End-to-end test: JUnit5 with [RestAssured](https://rest-assured.io).
@@ -114,13 +114,13 @@ container.
 ## REST API
 
 - List all customers
-    - GET /customer/all
+  - GET /customer/all
 - Create new customer (with Customer JSON as body)
-    - POST /customer/create
+  - POST /customer/create
 - Update customer (with Customer JSON as body)
-    - PUT /customer/update
+  - PUT /customer/update
 - Delete customer
-    - DELETE /customer/delete/{customerId} (customerId is a path parameter)
+  - DELETE /customer/delete/{customerId} (customerId is a path parameter)
 
 ### Customer JSON
 

@@ -25,192 +25,192 @@ import static spark.Spark.stop;
 
 class CustomerEndPointsShould {
 
-	private static final int MAX_RANGE_PORT = 60000;
-	private static final int MIN_RANGE_PORT = 30000;
-	private static final String DELETE_URI = format("/customer/delete/{%s}", CUSTOMER_ID.bindName);
+		private static final int MAX_RANGE_PORT = 60000;
+		private static final int MIN_RANGE_PORT = 30000;
+		private static final String DELETE_URI = format("/customer/delete/{%s}", CUSTOMER_ID.bindName);
 
-	private static int port() {
-		return new Random().nextInt(MAX_RANGE_PORT - MIN_RANGE_PORT + 1) + MIN_RANGE_PORT;
-	}
+		private static int port() {
+				return new Random().nextInt(MAX_RANGE_PORT - MIN_RANGE_PORT + 1) + MIN_RANGE_PORT;
+		}
 
-	@BeforeAll
-	static void startServer() {
-		final var port = port();
-		Application.main(new String[]{String.valueOf(port), String.valueOf(false)});
-		RestAssured.baseURI = format("http://localhost:%s/", port);
-		awaitInitialization();
-	}
+		@BeforeAll
+		static void startServer() {
+				final var port = port();
+				Application.main(new String[]{String.valueOf(port), String.valueOf(false)});
+				RestAssured.baseURI = format("http://localhost:%s/", port);
+				awaitInitialization();
+		}
 
-	@AfterAll
-	static void stopServer() {
-		stop();
-		awaitStop();
-	}
+		@AfterAll
+		static void stopServer() {
+				stop();
+				awaitStop();
+		}
 
-	@Test
-	void return_empty_customer_list_if_there_are_no_customers() {
-		String response = given()
-			.when()
-			.get(LIST_ALL_CUSTOMERS.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK)
-			.extract()
-			.response()
-			.asString();
+		@Test
+		void return_empty_customer_list_if_there_are_no_customers() {
+				String response = given()
+						.when()
+						.get(LIST_ALL_CUSTOMERS.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.asString();
 
-		assertThat(response).isEqualTo("[]");
-	}
+				assertThat(response).isEqualTo("[]");
+		}
 
-	@Test
-	void return_customer_list_with_new_created_customer() {
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
-			.accept(ContentType.JSON)
-			.post(CREATE_NEW_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK);
+		@Test
+		void return_customer_list_with_new_created_customer() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK);
 
-		JsonPath jsonPath = given()
-			.when()
-			.get(LIST_ALL_CUSTOMERS.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK)
-			.extract()
-			.response()
-			.jsonPath();
+				JsonPath jsonPath = given()
+						.when()
+						.get(LIST_ALL_CUSTOMERS.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.jsonPath();
 
 
-		assertThat(jsonPath.getString("id")).isEqualTo("[id]");
-		assertThat(jsonPath.getString("name")).isEqualTo("[name]");
-		assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
-		assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
+				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
+				assertThat(jsonPath.getString("name")).isEqualTo("[name]");
+				assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
+				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
 
-		deleteCustomer("id");
-	}
+				deleteCustomer("id");
+		}
 
-	@Test
-	void return_exception_when_created_existing_customer() {
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
-			.accept(ContentType.JSON)
-			.post(CREATE_NEW_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK)
-			.extract()
-			.response()
-			.asString();
+		@Test
+		void return_exception_when_created_existing_customer() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.asString();
 
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
-			.accept(ContentType.JSON)
-			.put(CREATE_NEW_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_NOT_FOUND);
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
+						.accept(ContentType.JSON)
+						.put(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_NOT_FOUND);
 
-		deleteCustomer("id");
-	}
+				deleteCustomer("id");
+		}
 
-	@Test
-	void return_customer_list_with_updated_customer() {
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
-			.accept(ContentType.JSON)
-			.post(CREATE_NEW_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK);
+		@Test
+		void return_customer_list_with_updated_customer() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK);
 
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
-			.accept(ContentType.JSON)
-			.put(UPDATE_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK);
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
+						.accept(ContentType.JSON)
+						.put(UPDATE_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK);
 
-		JsonPath jsonPath = given()
-			.when()
-			.get(LIST_ALL_CUSTOMERS.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK)
-			.extract()
-			.response()
-			.jsonPath();
+				JsonPath jsonPath = given()
+						.when()
+						.get(LIST_ALL_CUSTOMERS.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.jsonPath();
 
-		assertThat(jsonPath.getString("id")).isEqualTo("[id]");
-		assertThat(jsonPath.getString("name")).isEqualTo("[name_updated]");
-		assertThat(jsonPath.getString("surname")).isEqualTo("[surname_updated]");
-		assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
+				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
+				assertThat(jsonPath.getString("name")).isEqualTo("[name_updated]");
+				assertThat(jsonPath.getString("surname")).isEqualTo("[surname_updated]");
+				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
 
-		deleteCustomer("id");
-	}
+				deleteCustomer("id");
+		}
 
-	@Test
-	void return_exception_when_update_not_existing_customer() {
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
-			.accept(ContentType.JSON)
-			.put(UPDATE_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_NOT_FOUND);
-	}
+		@Test
+		void return_exception_when_update_not_existing_customer() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\"}")
+						.accept(ContentType.JSON)
+						.put(UPDATE_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_NOT_FOUND);
+		}
 
-	@Test
-	void return_customer_list_without_deleted_customer() {
-		given()
-			.when()
-			.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
-			.accept(ContentType.JSON)
-			.post(CREATE_NEW_CUSTOMER.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK);
+		@Test
+		void return_customer_list_without_deleted_customer() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK);
 
-		String deleteResponse = given()
-			.when()
-			.delete(DELETE_URI, "id")
-			.then()
-			.assertThat()
-			.statusCode(SC_OK)
-			.extract()
-			.response()
-			.asString();
-		assertThat(deleteResponse).isEqualTo("\"OK\"");
+				String deleteResponse = given()
+						.when()
+						.delete(DELETE_URI, "id")
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.asString();
+				assertThat(deleteResponse).isEqualTo("\"OK\"");
 
-		String response = given()
-			.when()
-			.get(LIST_ALL_CUSTOMERS.uri)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK)
-			.extract()
-			.response()
-			.asString();
+				String response = given()
+						.when()
+						.get(LIST_ALL_CUSTOMERS.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.asString();
 
-		assertThat(response).isEqualTo("[]");
-	}
+				assertThat(response).isEqualTo("[]");
+		}
 
-	private void deleteCustomer(final String customerId) {
-		given()
-			.when()
-			.delete(DELETE_URI, customerId)
-			.then()
-			.assertThat()
-			.statusCode(SC_OK);
-	}
+		private void deleteCustomer(final String customerId) {
+				given()
+						.when()
+						.delete(DELETE_URI, customerId)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK);
+		}
 
 
 }

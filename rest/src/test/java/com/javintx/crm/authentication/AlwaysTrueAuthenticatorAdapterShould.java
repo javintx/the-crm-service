@@ -12,14 +12,14 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 class AlwaysTrueAuthenticatorAdapterShould {
 
-	@Test
-	void return_true_is_request_is_authenticated() {
-		Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
+		@Test
+		void return_true_is_request_is_authenticated() {
+				Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
 
-		Request request = mock(Request.class);
-		Response response = mock(Response.class);
+				Request request = mock(Request.class);
+				Response response = mock(Response.class);
 
-		boolean isAuthenticated = authenticator.isAuthenticated(request, response);
-		assertTrue(isAuthenticated);
-	}
+				boolean isAuthenticated = authenticator.isAuthenticated(request, response);
+				assertTrue(isAuthenticated);
+		}
 }

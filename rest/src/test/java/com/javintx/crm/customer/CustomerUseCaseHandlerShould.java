@@ -21,69 +21,69 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CustomerUseCaseHandlerShould {
 
-	@Mock
-	private ListAllCustomers listAllCustomersMock;
-	@Mock
-	private CreateNewCustomer createNewCustomerMock;
-	@Mock
-	private UpdateCustomer updateCustomerMock;
-	@Mock
-	private DeleteCustomer deleteCustomerMock;
+		@Mock
+		private ListAllCustomers listAllCustomersMock;
+		@Mock
+		private CreateNewCustomer createNewCustomerMock;
+		@Mock
+		private UpdateCustomer updateCustomerMock;
+		@Mock
+		private DeleteCustomer deleteCustomerMock;
 
-	private CustomerUseCaseHandler customerUseCaseHandler;
+		private CustomerUseCaseHandler customerUseCaseHandler;
 
-	@BeforeEach
-	public void setUp() {
-		customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomersMock, createNewCustomerMock, updateCustomerMock, deleteCustomerMock);
-	}
+		@BeforeEach
+		public void setUp() {
+				customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomersMock, createNewCustomerMock, updateCustomerMock, deleteCustomerMock);
+		}
 
-	@Test
-	void return_empty_customer_list_if_there_are_no_customers() {
-		assertThat(customerUseCaseHandler.get()).isEmpty();
-	}
+		@Test
+		void return_empty_customer_list_if_there_are_no_customers() {
+				assertThat(customerUseCaseHandler.get()).isEmpty();
+		}
 
-	@Test
-	void return_customer_list_if_there_are_customers() {
-		Customer customerMock = new Customer("id", "name", "surname");
-		when(listAllCustomersMock.get()).thenReturn(List.of(customerMock));
+		@Test
+		void return_customer_list_if_there_are_customers() {
+				Customer customerMock = new Customer("id", "name", "surname");
+				when(listAllCustomersMock.get()).thenReturn(List.of(customerMock));
 
-		List<CustomerResponse> customerResponseList = customerUseCaseHandler.get();
+				List<CustomerResponse> customerResponseList = customerUseCaseHandler.get();
 
-		assertThat(customerResponseList).isNotEmpty();
-		assertThat(customerResponseList.get(0)).isInstanceOf(CustomerResponse.class);
-		assertThat(customerResponseList).containsExactly(CustomerResponse.from(customerMock));
-	}
+				assertThat(customerResponseList).isNotEmpty();
+				assertThat(customerResponseList.get(0)).isInstanceOf(CustomerResponse.class);
+				assertThat(customerResponseList).containsExactly(CustomerResponse.from(customerMock));
+		}
 
-	@Test
-	void return_new_customer_created() {
-		CustomerRequest customerRequestMock = new CustomerRequest();
-		Customer customerExpected = new Customer("id", "name", "surname");
-		when(createNewCustomerMock.with(any(Customer.class))).thenReturn(customerExpected);
+		@Test
+		void return_new_customer_created() {
+				CustomerRequest customerRequestMock = new CustomerRequest();
+				Customer customerExpected = new Customer("id", "name", "surname");
+				when(createNewCustomerMock.with(any(Customer.class))).thenReturn(customerExpected);
 
-		CustomerResponse customerResponse = customerUseCaseHandler.create(customerRequestMock);
+				CustomerResponse customerResponse = customerUseCaseHandler.create(customerRequestMock);
 
-		assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
-	}
+				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
+		}
 
-	@Test
-	void return_customer_updated_when_updates_user_and_exists() {
-		CustomerRequest customerRequestMock = new CustomerRequest();
-		customerRequestMock.setId("id");
-		customerRequestMock.setName("name");
-		customerRequestMock.setSurname("name");
-		customerRequestMock.setPhoto("photo");
+		@Test
+		void return_customer_updated_when_updates_user_and_exists() {
+				CustomerRequest customerRequestMock = new CustomerRequest();
+				customerRequestMock.setId("id");
+				customerRequestMock.setName("name");
+				customerRequestMock.setSurname("name");
+				customerRequestMock.setPhoto("photo");
 
-		Customer customerExpected = new Customer("id", "name", "surname", "photo");
-		when(updateCustomerMock.update(any(Customer.class))).thenReturn(customerExpected);
+				Customer customerExpected = new Customer("id", "name", "surname", "photo");
+				when(updateCustomerMock.update(any(Customer.class))).thenReturn(customerExpected);
 
-		CustomerResponse customerResponse = customerUseCaseHandler.update(customerRequestMock);
+				CustomerResponse customerResponse = customerUseCaseHandler.update(customerRequestMock);
 
-		assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
-	}
+				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
+		}
 
-	@Test
-	void verify_deleted_customer() {
-		customerUseCaseHandler.delete("customerId");
-		verify(deleteCustomerMock).delete("customerId");
-	}
+		@Test
+		void verify_deleted_customer() {
+				customerUseCaseHandler.delete("customerId");
+				verify(deleteCustomerMock).delete("customerId");
+		}
 }

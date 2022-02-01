@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface CustomerReader {
 
-	/**
-	 * Get all {@link Customer} in a {@link List}.
-	 *
-	 * @return List of customers.
-	 */
-	List<Customer> readAll();
+		/**
+			* Get all {@link Customer} in a {@link List}.
+			*
+			* @return List of customers.
+			*/
+		List<Customer> readAll();
 }

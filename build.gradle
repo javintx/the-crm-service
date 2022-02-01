@@ -1,74 +1,74 @@
 plugins {
-    id "java-library"
-    id "org.sonarqube" version "3.3"
+  id "java-library"
+  id "org.sonarqube" version "3.3"
 }
 
 wrapper {
-    gradleVersion = "7.3.3"
+  gradleVersion = "7.3.3"
 }
 
 dependencies {
-    implementation project(":core")
-    implementation project(":app")
-    implementation project(":persistence")
+  implementation project(":core")
+  implementation project(":app")
+  implementation project(":persistence")
 }
 
 jar {
-    manifest {
-        attributes("Main-Class": "com.javintx.crm.Application")
-    }
+  manifest {
+    attributes("Main-Class": "com.javintx.crm.Application")
+  }
 
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+  from {
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 allprojects {
-    group "com.javintx.crm"
-    version "1.0.0"
+  group "com.javintx.crm"
+  version "1.0.0"
 
-    repositories {
-        mavenCentral()
-    }
+  repositories {
+    mavenCentral()
+  }
 }
 
 subprojects {
-    apply plugin: "java"
-    apply plugin: "jacoco"
+  apply plugin: "java"
+  apply plugin: "jacoco"
 
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(11)
-        }
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(11)
     }
+  }
 
-    check.finalizedBy(jacocoTestReport)
+  check.finalizedBy(jacocoTestReport)
 
-    jacocoTestReport {
-        reports {
-            xml.required = true
-            html.required = true
-        }
+  jacocoTestReport {
+    reports {
+      xml.required = true
+      html.required = true
     }
+  }
 
-    dependencies {
-        testImplementation "org.assertj:assertj-core:3.22.0"
-        testImplementation "org.mockito:mockito-junit-jupiter:4.3.1"
-        testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.2"
-    }
+  dependencies {
+    testImplementation "org.assertj:assertj-core:3.22.0"
+    testImplementation "org.mockito:mockito-junit-jupiter:4.3.1"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.2"
+  }
 
-    test {
-        useJUnitPlatform()
-    }
+  test {
+    useJUnitPlatform()
+  }
 }
 
 sonarqube {
-    properties {
-        property "sonar.projectKey", "javintx_the-crm-service"
-        property "sonar.organization", "javintx"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
+  properties {
+    property "sonar.projectKey", "javintx_the-crm-service"
+    property "sonar.organization", "javintx"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
 }
