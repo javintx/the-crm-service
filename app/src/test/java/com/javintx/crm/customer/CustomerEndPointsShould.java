@@ -16,6 +16,8 @@ import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPointsBindNames.CUSTOMER_ID;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_CONFLICT;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,7 +85,6 @@ class CustomerEndPointsShould {
 						.response()
 						.jsonPath();
 
-
 				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[name]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
@@ -111,12 +112,24 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
 						.accept(ContentType.JSON)
-						.put(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
 						.assertThat()
-						.statusCode(SC_NOT_FOUND);
+						.statusCode(SC_CONFLICT);
 
 				deleteCustomer("id");
+		}
+
+		@Test
+		void return_exception_when_created_invalid_customer() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_CUSTOMER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_BAD_REQUEST);
 		}
 
 		@Test
