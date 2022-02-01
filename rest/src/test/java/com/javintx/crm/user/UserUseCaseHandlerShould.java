@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -17,8 +18,8 @@ class UserUseCaseHandlerShould {
 
 		@Mock
 		private ListAllUsers listAllUsersMock;
-//		@Mock
-//		private CreateNewUser createNewUserMock;
+		@Mock
+		private CreateNewUser createNewUserMock;
 //		@Mock
 //		private UpdateUser updateUserMock;
 //		@Mock
@@ -28,7 +29,7 @@ class UserUseCaseHandlerShould {
 
 		@BeforeEach
 		public void setUp() {
-				userUseCaseHandler = new UserUseCaseHandler(listAllUsersMock);//, createNewUserMock, updateUserMock, deleteUserMock);
+				userUseCaseHandler = new UserUseCaseHandler(listAllUsersMock, createNewUserMock);//, updateUserMock, deleteUserMock);
 		}
 
 		@Test
@@ -48,17 +49,17 @@ class UserUseCaseHandlerShould {
 				assertThat(userResponseList).containsExactly(UserResponse.from(userMock));
 		}
 
-//		@Test
-//		void return_new_user_created() {
-//				UserRequest userRequestMock = new UserRequest();
-//				User userExpected = new User("id", "name", "surname");
-//				when(createNewUserMock.with(any(User.class))).thenReturn(userExpected);
-//
-//				UserResponse userResponse = userUseCaseHandler.create(userRequestMock);
-//
-//				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
-//		}
-//
+		@Test
+		void return_new_user_created() {
+				UserRequest userRequestMock = new UserRequest();
+				User userExpected = new User("id", "name", "surname");
+				when(createNewUserMock.with(any(User.class))).thenReturn(userExpected);
+
+				UserResponse userResponse = userUseCaseHandler.create(userRequestMock);
+
+				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
+		}
+
 //		@Test
 //		void return_user_updated_when_updates_user_and_exists() {
 //				UserRequest userRequestMock = new UserRequest();

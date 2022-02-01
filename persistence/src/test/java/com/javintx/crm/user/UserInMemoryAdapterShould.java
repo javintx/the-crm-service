@@ -1,5 +1,6 @@
 package com.javintx.crm.user;
 
+import com.javintx.crm.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +22,15 @@ class UserInMemoryAdapterShould {
 				assertThat(userInMemoryAdapter.readAll()).isEmpty();
 		}
 
-//		@Test
-//		void return_user_list_with_new_created_user() {
-//				User userMock = new User("id", "name", "surname");
-//				User userCreated = userInMemoryAdapter.writes(userMock);
-//				assertThat(userCreated).isNotNull();
-//				assertThat(userInMemoryAdapter.readAll()).isNotEmpty();
-//				assertThat(userInMemoryAdapter.readAll().get(0)).isEqualTo(userCreated);
-//		}
-//
+		@Test
+		void return_user_list_with_new_created_user() {
+				User userMock = new User("id", "name", "surname");
+				User userCreated = userInMemoryAdapter.writes(userMock);
+				assertThat(userCreated).isNotNull();
+				assertThat(userInMemoryAdapter.readAll()).isNotEmpty();
+				assertThat(userInMemoryAdapter.readAll().get(0)).isEqualTo(userCreated);
+		}
+
 //		@Test
 //		void return_user_list_with_updated_user() {
 //				User existingCustomer = new User("id", "name", "surname");

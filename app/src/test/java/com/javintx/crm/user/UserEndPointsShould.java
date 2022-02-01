@@ -2,12 +2,15 @@ package com.javintx.crm.user;
 
 import com.javintx.crm.Application;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
+import static com.javintx.crm.user.UserEndPoints.CREATE_NEW_USER;
 import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
@@ -56,36 +59,34 @@ class UserEndPointsShould {
 				assertThat(response).isEqualTo("[]");
 		}
 
-//		@Test
-//		void return_user_list_with_new_created_user() {
-//				given()
-//						.when()
-//						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\"}")
-//						.accept(ContentType.JSON)
-//						.post(CREATE_NEW_USER.uri)
-//						.then()
-//						.assertThat()
-//						.statusCode(SC_OK);
-//
-//				JsonPath jsonPath = given()
-//						.when()
-//						.get(LIST_ALL_USERS.uri)
-//						.then()
-//						.assertThat()
-//						.statusCode(SC_OK)
-//						.extract()
-//						.response()
-//						.jsonPath();
-//
-//
-//				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
-//				assertThat(jsonPath.getString("name")).isEqualTo("[name]");
-//				assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
-//				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
-//
+		@Test
+		void return_user_list_with_new_created_user() {
+				given()
+						.when()
+						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.accept(ContentType.JSON)
+						.post(CREATE_NEW_USER.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK);
+
+				JsonPath jsonPath = given()
+						.when()
+						.get(LIST_ALL_USERS.uri)
+						.then()
+						.assertThat()
+						.statusCode(SC_OK)
+						.extract()
+						.response()
+						.jsonPath();
+
+				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
+				assertThat(jsonPath.getString("name")).isEqualTo("[name]");
+				assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
+
 //				deleteUser("id");
-//		}
-//
+		}
+
 //		@Test
 //		void return_exception_when_created_existing_user() {
 //				given()

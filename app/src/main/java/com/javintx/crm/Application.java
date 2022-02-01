@@ -17,9 +17,11 @@ import com.javintx.crm.customer.impl.ListAllCustomersService;
 import com.javintx.crm.customer.impl.UpdateCustomerService;
 import com.javintx.crm.log.ApiRestLogger;
 import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
+import com.javintx.crm.user.CreateNewUser;
 import com.javintx.crm.user.ListAllUsers;
 import com.javintx.crm.user.UserInMemoryAdapter;
 import com.javintx.crm.user.UserUseCaseHandler;
+import com.javintx.crm.user.impl.CreateNewUserService;
 import com.javintx.crm.user.impl.ListAllUsersService;
 
 public class Application {
@@ -48,7 +50,8 @@ public class Application {
 				final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
 
 				final ListAllUsers listAllUsers = new ListAllUsersService(userInMemoryAdapter);
-				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers);
+				final CreateNewUser createNewUser = new CreateNewUserService(userInMemoryAdapter, userInMemoryAdapter);
+				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser);
 
 				final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
 				final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
