@@ -1,7 +1,6 @@
 # The CRM Service
 
 ![workflow](https://github.com/javintx/the-crm-service/actions/workflows/gradle.yml/badge.svg)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=alert_status)](https://sonarcloud.io/dashboard?id=javintx_the-crm-service)
 [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=javintx_the-crm-service)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=javintx_the-crm-service)
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=javintx_the-crm-service)
