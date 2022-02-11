@@ -3,8 +3,8 @@ package com.javintx.crm;
 import com.javintx.crm.application.ApplicationController;
 import com.javintx.crm.application.CustomerController;
 import com.javintx.crm.application.UserController;
-import com.javintx.crm.authentication.AlwaysTrueAuthenticatorAdapter;
 import com.javintx.crm.authentication.Authenticator;
+import com.javintx.crm.authentication.JwtAuthenticatorAdapter;
 import com.javintx.crm.customer.CreateNewCustomer;
 import com.javintx.crm.customer.CustomerInMemoryAdapter;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
@@ -33,9 +33,10 @@ import com.javintx.crm.user.impl.UpdateUserService;
 public class Application {
 
 		private static final int STANDARD_PORT = 8080;
+		private static final String SECRET = "changeIt";
 
 		public static void main(final String[] args) {
-				initializeControllers(portFromOrDefault(args));
+				initializeControllers(portFromOrDefault(args), secretFromOrDefault(args));
 		}
 
 		private static int portFromOrDefault(final String[] args) {
@@ -45,29 +46,46 @@ public class Application {
 				return port;
 		}
 
-		private static void initializeControllers(int port) {
-				final CustomerInMemoryAdapter customerInMemoryAdapter = new CustomerInMemoryAdapter();
-				final UserInMemoryAdapter userInMemoryAdapter = new UserInMemoryAdapter();
+		private static String secretFromOrDefault(final String[] args) {
+				var secret = SECRET;
+				if (args.length > 1)
+						secret = args[1];
+				return secret;
+		}
 
-				final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
-				final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final UpdateCustomer updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final DeleteCustomer deleteCustomer = new DeleteCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final CustomerUseCaseHandler customerUseCaseHandler = new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
+		private static void initializeControllers(final int port, final String secret) {
+				final CustomerUseCaseHandler customerUseCaseHandler = initializeCustomerUseCaseHandler();
+				final UserUseCaseHandler userUseCaseHandler = initializeUserUseCaseHandler();
+
+				final Authenticator authenticator = new JwtAuthenticatorAdapter(secret);
+				final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
+
+				new ApplicationController(port, authenticator, applicationLog);
+				new CustomerController(customerUseCaseHandler);
+				new UserController(userUseCaseHandler);
+		}
+
+		private static UserUseCaseHandler initializeUserUseCaseHandler() {
+				UserInMemoryAdapter userInMemoryAdapter = new UserInMemoryAdapter();
 
 				final ListAllUsers listAllUsers = new ListAllUsersService(userInMemoryAdapter);
 				final CreateNewUser createNewUser = new CreateNewUserService(userInMemoryAdapter, userInMemoryAdapter);
 				final UpdateUser updateUser = new UpdateUserService(userInMemoryAdapter, userInMemoryAdapter);
 				final DeleteUser deleteUser = new DeleteUserService(userInMemoryAdapter, userInMemoryAdapter);
 				final IsAdminUser isAdminUser = new IsAdminUserService(userInMemoryAdapter);
-				final UserUseCaseHandler userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
 
-				final Authenticator authenticator = new AlwaysTrueAuthenticatorAdapter();
-				final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
+				return new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
+		}
 
-				new ApplicationController(port, authenticator, applicationLog);
-				new CustomerController(customerUseCaseHandler);
-				new UserController(userUseCaseHandler);
+		private static CustomerUseCaseHandler initializeCustomerUseCaseHandler() {
+				CustomerInMemoryAdapter customerInMemoryAdapter = new CustomerInMemoryAdapter();
+
+				final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
+				final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+				final UpdateCustomer updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+				final DeleteCustomer deleteCustomer = new DeleteCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+
+				return new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
 		}
 
 }

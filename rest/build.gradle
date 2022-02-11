@@ -9,4 +9,8 @@ dependencies {
   implementation "com.fasterxml.jackson.core:jackson-databind:2.13.1"
 
   implementation "com.sparkjava:spark-core:2.9.3"
+  implementation "io.jsonwebtoken:jjwt:0.9.1"
+
+  // To test with JWT
+  testImplementation "javax.xml.bind:jaxb-api:2.3.1"
 }
