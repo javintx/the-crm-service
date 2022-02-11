@@ -39,8 +39,8 @@ charge of the API design and implementation. Here are the requirements for the A
 
 - The persistence was implemented with in-memory datastore.
   - The first admin user is in the datastore by default with `admin` id.
-- The authentication was implemented with an always-authenticated adapter.
-  - There is no authentication end point to generate the authentication token or similar.
+- The authentication was implemented with a JWT adapter.
+  - Only provided a validation token method. The token should be generated with the same server secret to be valid.
 - For a customer:
   - The identifier (field id) of a customer is provided in the create customer request.
   - The only field that is not possible to change from a customer is the identifier (field id).
@@ -58,6 +58,7 @@ charge of the API design and implementation. Here are the requirements for the A
 - For an admin:
   - Admin is a user with an activated flag.
 - The headers `userId` and `adminId` are not intended for validation purposes.
+- The header `Authorization` is to include the "Bearer" authentication token.
 
 ---
 
@@ -128,6 +129,8 @@ container.
 
 ## REST API
 
+The request header `Authorization` must be filled with a valid token to have access to the REST API.
+
 ### Customer REST API
 
 The request header `userId` must be filled with the user identifier to have access to the customer REST API.
@@ -184,6 +187,8 @@ The request header `adminId` must be filled with the user identifier of an admin
 
 ## Improvements
 
+- The authentication package could be extracted to a module.
+  - The current JWT adapter could be improved by defining more methods, classes and endpoints.
 - The authentication layer could implement an adapter for [OAuth2](https://oauth.net/code/java/).
   - It should be generated an end point to generate the authorization token.
 - The persistence layer could implement an adapter for [H2](https://www.h2database.com/html/main.html).
