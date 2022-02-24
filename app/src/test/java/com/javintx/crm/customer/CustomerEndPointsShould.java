@@ -84,7 +84,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -102,13 +102,13 @@ class CustomerEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
+				assertThat(jsonPath.getString("identifier")).isEqualTo("[identifier]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[name]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[surname]");
 				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
-				assertThat(jsonPath.getString("userId")).isEqualTo("[userId]");
+				assertThat(jsonPath.getString("userReference")).isEqualTo("[userReference]");
 
-				deleteCustomer("id");
+				deleteCustomer("identifier");
 		}
 
 		@Test
@@ -116,7 +116,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -129,14 +129,14 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
 						.assertThat()
 						.statusCode(SC_CONFLICT);
 
-				deleteCustomer("id");
+				deleteCustomer("identifier");
 		}
 
 		@Test
@@ -154,7 +154,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -164,7 +164,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -177,7 +177,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -187,7 +187,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.put(UPDATE_CUSTOMER.uri)
 						.then()
@@ -205,13 +205,13 @@ class CustomerEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[id]");
+				assertThat(jsonPath.getString("identifier")).isEqualTo("[identifier]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[name_updated]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[surname_updated]");
 				assertThat(jsonPath.getString("photo")).isEqualTo("[photo]");
-				assertThat(jsonPath.getString("userId")).isEqualTo("[userId]");
+				assertThat(jsonPath.getString("userReference")).isEqualTo("[userReference]");
 
-				deleteCustomer("id");
+				deleteCustomer("identifier");
 		}
 
 		@Test
@@ -219,7 +219,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.put(UPDATE_CUSTOMER.uri)
 						.then()
@@ -232,7 +232,7 @@ class CustomerEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\", \"userId\":\"userId\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_CUSTOMER.uri)
 						.then()
@@ -242,7 +242,7 @@ class CustomerEndPointsShould {
 				var deleteResponse = given()
 						.header(authenticationHeader())
 						.when()
-						.delete(DELETE_URI, "id")
+						.delete(DELETE_URI, "identifier")
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)

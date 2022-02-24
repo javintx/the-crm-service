@@ -14,7 +14,7 @@ public class UserWriterInMemoryAdapter implements UserWriter {
 		@Override
 		public User writes(final User user) {
 				var userDto = UserDto.from(user);
-				this.inMemoryStorage.users().put(userDto.id, userDto);
+				this.inMemoryStorage.users().put(userDto.identifier(), userDto);
 				return userDto.toDomain();
 		}
 }

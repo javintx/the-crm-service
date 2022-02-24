@@ -25,11 +25,6 @@ public class UserRequest {
 		}
 
 		public User toDomain() {
-				return User.builder()
-						.withId(id)
-						.withName(name)
-						.withSurname(surname)
-						.thatIsAdmin(isAdmin)
-						.build();
+				return new User(id, name, surname, isAdmin);
 		}
 }

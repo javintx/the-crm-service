@@ -28,8 +28,8 @@ public class UserDeleterInMemoryAdapterShould {
 		}
 
 		@Test
-		void return_user_wrote() {
-				final var USER_ID = "userId";
+		void return_user_write() {
+				final var USER_ID = "userReference";
 
 				var mapMock = mock(Map.class);
 				when(inMemoryStorage.users()).thenReturn(mapMock);

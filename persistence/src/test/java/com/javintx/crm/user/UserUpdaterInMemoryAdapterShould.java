@@ -30,11 +30,11 @@ public class UserUpdaterInMemoryAdapterShould {
 
 		@Test
 		void return_user_updated() {
-				var user = User.builder().withId("id").withName("name").withSurname("surname").thatIsAdmin(false).build();
+				var user = new User("id", "name", "surname", false);
 				var userDto = UserDto.from(user);
 
 				var users = new HashMap<String, UserDto>(1);
-				users.put(userDto.id, userDto);
+				users.put(userDto.identifier(), userDto);
 
 				when(inMemoryStorage.users()).thenReturn(users).thenReturn(users);
 

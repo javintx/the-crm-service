@@ -54,7 +54,7 @@ class UpdateCustomerShould {
 
 		@Test
 		void throw_exception_if_customer_not_exists() {
-				Customer customer = new Customer("id", "name", "surname", "photo", "userId");
+				Customer customer = new Customer("id", "name", "surname", "photo", "userReference");
 
 				when(customerReaderMock.readAll()).thenReturn(Collections.emptyList());
 

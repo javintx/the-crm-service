@@ -1,7 +1,7 @@
 package com.javintx.crm.user;
 
 public enum UserEndPointsBindNames {
-		USER_ID("userId"),
+		USER_ID("userReference"),
 		ADMIN_ID("adminId");
 
 		public final String bindName;

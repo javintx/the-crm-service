@@ -44,7 +44,7 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_user_list_if_there_are_users() {
-				var user = User.builder().withId("id").withName("name").withSurname("surname").build();
+				var user = new User("id", "name", "surname", false);
 				when(listAllUsersMock.get()).thenReturn(List.of(user));
 
 				var userResponseList = userUseCaseHandler.get();
@@ -61,7 +61,7 @@ class UserUseCaseHandlerShould {
 				userRequest.setName("name");
 				userRequest.setSurname("name");
 
-				var userExpected = User.builder().withId("id").withName("name").withSurname("surname").build();
+				var userExpected = new User("id", "name", "surname", false);
 				when(createNewUserMock.with(any(User.class))).thenReturn(userExpected);
 
 				var userResponse = userUseCaseHandler.create(userRequest);
@@ -76,7 +76,7 @@ class UserUseCaseHandlerShould {
 				userRequest.setName("name");
 				userRequest.setSurname("name");
 
-				var userExpected = User.builder().withId("id").withName("name").withSurname("surname").build();
+				var userExpected = new User("id", "name", "surname", false);
 				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
 
 				var userResponse = userUseCaseHandler.update(userRequest);
@@ -86,8 +86,8 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void verify_deleted_user() {
-				userUseCaseHandler.delete("userId");
-				verify(deleteUserMock).delete("userId");
+				userUseCaseHandler.delete("userReference");
+				verify(deleteUserMock).delete("userReference");
 		}
 
 		@Test
@@ -116,7 +116,7 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void verify_is_admin_user() {
-				userUseCaseHandler.isAdmin("userId");
-				verify(isAdminUserMock).isAdmin("userId");
+				userUseCaseHandler.isAdmin("userReference");
+				verify(isAdminUserMock).isAdmin("userReference");
 		}
 }

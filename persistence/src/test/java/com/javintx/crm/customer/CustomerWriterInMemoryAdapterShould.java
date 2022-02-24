@@ -1,8 +1,8 @@
-package com.javintx.crm.user;
+package com.javintx.crm.customer;
 
-import com.javintx.crm.domain.User;
+import com.javintx.crm.domain.Customer;
 import com.javintx.crm.inMemoryStorage.InMemoryStorage;
-import com.javintx.crm.port.out.user.UserWriter;
+import com.javintx.crm.port.out.customer.CustomerWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,26 +17,26 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserWriterInMemoryAdapterShould {
-		private UserWriter userWriter;
+public class CustomerWriterInMemoryAdapterShould {
+		private CustomerWriter customerWriter;
 
 		@Mock
 		private InMemoryStorage inMemoryStorage;
 
 		@BeforeEach
 		public void setUp() {
-				userWriter = new UserWriterInMemoryAdapter(inMemoryStorage);
+				customerWriter = new CustomerWriterInMemoryAdapter(inMemoryStorage);
 		}
 
 		@Test
-		void return_user_write() {
-				var user = new User("id", "name", "surname", false);
+		void return_customer_write() {
+				var customer = new Customer("id", "name", "surname", "photo", "userReference");
 
 				var mapMock = mock(Map.class);
-				when(inMemoryStorage.users()).thenReturn(mapMock);
+				when(inMemoryStorage.customers()).thenReturn(mapMock);
 
-				assertThat(userWriter.writes(user)).isEqualTo(user);
-				verify(mapMock).put(user.identifier(), UserDto.from(user));
+				assertThat(customerWriter.writes(customer)).isEqualTo(customer);
+				verify(mapMock).put(customer.identifier(), CustomerDto.from(customer));
 		}
 
 }

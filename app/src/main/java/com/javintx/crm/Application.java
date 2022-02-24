@@ -4,8 +4,11 @@ import com.javintx.crm.application.ApplicationController;
 import com.javintx.crm.application.CustomerController;
 import com.javintx.crm.application.UserController;
 import com.javintx.crm.authentication.JwtAuthenticatorAdapter;
-import com.javintx.crm.customer.CustomerInMemoryAdapter;
+import com.javintx.crm.customer.CustomerDeleterInMemoryAdapter;
+import com.javintx.crm.customer.CustomerReaderInMemoryAdapter;
+import com.javintx.crm.customer.CustomerUpdaterInMemoryAdapter;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
+import com.javintx.crm.customer.CustomerWriterInMemoryAdapter;
 import com.javintx.crm.customer.impl.CreateNewCustomerService;
 import com.javintx.crm.customer.impl.DeleteCustomerService;
 import com.javintx.crm.customer.impl.ListAllCustomersService;
@@ -56,7 +59,7 @@ public class Application {
 		}
 
 		private static void initializeControllers(final int port, final String secret, final boolean createAdmin) {
-				final var inMemoryStorage = new InMemoryStorage();
+				final var inMemoryStorage = InMemoryStorage.getInstance();
 				final var userUseCaseHandler = initializeUserUseCaseHandler(inMemoryStorage);
 				final var customerUseCaseHandler = initializeCustomerUseCaseHandler(inMemoryStorage);
 
@@ -97,12 +100,15 @@ public class Application {
 		}
 
 		private static CustomerUseCaseHandler initializeCustomerUseCaseHandler(final InMemoryStorage inMemoryStorage) {
-				final var customerInMemoryAdapter = new CustomerInMemoryAdapter(inMemoryStorage);
+				final var customerReader = new CustomerReaderInMemoryAdapter(inMemoryStorage);
+				final var customerWriter = new CustomerWriterInMemoryAdapter(inMemoryStorage);
+				final var customerUpdater = new CustomerUpdaterInMemoryAdapter(inMemoryStorage);
+				final var customerDeleter = new CustomerDeleterInMemoryAdapter(inMemoryStorage);
 
-				final var listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
-				final var createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final var updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final var deleteCustomer = new DeleteCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+				final var listAllCustomers = new ListAllCustomersService(customerReader);
+				final var createNewCustomer = new CreateNewCustomerService(customerWriter, customerReader);
+				final var updateCustomer = new UpdateCustomerService(customerReader, customerUpdater);
+				final var deleteCustomer = new DeleteCustomerService(customerReader, customerDeleter);
 
 				return new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
 		}

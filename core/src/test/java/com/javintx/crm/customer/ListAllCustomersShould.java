@@ -35,7 +35,7 @@ class ListAllCustomersShould {
 
 		@Test
 		void return_customer_list_if_there_are_customers() {
-				Customer customerMock = new Customer("id", "name", "surname", "photo", "userId");
+				Customer customerMock = new Customer("id", "name", "surname", "photo", "userReference");
 				when(customerReaderMock.readAll()).thenReturn(List.of(customerMock));
 				assertThat(listAllCustomers.get()).isNotEmpty();
 		}

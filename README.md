@@ -1,10 +1,10 @@
 # The CRM Service
 
 ![workflow](https://github.com/javintx/the-crm-service/actions/workflows/gradle.yml/badge.svg)
-[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=javintx_the-crm-service)
-[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=javintx_the-crm-service)
-[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=javintx_the-crm-service)
-[![SonarCloud Code Smells](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=code_smells)](https://sonarcloud.io/component_measures?id=javintx_the-crm-service&metric=Maintainability&view=list)
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?identifier=javintx_the-crm-service)
+[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?identifier=javintx_the-crm-service)
+[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?identifier=javintx_the-crm-service)
+[![SonarCloud Code Smells](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=code_smells)](https://sonarcloud.io/component_measures?identifier=javintx_the-crm-service&metric=Maintainability&view=list)
 
 ---
 
@@ -17,8 +17,8 @@ charge of the API design and implementation. Here are the requirements for the A
   - List all customers in the database.
   - Get full customer information, including a photo URL.
   - Create a new customer:
-    - A customer should have at least name, surname, id and a photo field.
-    - Name, surname and id are required fields.
+    - A customer should have at least name, surname, identifier and a photo field.
+    - Name, surname and identifier are required fields.
     - Image uploads should be able to be managed.
     - The customer should have a reference to the user who created it.
   - Update an existing customer.
@@ -37,26 +37,26 @@ charge of the API design and implementation. Here are the requirements for the A
 ## Assumptions
 
 - The persistence was implemented with in-memory datastore.
-  - The first admin user is in the datastore by default with `admin` id.
+  - The first admin user is in the datastore by default with `admin` identifier.
 - The authentication was implemented with a JWT adapter.
   - Only provided a validation token method. The token should be generated with the same server secret to be valid.
 - For a customer:
-  - The identifier (field id) of a customer is provided in the create customer request.
-  - The only field that is not possible to change from a customer is the identifier (field id).
+  - The identifier (field identifier) of a customer is provided in the create customer request.
+  - The only field that is not possible to change from a customer is the identifier (field identifier).
   - When a customer is deleted, it is removed physically from database.
-  - The user reference (field userId) must be passed with the customer information, and it will not be validated.
+  - The user reference (field userReference) must be passed with the customer information, and it will not be validated.
   - The photo field is opened to be whatever: URL, Base64 encoding value...
-  - The header `userId` must be filled with the user identifier to have access to the REST API.
+  - The header `userReference` must be filled with the user identifier to have access to the REST API.
 - For a user:
-  - The identifier (field id) of a user is provided in the create customer request.
-  - The only field that is not possible to change from a user is the identifier (field id).
-  - When a user is deleted, it is removed physically from database. The customer will maintain the latest user id that
-    modified it.
-  - The mandatory fields for a user will be: id, name and surname.
+  - The identifier (field identifier) of a user is provided in the create customer request.
+  - The only field that is not possible to change from a user is the identifier (field identifier).
+  - When a user is deleted, it is removed physically from database. The customer will maintain the latest user
+    identifier that modified it.
+  - The mandatory fields for a user will be: identifier, name and surname.
   - The header `adminId` must be filled with the user identifier to have access to the REST API.
 - For an admin:
   - Admin is a user with an activated flag.
-- The headers `userId` and `adminId` are not intended for validation purposes.
+- The headers `userReference` and `adminId` are not intended for validation purposes.
 - The header `Authorization` is to include the "Bearer" authentication token.
 
 ---
@@ -132,7 +132,7 @@ The request header `Authorization` must be filled with a valid token to have acc
 
 ### Customer REST API
 
-The request header `userId` must be filled with the user identifier to have access to the customer REST API.
+The request header `userReference` must be filled with the user identifier to have access to the customer REST API.
 
 - List all customers
   - GET /customer/all
@@ -149,11 +149,11 @@ The request header `userId` must be filled with the user identifier to have acce
 ### Customer JSON
 
 > {
-> "id": "identifier",
+> "identifier": "identifier",
 > "name": "name",
 > "surname": "surname",
 > "photo": "photo",
-> "userId": "userId"
+> "userReference": "userReference"
 > }
 
 ---
@@ -171,13 +171,13 @@ The request header `adminId` must be filled with the user identifier of an admin
   - PUT /user/update
   - Could throw exception if user does not exist
 - Delete user
-  - DELETE /user/delete/{userId} (userId is a path parameter)
+  - DELETE /user/delete/{userReference} (userReference is a path parameter)
   - Could throw exception if user does not exist
 
 ### User JSON
 
 > {
-> "id": "identifier",
+> "identifier": "identifier",
 > "name": "name",
 > "surname": "surname",
 > }

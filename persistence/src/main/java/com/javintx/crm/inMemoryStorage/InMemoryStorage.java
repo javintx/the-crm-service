@@ -8,12 +8,21 @@ import java.util.Map;
 
 public class InMemoryStorage {
 
+		private static InMemoryStorage INSTANCE;
+
 		private final Map<String, CustomerDto> customers;
 		private final Map<String, UserDto> users;
 
-		public InMemoryStorage() {
+		private InMemoryStorage() {
 				this.customers = new HashMap<>();
 				this.users = new HashMap<>();
+		}
+
+		public static InMemoryStorage getInstance() {
+				if (INSTANCE == null) {
+						INSTANCE = new InMemoryStorage();
+				}
+				return INSTANCE;
 		}
 
 		public Map<String, CustomerDto> customers() {

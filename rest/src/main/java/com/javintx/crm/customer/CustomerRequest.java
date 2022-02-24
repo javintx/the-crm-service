@@ -3,14 +3,14 @@ package com.javintx.crm.customer;
 import com.javintx.crm.domain.Customer;
 
 public class CustomerRequest {
-		private String id;
+		private String identifier;
 		private String name;
 		private String surname;
 		private String photo;
-		private String userId;
+		private String userReference;
 
-		public void setId(String id) {
-				this.id = id;
+		public void setIdentifier(String identifier) {
+				this.identifier = identifier;
 		}
 
 		public void setName(String name) {
@@ -25,11 +25,11 @@ public class CustomerRequest {
 				this.photo = photo;
 		}
 
-		public void setUserId(String userId) {
-				this.userId = userId;
+		public void setUserReference(String userReference) {
+				this.userReference = userReference;
 		}
 
 		public Customer toDomain() {
-				return new Customer(id, name, surname, photo, userId);
+				return new Customer(identifier, name, surname, photo, userReference);
 		}
 }

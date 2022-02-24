@@ -89,7 +89,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
@@ -107,7 +107,7 @@ class UserEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[admin, id]");
+				assertThat(jsonPath.getString("id")).isEqualTo("[admin, identifier]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[first admin name, name]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[first admin surname, surname]");
 
@@ -119,7 +119,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
@@ -132,7 +132,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
@@ -157,7 +157,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
@@ -167,7 +167,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
@@ -180,7 +180,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
@@ -190,7 +190,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\"}")
 						.accept(ContentType.JSON)
 						.put(UPDATE_USER.uri)
 						.then()
@@ -208,7 +208,7 @@ class UserEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[admin, id]");
+				assertThat(jsonPath.getString("id")).isEqualTo("[admin, identifier]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[first admin name, name_updated]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[first admin surname, surname_updated]");
 
@@ -220,7 +220,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name_updated\", \"surname\":\"surname_updated\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\"}")
 						.accept(ContentType.JSON)
 						.put(UPDATE_USER.uri)
 						.then()
@@ -233,7 +233,7 @@ class UserEndPointsShould {
 				given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.body("{\"id\":\"id\", \"name\":\"name\", \"surname\":\"surname\"}")
+						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
 						.post(CREATE_NEW_USER.uri)
 						.then()
