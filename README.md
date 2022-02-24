@@ -45,7 +45,7 @@ charge of the API design and implementation. Here are the requirements for the A
   - The only field that is not possible to change from a customer is the identifier (field id).
   - When a customer is deleted, it is removed physically from database.
   - The user reference (field userId) must be passed with the customer information, and it will not be validated.
-  - The photo field is opened to be whatever.
+  - The photo field is opened to be whatever: URL, Base64 encoding value...
   - The header `userId` must be filled with the user identifier to have access to the REST API.
 - For a user:
   - The identifier (field id) of a user is provided in the create customer request.

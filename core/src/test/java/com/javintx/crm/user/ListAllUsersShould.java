@@ -35,7 +35,7 @@ class ListAllUsersShould {
 
 		@Test
 		void return_user_list_if_there_are_users() {
-				User userMock = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User userMock = User.builder().withId("id").withName("name").withSurname("surname").build();
 				when(userReaderMock.readAll()).thenReturn(List.of(userMock));
 				assertThat(listAllUsers.get()).isNotEmpty();
 		}

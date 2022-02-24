@@ -6,6 +6,7 @@ public class UserRequest {
 		private String id;
 		private String name;
 		private String surname;
+		private boolean isAdmin;
 
 		public void setId(String id) {
 				this.id = id;
@@ -19,11 +20,16 @@ public class UserRequest {
 				this.surname = surname;
 		}
 
+		public void setIsAdmin(boolean isAdmin) {
+				this.isAdmin = isAdmin;
+		}
+
 		public User toDomain() {
-				return User.buildUser()
+				return User.builder()
 						.withId(id)
 						.withName(name)
 						.withSurname(surname)
+						.thatIsAdmin(isAdmin)
 						.build();
 		}
 }

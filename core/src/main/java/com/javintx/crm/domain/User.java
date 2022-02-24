@@ -18,12 +18,8 @@ public final class User {
 				verify();
 		}
 
-		public static UserBuilder buildUser() {
-				return new UserBuilder(false);
-		}
-
-		public static UserBuilder buildAdmin() {
-				return new UserBuilder(true);
+		public static UserBuilder builder() {
+				return new UserBuilder();
 		}
 
 		private void verify() {
@@ -71,13 +67,12 @@ public final class User {
 		}
 
 		public static class UserBuilder {
-				private final boolean isAdmin;
+				private boolean isAdmin;
 				private String id;
 				private String name;
 				private String surname;
 
-				private UserBuilder(final boolean isAdmin) {
-						this.isAdmin = isAdmin;
+				private UserBuilder() {
 				}
 
 				public UserBuilder withId(final String id) {
@@ -92,6 +87,11 @@ public final class User {
 
 				public UserBuilder withSurname(final String surname) {
 						this.surname = surname;
+						return this;
+				}
+
+				public UserBuilder thatIsAdmin(final boolean isAdmin) {
+						this.isAdmin = isAdmin;
 						return this;
 				}
 

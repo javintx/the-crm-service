@@ -35,9 +35,9 @@ class UpdateUserShould {
 
 		@Test
 		void return_update_user_if_user_exists() {
-				User existingUser = User.buildUser().withId("id1").withName("name1").withSurname("surname1").build();
-				User updatedUser = User.buildUser().withId("id2").withName("name2").withSurname("surname2").build();
-				User userExpected = User.buildUser().withId("id2").withName("name2").withSurname("surname2").build();
+				User existingUser = User.builder().withId("id1").withName("name1").withSurname("surname1").build();
+				User updatedUser = User.builder().withId("id2").withName("name2").withSurname("surname2").build();
+				User userExpected = User.builder().withId("id2").withName("name2").withSurname("surname2").build();
 
 				when(userReaderMock.readAll()).thenReturn(List.of(existingUser));
 				when(userUpdaterMock.update(existingUser)).thenReturn(updatedUser);
@@ -52,7 +52,7 @@ class UpdateUserShould {
 
 		@Test
 		void throw_exception_if_user_not_exists() {
-				User user = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User user = User.builder().withId("id").withName("name").withSurname("surname").build();
 
 				when(userReaderMock.readAll()).thenReturn(Collections.emptyList());
 

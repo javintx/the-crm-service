@@ -42,10 +42,10 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_customer_list_if_there_are_customers() {
-				Customer customer = new Customer("id", "name", "surname", "photo", "userId");
+				var customer = new Customer("id", "name", "surname", "photo", "userId");
 				when(listAllCustomersMock.get()).thenReturn(List.of(customer));
 
-				List<CustomerResponse> customerResponseList = customerUseCaseHandler.get();
+				var customerResponseList = customerUseCaseHandler.get();
 
 				assertThat(customerResponseList).isNotEmpty();
 				assertThat(customerResponseList.get(0)).isInstanceOf(CustomerResponse.class);
@@ -54,34 +54,34 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_new_customer_created() {
-				CustomerRequest customerRequest = new CustomerRequest();
+				var customerRequest = new CustomerRequest();
 				customerRequest.setId("id");
 				customerRequest.setName("name");
 				customerRequest.setSurname("name");
 				customerRequest.setPhoto("photo");
 				customerRequest.setUserId("userId");
 
-				Customer customerExpected = new Customer("id", "name", "surname", "photo", "userId");
+				var customerExpected = new Customer("id", "name", "surname", "photo", "userId");
 				when(createNewCustomerMock.with(any(Customer.class))).thenReturn(customerExpected);
 
-				CustomerResponse customerResponse = customerUseCaseHandler.create(customerRequest);
+				var customerResponse = customerUseCaseHandler.create(customerRequest);
 
 				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
 		}
 
 		@Test
 		void return_customer_updated_when_updates_user_and_exists() {
-				CustomerRequest customerRequest = new CustomerRequest();
+				var customerRequest = new CustomerRequest();
 				customerRequest.setId("id");
 				customerRequest.setName("name");
 				customerRequest.setSurname("name");
 				customerRequest.setPhoto("photo");
 				customerRequest.setUserId("userId");
 
-				Customer customerExpected = new Customer("id", "name", "surname", "photo", "userId");
+				var customerExpected = new Customer("id", "name", "surname", "photo", "userId");
 				when(updateCustomerMock.update(any(Customer.class))).thenReturn(customerExpected);
 
-				CustomerResponse customerResponse = customerUseCaseHandler.update(customerRequest);
+				var customerResponse = customerUseCaseHandler.update(customerRequest);
 
 				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
 		}
@@ -94,7 +94,7 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void throw_exception_when_create_new_customer_without_mandatory_field() {
-				CustomerRequest customerRequest = new CustomerRequest();
+				var customerRequest = new CustomerRequest();
 				customerRequest.setId(null);
 				customerRequest.setName("name");
 				customerRequest.setSurname("surname");

@@ -13,23 +13,23 @@ public class Slf4JApiRestLoggerAdapter implements ApiRestLogger {
 		}
 
 		public void request(final Request request, final Response response) {
-				final String ip = request.ip();
-				final String protocol = request.protocol();
-				final String method = request.requestMethod();
-				final String host = request.host();
-				final String uri = request.uri();
+				final var ip = request.ip();
+				final var protocol = request.protocol();
+				final var method = request.requestMethod();
+				final var host = request.host();
+				final var uri = request.uri();
 
 				log.info("Request from {} --> {} {} {}{}", ip, protocol, method, host, uri);
 		}
 
 		@Override
 		public void response(final Request request, final Response response) {
-				final String ip = request.ip();
-				final String host = request.host();
-				final String uri = request.uri();
+				final var ip = request.ip();
+				final var host = request.host();
+				final var uri = request.uri();
 
-				final int status = response.status();
-				final String type = response.type();
+				final var status = response.status();
+				final var type = response.type();
 
 				log.info("Response for {} on {}{} --> {} {}", ip, host, uri, status, type);
 		}

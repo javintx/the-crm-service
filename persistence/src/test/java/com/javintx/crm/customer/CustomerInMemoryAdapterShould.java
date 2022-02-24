@@ -1,6 +1,7 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
+import com.javintx.crm.inMemoryStorage.InMemoryStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +15,7 @@ class CustomerInMemoryAdapterShould {
 
 		@BeforeEach
 		public void setUp() {
-				customerInMemoryAdapter = new CustomerInMemoryAdapter();
+				customerInMemoryAdapter = new CustomerInMemoryAdapter(new InMemoryStorage());
 		}
 
 		@Test

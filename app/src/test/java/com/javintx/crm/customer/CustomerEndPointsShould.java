@@ -7,7 +7,6 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
-import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -66,7 +65,7 @@ class CustomerEndPointsShould {
 
 		@Test
 		void return_empty_customer_list_if_there_are_no_customers() {
-				String response = given()
+				var response = given()
 						.header(authenticationHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS.uri)
@@ -92,7 +91,7 @@ class CustomerEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				JsonPath jsonPath = given()
+				var jsonPath = given()
 						.header(authenticationHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS.uri)
@@ -195,7 +194,7 @@ class CustomerEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				JsonPath jsonPath = given()
+				var jsonPath = given()
 						.header(authenticationHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS.uri)
@@ -240,7 +239,7 @@ class CustomerEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				String deleteResponse = given()
+				var deleteResponse = given()
 						.header(authenticationHeader())
 						.when()
 						.delete(DELETE_URI, "id")
@@ -252,7 +251,7 @@ class CustomerEndPointsShould {
 						.asString();
 				assertThat(deleteResponse).isEqualTo("\"OK\"");
 
-				String response = given()
+				var response = given()
 						.header(authenticationHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS.uri)
@@ -287,7 +286,7 @@ class CustomerEndPointsShould {
 		}
 
 		private Header authenticationHeader() {
-				DefaultClaims claims = new DefaultClaims();
+				var claims = new DefaultClaims();
 				claims.setSubject("test");
 				return new Header("Authorization", "Bearer " + Jwts.builder()
 						.setClaims(claims)

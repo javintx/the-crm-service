@@ -1,7 +1,5 @@
 package com.javintx.crm.customer;
 
-import com.javintx.crm.domain.Customer;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +21,7 @@ public class CustomerUseCaseHandler {
 		}
 
 		public List<CustomerResponse> get() {
-				List<Customer> customersList = listAllCustomers.get();
+				var customersList = listAllCustomers.get();
 				return customersList.stream().map(CustomerResponse::from).collect(Collectors.toList());
 		}
 

@@ -1,6 +1,5 @@
 package com.javintx.crm.application;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javintx.crm.user.UserRequest;
 import com.javintx.crm.user.UserResponse;
@@ -86,13 +85,13 @@ public class UserController {
 		}
 
 		private UserResponse handleCreateNewUser(final Request request, final Response response) throws IOException {
-				try (JsonParser parser = objectMapper.createParser(request.body())) {
+				try (var parser = objectMapper.createParser(request.body())) {
 						return userUseCaseHandler.create(parser.readValueAs(UserRequest.class));
 				}
 		}
 
 		private UserResponse handleUpdateUser(final Request request, final Response response) throws IOException {
-				try (JsonParser parser = objectMapper.createParser(request.body())) {
+				try (var parser = objectMapper.createParser(request.body())) {
 						return userUseCaseHandler.update(parser.readValueAs(UserRequest.class));
 				}
 		}

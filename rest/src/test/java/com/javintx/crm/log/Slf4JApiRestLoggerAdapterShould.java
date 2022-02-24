@@ -14,10 +14,10 @@ class Slf4JApiRestLoggerAdapterShould {
 
 		@Test
 		void request_is_logged() {
-				ApiRestLogger logger = new Slf4JApiRestLoggerAdapter(Slf4JApiRestLoggerAdapterShould.class);
+				var logger = new Slf4JApiRestLoggerAdapter(Slf4JApiRestLoggerAdapterShould.class);
 
-				Request request = mock(Request.class);
-				Response response = mock(Response.class);
+				var request = mock(Request.class);
+				var response = mock(Response.class);
 
 				logger.request(request, response);
 
@@ -30,10 +30,10 @@ class Slf4JApiRestLoggerAdapterShould {
 
 		@Test
 		void response_is_logged() {
-				ApiRestLogger logger = new Slf4JApiRestLoggerAdapter(Slf4JApiRestLoggerAdapterShould.class);
+				var logger = new Slf4JApiRestLoggerAdapter(Slf4JApiRestLoggerAdapterShould.class);
 
-				Request request = mock(Request.class);
-				Response response = mock(Response.class);
+				var request = mock(Request.class);
+				var response = mock(Response.class);
 
 				logger.response(request, response);
 

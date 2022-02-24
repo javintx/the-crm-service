@@ -3,27 +3,21 @@ package com.javintx.crm;
 import com.javintx.crm.application.ApplicationController;
 import com.javintx.crm.application.CustomerController;
 import com.javintx.crm.application.UserController;
-import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.authentication.JwtAuthenticatorAdapter;
-import com.javintx.crm.customer.CreateNewCustomer;
 import com.javintx.crm.customer.CustomerInMemoryAdapter;
 import com.javintx.crm.customer.CustomerUseCaseHandler;
-import com.javintx.crm.customer.DeleteCustomer;
-import com.javintx.crm.customer.ListAllCustomers;
-import com.javintx.crm.customer.UpdateCustomer;
 import com.javintx.crm.customer.impl.CreateNewCustomerService;
 import com.javintx.crm.customer.impl.DeleteCustomerService;
 import com.javintx.crm.customer.impl.ListAllCustomersService;
 import com.javintx.crm.customer.impl.UpdateCustomerService;
-import com.javintx.crm.log.ApiRestLogger;
+import com.javintx.crm.inMemoryStorage.InMemoryStorage;
 import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
-import com.javintx.crm.user.CreateNewUser;
-import com.javintx.crm.user.DeleteUser;
-import com.javintx.crm.user.IsAdminUser;
-import com.javintx.crm.user.ListAllUsers;
-import com.javintx.crm.user.UpdateUser;
-import com.javintx.crm.user.UserInMemoryAdapter;
+import com.javintx.crm.user.UserDeleterInMemoryAdapter;
+import com.javintx.crm.user.UserReaderInMemoryAdapter;
+import com.javintx.crm.user.UserRequest;
+import com.javintx.crm.user.UserUpdaterInMemoryAdapter;
 import com.javintx.crm.user.UserUseCaseHandler;
+import com.javintx.crm.user.UserWriterInMemoryAdapter;
 import com.javintx.crm.user.impl.CreateNewUserService;
 import com.javintx.crm.user.impl.DeleteUserService;
 import com.javintx.crm.user.impl.IsAdminUserService;
@@ -34,9 +28,10 @@ public class Application {
 
 		private static final int STANDARD_PORT = 8080;
 		private static final String SECRET = "changeIt";
+		private static final boolean CREATE_ADMIN = true;
 
 		public static void main(final String[] args) {
-				initializeControllers(portFromOrDefault(args), secretFromOrDefault(args));
+				initializeControllers(portFromOrDefault(args), secretFromOrDefault(args), createAdminOrDefault(args));
 		}
 
 		private static int portFromOrDefault(final String[] args) {
@@ -53,37 +48,61 @@ public class Application {
 				return secret;
 		}
 
-		private static void initializeControllers(final int port, final String secret) {
-				final CustomerUseCaseHandler customerUseCaseHandler = initializeCustomerUseCaseHandler();
-				final UserUseCaseHandler userUseCaseHandler = initializeUserUseCaseHandler();
+		private static boolean createAdminOrDefault(final String[] args) {
+				var createAdmin = CREATE_ADMIN;
+				if (args.length > 2)
+						createAdmin = Boolean.parseBoolean(args[2]);
+				return createAdmin;
+		}
 
-				final Authenticator authenticator = new JwtAuthenticatorAdapter(secret);
-				final ApiRestLogger applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
+		private static void initializeControllers(final int port, final String secret, final boolean createAdmin) {
+				final var inMemoryStorage = new InMemoryStorage();
+				final var userUseCaseHandler = initializeUserUseCaseHandler(inMemoryStorage);
+				final var customerUseCaseHandler = initializeCustomerUseCaseHandler(inMemoryStorage);
+
+				createAdminUser(createAdmin, userUseCaseHandler);
+
+				final var authenticator = new JwtAuthenticatorAdapter(secret);
+				final var applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
 
 				new ApplicationController(port, authenticator, applicationLog);
 				new CustomerController(customerUseCaseHandler);
 				new UserController(userUseCaseHandler);
 		}
 
-		private static UserUseCaseHandler initializeUserUseCaseHandler() {
-				UserInMemoryAdapter userInMemoryAdapter = new UserInMemoryAdapter();
+		private static void createAdminUser(final boolean createAdmin, final UserUseCaseHandler userUseCaseHandler) {
+				if (createAdmin) {
+						final var userRequest = new UserRequest();
+						userRequest.setId("admin");
+						userRequest.setName("first admin name");
+						userRequest.setSurname("first admin surname");
+						userRequest.setIsAdmin(true);
+						userUseCaseHandler.create(userRequest);
+				}
+		}
 
-				final ListAllUsers listAllUsers = new ListAllUsersService(userInMemoryAdapter);
-				final CreateNewUser createNewUser = new CreateNewUserService(userInMemoryAdapter, userInMemoryAdapter);
-				final UpdateUser updateUser = new UpdateUserService(userInMemoryAdapter, userInMemoryAdapter);
-				final DeleteUser deleteUser = new DeleteUserService(userInMemoryAdapter, userInMemoryAdapter);
-				final IsAdminUser isAdminUser = new IsAdminUserService(userInMemoryAdapter);
+		private static UserUseCaseHandler initializeUserUseCaseHandler(final InMemoryStorage inMemoryStorage) {
+				final var userReader = new UserReaderInMemoryAdapter(inMemoryStorage);
+				final var userWriter = new UserWriterInMemoryAdapter(inMemoryStorage);
+				final var userUpdater = new UserUpdaterInMemoryAdapter(inMemoryStorage);
+				final var userDeleter = new UserDeleterInMemoryAdapter(inMemoryStorage);
+
+				final var listAllUsers = new ListAllUsersService(userReader);
+				final var createNewUser = new CreateNewUserService(userWriter, userReader);
+				final var updateUser = new UpdateUserService(userReader, userUpdater);
+				final var deleteUser = new DeleteUserService(userReader, userDeleter);
+				final var isAdminUser = new IsAdminUserService(userReader);
 
 				return new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
 		}
 
-		private static CustomerUseCaseHandler initializeCustomerUseCaseHandler() {
-				CustomerInMemoryAdapter customerInMemoryAdapter = new CustomerInMemoryAdapter();
+		private static CustomerUseCaseHandler initializeCustomerUseCaseHandler(final InMemoryStorage inMemoryStorage) {
+				final var customerInMemoryAdapter = new CustomerInMemoryAdapter(inMemoryStorage);
 
-				final ListAllCustomers listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
-				final CreateNewCustomer createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final UpdateCustomer updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
-				final DeleteCustomer deleteCustomer = new DeleteCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+				final var listAllCustomers = new ListAllCustomersService(customerInMemoryAdapter);
+				final var createNewCustomer = new CreateNewCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+				final var updateCustomer = new UpdateCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
+				final var deleteCustomer = new DeleteCustomerService(customerInMemoryAdapter, customerInMemoryAdapter);
 
 				return new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
 		}

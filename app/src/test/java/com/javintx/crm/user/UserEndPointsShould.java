@@ -8,7 +8,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
-import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,7 +68,7 @@ class UserEndPointsShould {
 
 		@Test
 		void return_empty_user_list_if_there_are_no_users() {
-				JsonPath jsonPath = given()
+				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
 						.get(LIST_ALL_USERS.uri)
@@ -97,7 +96,7 @@ class UserEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				JsonPath jsonPath = given()
+				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
 						.get(LIST_ALL_USERS.uri)
@@ -198,7 +197,7 @@ class UserEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				JsonPath jsonPath = given()
+				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
 						.get(LIST_ALL_USERS.uri)
@@ -241,7 +240,7 @@ class UserEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				String deleteResponse = given()
+				var deleteResponse = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
 						.delete(DELETE_URI, "id")
@@ -253,7 +252,7 @@ class UserEndPointsShould {
 						.asString();
 				assertThat(deleteResponse).isEqualTo("\"OK\"");
 
-				JsonPath jsonPath = given()
+				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
 						.get(LIST_ALL_USERS.uri)
@@ -301,7 +300,7 @@ class UserEndPointsShould {
 		}
 
 		private Header authenticationHeader() {
-				DefaultClaims claims = new DefaultClaims();
+				var claims = new DefaultClaims();
 				claims.setSubject("test");
 				return new Header("Authorization", "Bearer " + Jwts.builder()
 						.setClaims(claims)

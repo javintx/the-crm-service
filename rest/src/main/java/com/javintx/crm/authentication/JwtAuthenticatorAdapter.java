@@ -21,7 +21,7 @@ public class JwtAuthenticatorAdapter implements Authenticator {
 		@Override
 		public boolean isAuthenticated(final Request request, final Response response) {
 				// Request like login, register or whatever you need should not be authenticated
-				String authorizationHeader = request.headers("Authorization");
+				var authorizationHeader = request.headers("Authorization");
 				if (authorizationHeader == null) {
 						halt(401, "Missing Authorization header");
 				} else if (!validate(tokenFrom(authorizationHeader))) {
