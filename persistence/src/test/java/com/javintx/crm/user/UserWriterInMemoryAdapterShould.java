@@ -30,7 +30,7 @@ public class UserWriterInMemoryAdapterShould {
 
 		@Test
 		void return_user_write() {
-				var user = new User("id", "name", "surname", false);
+				var user = new User("identifier", "name", "surname", false);
 
 				var mapMock = mock(Map.class);
 				when(inMemoryStorage.users()).thenReturn(mapMock);

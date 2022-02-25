@@ -30,7 +30,7 @@ public class CustomerWriterInMemoryAdapterShould {
 
 		@Test
 		void return_customer_write() {
-				var customer = new Customer("id", "name", "surname", "photo", "userReference");
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				var mapMock = mock(Map.class);
 				when(inMemoryStorage.customers()).thenReturn(mapMock);

@@ -44,7 +44,7 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_user_list_if_there_are_users() {
-				var user = new User("id", "name", "surname", false);
+				var user = new User("identifier", "name", "surname", false);
 				when(listAllUsersMock.get()).thenReturn(List.of(user));
 
 				var userResponseList = userUseCaseHandler.get();
@@ -56,12 +56,8 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_new_user_created() {
-				var userRequest = new UserRequest();
-				userRequest.setId("id");
-				userRequest.setName("name");
-				userRequest.setSurname("name");
-
-				var userExpected = new User("id", "name", "surname", false);
+				var userRequest = new UserRequest("identifier", "name", "surname", false);
+				var userExpected = new User("identifier", "name", "surname", false);
 				when(createNewUserMock.with(any(User.class))).thenReturn(userExpected);
 
 				var userResponse = userUseCaseHandler.create(userRequest);
@@ -71,12 +67,8 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_user_updated_when_updates_user_and_exists() {
-				var userRequest = new UserRequest();
-				userRequest.setId("id");
-				userRequest.setName("name");
-				userRequest.setSurname("name");
-
-				var userExpected = new User("id", "name", "surname", false);
+				var userRequest = new UserRequest("identifier", "name", "surname", false);
+				var userExpected = new User("identifier", "name", "surname", false);
 				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
 
 				var userResponse = userUseCaseHandler.update(userRequest);
@@ -92,25 +84,19 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void throw_exception_when_create_new_user_without_mandatory_field() {
-				var userRequest = new UserRequest();
-				userRequest.setId(null);
-				userRequest.setName("name");
-				userRequest.setSurname("surname");
-
+				var userRequestWithoutIdentifier = new UserRequest(null, "name", "surname", false);
 				assertThatThrownBy(
-						() -> userUseCaseHandler.create(userRequest)
+						() -> userUseCaseHandler.create(userRequestWithoutIdentifier)
 				).isExactlyInstanceOf(UserNotValid.class);
 
-				userRequest.setId("id");
-				userRequest.setName(null);
+				var userRequestWithoutName = new UserRequest("identifier", null, "surname", false);
 				assertThatThrownBy(
-						() -> userUseCaseHandler.create(userRequest)
+						() -> userUseCaseHandler.create(userRequestWithoutName)
 				).isExactlyInstanceOf(UserNotValid.class);
 
-				userRequest.setName("name");
-				userRequest.setSurname(null);
+				var userRequestWithoutSurname = new UserRequest("identifier", "name", null, false);
 				assertThatThrownBy(
-						() -> userUseCaseHandler.create(userRequest)
+						() -> userUseCaseHandler.create(userRequestWithoutSurname)
 				).isExactlyInstanceOf(UserNotValid.class);
 		}
 

@@ -63,7 +63,7 @@ public class Application {
 				final var userUseCaseHandler = initializeUserUseCaseHandler(inMemoryStorage);
 				final var customerUseCaseHandler = initializeCustomerUseCaseHandler(inMemoryStorage);
 
-				createAdminUser(createAdmin, userUseCaseHandler);
+				initializeStorage(userUseCaseHandler, createAdmin);
 
 				final var authenticator = new JwtAuthenticatorAdapter(secret);
 				final var applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
@@ -73,14 +73,18 @@ public class Application {
 				new UserController(userUseCaseHandler);
 		}
 
-		private static void createAdminUser(final boolean createAdmin, final UserUseCaseHandler userUseCaseHandler) {
+		private static void initializeStorage(final UserUseCaseHandler userUseCaseHandler, final boolean createAdmin) {
 				if (createAdmin) {
-						final var userRequest = new UserRequest();
-						userRequest.setId("admin");
-						userRequest.setName("first admin name");
-						userRequest.setSurname("first admin surname");
-						userRequest.setIsAdmin(true);
-						userUseCaseHandler.create(userRequest);
+						ensureEmptyDatabase(userUseCaseHandler);
+						var adminUserRequest = new UserRequest("admin", "first admin name", "first admin surname", true);
+						userUseCaseHandler.create(adminUserRequest);
+				}
+		}
+
+		private static void ensureEmptyDatabase(final UserUseCaseHandler userUseCaseHandler) {
+				// Ensure that there are no users before
+				if (!userUseCaseHandler.get().isEmpty()) {
+						userUseCaseHandler.delete("admin");
 				}
 		}
 

@@ -35,8 +35,8 @@ class CreateNewCustomerShould {
 
 		@Test
 		void create_new_customer() {
-				Customer customerToCreate = new Customer("id", "name", "surname", "photo", "userReference");
-				Customer customerExpected = new Customer("id", "name", "surname", "photo", "userReference");
+				Customer customerToCreate = new Customer("identifier", "name", "surname", "photo", "userReference");
+				Customer customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerWriterMocked.writes(any(Customer.class))).thenReturn(customerExpected);
 
@@ -47,8 +47,8 @@ class CreateNewCustomerShould {
 
 		@Test
 		void throw_exception_when_create_new_customer_that_exists() {
-				Customer customerToCreate = new Customer("id", "name", "surname", "photo", "userReference");
-				Customer customer = new Customer("id", "name", "surname", "photo", "userReference");
+				Customer customerToCreate = new Customer("identifier", "name", "surname", "photo", "userReference");
+				Customer customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerReaderMocked.readAll()).thenReturn(List.of(customer));
 

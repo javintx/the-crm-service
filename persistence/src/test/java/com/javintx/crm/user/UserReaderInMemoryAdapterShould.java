@@ -34,7 +34,7 @@ public class UserReaderInMemoryAdapterShould {
 
 		@Test
 		void return_user_list_when_have_users() {
-				var userDto = new UserDto("id", "name", "surname", false);
+				var userDto = new UserDto("identifier", "name", "surname", false);
 				var users = new HashMap<String, UserDto>();
 				users.put(userDto.identifier(), userDto);
 

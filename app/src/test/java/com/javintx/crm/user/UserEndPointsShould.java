@@ -79,7 +79,7 @@ class UserEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[admin]");
+				assertThat(jsonPath.getString("identifier")).isEqualTo("[admin]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[first admin name]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[first admin surname]");
 		}
@@ -107,11 +107,11 @@ class UserEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[admin, identifier]");
-				assertThat(jsonPath.getString("name")).isEqualTo("[first admin name, name]");
-				assertThat(jsonPath.getString("surname")).isEqualTo("[first admin surname, surname]");
+				assertThat(jsonPath.getList("identifier")).containsExactlyInAnyOrder("admin", "identifier");
+				assertThat(jsonPath.getList("name")).containsExactlyInAnyOrder("first admin name", "name");
+				assertThat(jsonPath.getList("surname")).containsExactlyInAnyOrder("first admin surname", "surname");
 
-				deleteUser("id");
+				deleteUser("identifier");
 		}
 
 		@Test
@@ -139,7 +139,7 @@ class UserEndPointsShould {
 						.assertThat()
 						.statusCode(SC_CONFLICT);
 
-				deleteUser("id");
+				deleteUser("identifier");
 		}
 
 		@Test
@@ -208,11 +208,11 @@ class UserEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[admin, identifier]");
-				assertThat(jsonPath.getString("name")).isEqualTo("[first admin name, name_updated]");
-				assertThat(jsonPath.getString("surname")).isEqualTo("[first admin surname, surname_updated]");
+				assertThat(jsonPath.getList("identifier")).containsExactlyInAnyOrder("admin", "identifier");
+				assertThat(jsonPath.getList("name")).containsExactlyInAnyOrder("first admin name", "name_updated");
+				assertThat(jsonPath.getList("surname")).containsExactlyInAnyOrder("first admin surname", "surname_updated");
 
-				deleteUser("id");
+				deleteUser("identifier");
 		}
 
 		@Test
@@ -243,7 +243,7 @@ class UserEndPointsShould {
 				var deleteResponse = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.delete(DELETE_URI, "id")
+						.delete(DELETE_URI, "identifier")
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -263,7 +263,7 @@ class UserEndPointsShould {
 						.response()
 						.jsonPath();
 
-				assertThat(jsonPath.getString("id")).isEqualTo("[admin]");
+				assertThat(jsonPath.getString("identifier")).isEqualTo("[admin]");
 				assertThat(jsonPath.getString("name")).isEqualTo("[first admin name]");
 				assertThat(jsonPath.getString("surname")).isEqualTo("[first admin surname]");
 		}

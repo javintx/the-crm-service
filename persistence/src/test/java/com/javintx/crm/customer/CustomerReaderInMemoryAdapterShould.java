@@ -34,7 +34,7 @@ public class CustomerReaderInMemoryAdapterShould {
 
 		@Test
 		void return_user_list_when_have_users() {
-				var customerDto = new CustomerDto("id", "name", "surname", "photo", "userReference");
+				var customerDto = new CustomerDto("identifier", "name", "surname", "photo", "userReference");
 				var customers = new HashMap<String, CustomerDto>();
 				customers.put(customerDto.identifier(), customerDto);
 

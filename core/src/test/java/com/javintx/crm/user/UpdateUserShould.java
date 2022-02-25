@@ -52,7 +52,7 @@ class UpdateUserShould {
 
 		@Test
 		void throw_exception_if_user_not_exists() {
-				User user = new User("id", "name", "surname", false);
+				User user = new User("identifier", "name", "surname", false);
 
 				when(userReaderMock.readAll()).thenReturn(Collections.emptyList());
 

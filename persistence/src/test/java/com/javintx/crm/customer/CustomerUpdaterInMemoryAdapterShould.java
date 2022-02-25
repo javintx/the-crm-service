@@ -30,7 +30,7 @@ public class CustomerUpdaterInMemoryAdapterShould {
 
 		@Test
 		void return_customer_updated() {
-				var customer = new Customer("id", "name", "surname", "photo", "userReference");
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 				var customerDto = CustomerDto.from(customer);
 
 				var customers = new HashMap<String, CustomerDto>(1);

@@ -30,7 +30,7 @@ public class UserUpdaterInMemoryAdapterShould {
 
 		@Test
 		void return_user_updated() {
-				var user = new User("id", "name", "surname", false);
+				var user = new User("identifier", "name", "surname", false);
 				var userDto = UserDto.from(user);
 
 				var users = new HashMap<String, UserDto>(1);

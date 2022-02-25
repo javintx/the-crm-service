@@ -42,7 +42,7 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_customer_list_if_there_are_customers() {
-				var customer = new Customer("id", "name", "surname", "photo", "userReference");
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(listAllCustomersMock.get()).thenReturn(List.of(customer));
 
 				var customerResponseList = customerUseCaseHandler.get();
@@ -54,14 +54,8 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_new_customer_created() {
-				var customerRequest = new CustomerRequest();
-				customerRequest.setIdentifier("id");
-				customerRequest.setName("name");
-				customerRequest.setSurname("name");
-				customerRequest.setPhoto("photo");
-				customerRequest.setUserReference("userReference");
-
-				var customerExpected = new Customer("id", "name", "surname", "photo", "userReference");
+				var customerRequest = new CustomerRequest("identifier", "surname", "name", "photo", "userReference");
+				var customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(createNewCustomerMock.with(any(Customer.class))).thenReturn(customerExpected);
 
 				var customerResponse = customerUseCaseHandler.create(customerRequest);
@@ -71,14 +65,8 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_customer_updated_when_updates_user_and_exists() {
-				var customerRequest = new CustomerRequest();
-				customerRequest.setIdentifier("id");
-				customerRequest.setName("name");
-				customerRequest.setSurname("name");
-				customerRequest.setPhoto("photo");
-				customerRequest.setUserReference("userReference");
-
-				var customerExpected = new Customer("id", "name", "surname", "photo", "userReference");
+				var customerRequest = new CustomerRequest("identifier", "surname", "name", "photo", "userReference");
+				var customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(updateCustomerMock.update(any(Customer.class))).thenReturn(customerExpected);
 
 				var customerResponse = customerUseCaseHandler.update(customerRequest);
@@ -94,32 +82,24 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void throw_exception_when_create_new_customer_without_mandatory_field() {
-				var customerRequest = new CustomerRequest();
-				customerRequest.setIdentifier(null);
-				customerRequest.setName("name");
-				customerRequest.setSurname("surname");
-				customerRequest.setUserReference("userReference");
-
+				var customerRequestWithoutId = new CustomerRequest(null, "name", "surname", null, "userReference");
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutId)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 
-				customerRequest.setIdentifier("id");
-				customerRequest.setName(null);
+				var customerRequestWithoutName = new CustomerRequest("identifier", null, "surname", null, "userReference");
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutName)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 
-				customerRequest.setName("name");
-				customerRequest.setSurname(null);
+				var customerRequestWithoutSurname = new CustomerRequest("identifier", "name", null, null, "userReference");
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutSurname)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 
-				customerRequest.setSurname("surname");
-				customerRequest.setUserReference(null);
+				var customerRequestWithoutUserReference = new CustomerRequest("identifier", "name", "surname", null, null);
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutUserReference)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 		}
 }
