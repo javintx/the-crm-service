@@ -59,11 +59,17 @@ charge of the API design and implementation. Here are the requirements for the A
 - The headers `userReference` and `adminId` are not intended for validation purposes.
 - The header `Authorization` is to include the "Bearer" authentication token.
 
+### Application parameters
+
+- \#1: Port value. The port where to start the application server. By default, 8080.
+- \#2: Secret value. The secret used to generate and validate JWT tokens. By default, changeIt.
+- \#3: Create admin flag. Flag to create an admin user in the application start. By default, true.
+
 ---
 
 ## Architecture
 
-- Language code: Java 11 with [Gradle](https://gradle.org)
+- Language code: Java 17 with [Gradle](https://gradle.org)
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
   - App: The main application layer. Contains the initialization of the CRM service.
   - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
