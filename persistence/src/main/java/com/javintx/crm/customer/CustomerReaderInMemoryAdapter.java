@@ -16,6 +16,6 @@ public class CustomerReaderInMemoryAdapter implements CustomerReader {
 
 		@Override
 		public List<Customer> readAll() {
-				return this.inMemoryStorage.customers().values().stream().map(CustomerDto::toDomain).collect(Collectors.toList());
+				return this.inMemoryStorage.customers().values().stream().map(CustomerDto::toDomain).toList();
 		}
 }

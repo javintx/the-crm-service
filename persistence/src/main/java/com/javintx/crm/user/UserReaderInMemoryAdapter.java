@@ -16,6 +16,6 @@ public class UserReaderInMemoryAdapter implements UserReader {
 
 		@Override
 		public List<User> readAll() {
-				return this.inMemoryStorage.users().values().stream().map(UserDto::toDomain).collect(Collectors.toList());
+				return this.inMemoryStorage.users().values().stream().map(UserDto::toDomain).toList();
 		}
 }
