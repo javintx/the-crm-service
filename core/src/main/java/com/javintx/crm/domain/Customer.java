@@ -7,18 +7,18 @@ public record Customer(String identifier, String name, String surname, String ph
 
 		public Customer(String identifier, String name, String surname, String photo,
 																		String userReference) {
-				this.identifier = identifier;
-				this.name = name;
-				this.surname = surname;
+				this.identifier = verify(identifier, "identifier");
+				this.name = verify(name, "name");
+				this.surname = verify(surname, "surname");
 				this.photo = photo;
-				this.userReference = userReference;
-				verify();
+				this.userReference = verify(userReference, "userReference");
 		}
 
-		private void verify() {
-				if (identifier == null || name == null || surname == null || userReference == null) {
-						throw new CustomerNotValid(this);
+		private String verify(final String value, final String field) {
+				if (value == null) {
+						throw new CustomerNotValid(field);
 				}
+				return value;
 		}
 
 }

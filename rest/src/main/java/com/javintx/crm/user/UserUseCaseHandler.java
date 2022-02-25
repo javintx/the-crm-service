@@ -23,8 +23,7 @@ public class UserUseCaseHandler {
 		}
 
 		public List<UserResponse> get() {
-				var usersList = listAllUsers.get();
-				return usersList.stream().map(UserResponse::from).collect(Collectors.toList());
+				return listAllUsers.get().stream().map(UserResponse::from).toList();
 		}
 
 		public UserResponse create(final UserRequest user) {

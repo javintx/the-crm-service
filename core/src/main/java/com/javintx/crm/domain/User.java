@@ -4,17 +4,17 @@ import com.javintx.crm.user.exception.UserNotValid;
 
 public record User(String identifier, String name, String surname, boolean isAdmin) {
 		public User(String identifier, String name, String surname, boolean isAdmin) {
-				this.identifier = identifier;
-				this.name = name;
-				this.surname = surname;
+				this.identifier = verify(identifier, "identifier");
+				this.name = verify(name, "name");
+				this.surname = verify(surname, "surname");
 				this.isAdmin = isAdmin;
-				verify();
 		}
 
-		private void verify() {
-				if (identifier == null || name == null || surname == null) {
-						throw new UserNotValid(this);
+		private String verify(final String value, final String field) {
+				if (value == null) {
+						throw new UserNotValid(field);
 				}
+				return value;
 		}
 
 }

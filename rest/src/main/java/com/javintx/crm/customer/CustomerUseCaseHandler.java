@@ -21,8 +21,7 @@ public class CustomerUseCaseHandler {
 		}
 
 		public List<CustomerResponse> get() {
-				var customersList = listAllCustomers.get();
-				return customersList.stream().map(CustomerResponse::from).collect(Collectors.toList());
+				return listAllCustomers.get().stream().map(CustomerResponse::from).toList();
 		}
 
 		public CustomerResponse create(final CustomerRequest customer) {
