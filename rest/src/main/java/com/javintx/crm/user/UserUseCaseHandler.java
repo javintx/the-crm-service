@@ -1,7 +1,6 @@
 package com.javintx.crm.user;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserUseCaseHandler {
 		private final ListAllUsers listAllUsers;
