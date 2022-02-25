@@ -24,11 +24,11 @@ class IsAdminUserShould {
 				IsAdminUser isAdminUser = new IsAdminUserService(userReader);
 				when(userReader.readAll()).thenReturn(
 						List.of(
-								User.buildUser().withId("userId").withName("user").withSurname("user").build(),
-								User.buildAdmin().withId("adminId").withName("admin").withSurname("admin").build()
+								new User("userReference", "user", "user", false),
+								new User("adminId", "admin", "admin", true)
 						)
 				);
-				assertThatThrownBy(() -> isAdminUser.isAdmin("userId")).isExactlyInstanceOf(UserIsNotAdmin.class);
+				assertThatThrownBy(() -> isAdminUser.isAdmin("userReference")).isExactlyInstanceOf(UserIsNotAdmin.class);
 		}
 
 		@Test
@@ -37,8 +37,8 @@ class IsAdminUserShould {
 				IsAdminUser isAdminUser = new IsAdminUserService(userReader);
 				when(userReader.readAll()).thenReturn(
 						List.of(
-								User.buildUser().withId("userId").withName("user").withSurname("user").build(),
-								User.buildAdmin().withId("adminId").withName("admin").withSurname("admin").build()
+								new User("userReference", "user", "user", false),
+								new User("adminId", "admin", "admin", true)
 						)
 				);
 				assertThatNoException().isThrownBy(() -> isAdminUser.isAdmin("adminId"));

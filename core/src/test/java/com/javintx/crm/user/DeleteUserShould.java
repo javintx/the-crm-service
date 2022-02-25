@@ -34,19 +34,19 @@ class DeleteUserShould {
 
 		@Test
 		void delete_user_if_user_exists() {
-				User existingUser = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User existingUser = new User("identifier", "name", "surname", false);
 
 				when(userReaderMock.readAll()).thenReturn(List.of(existingUser));
 
-				deleteUser.delete("id");
+				deleteUser.delete("identifier");
 
-				verify(userDeleterMock).delete("id");
+				verify(userDeleterMock).delete("identifier");
 		}
 
 		@Test
 		void throw_exception_if_user_not_exists() {
 				when(userReaderMock.readAll()).thenReturn(Collections.emptyList());
 
-				assertThatThrownBy(() -> deleteUser.delete("id")).isExactlyInstanceOf(UserNotExists.class);
+				assertThatThrownBy(() -> deleteUser.delete("identifier")).isExactlyInstanceOf(UserNotExists.class);
 		}
 }

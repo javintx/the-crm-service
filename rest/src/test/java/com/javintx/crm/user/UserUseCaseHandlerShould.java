@@ -44,10 +44,10 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_user_list_if_there_are_users() {
-				User user = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				var user = new User("identifier", "name", "surname", false);
 				when(listAllUsersMock.get()).thenReturn(List.of(user));
 
-				List<UserResponse> userResponseList = userUseCaseHandler.get();
+				var userResponseList = userUseCaseHandler.get();
 
 				assertThat(userResponseList).isNotEmpty();
 				assertThat(userResponseList.get(0)).isInstanceOf(UserResponse.class);
@@ -56,67 +56,53 @@ class UserUseCaseHandlerShould {
 
 		@Test
 		void return_new_user_created() {
-				UserRequest userRequest = new UserRequest();
-				userRequest.setId("id");
-				userRequest.setName("name");
-				userRequest.setSurname("name");
-
-				User userExpected = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				var userRequest = new UserRequest("identifier", "name", "surname", false);
+				var userExpected = new User("identifier", "name", "surname", false);
 				when(createNewUserMock.with(any(User.class))).thenReturn(userExpected);
 
-				UserResponse userResponse = userUseCaseHandler.create(userRequest);
+				var userResponse = userUseCaseHandler.create(userRequest);
 
 				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
 		}
 
 		@Test
 		void return_user_updated_when_updates_user_and_exists() {
-				UserRequest userRequest = new UserRequest();
-				userRequest.setId("id");
-				userRequest.setName("name");
-				userRequest.setSurname("name");
-
-				User userExpected = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				var userRequest = new UserRequest("identifier", "name", "surname", false);
+				var userExpected = new User("identifier", "name", "surname", false);
 				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
 
-				UserResponse userResponse = userUseCaseHandler.update(userRequest);
+				var userResponse = userUseCaseHandler.update(userRequest);
 
 				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
 		}
 
 		@Test
 		void verify_deleted_user() {
-				userUseCaseHandler.delete("userId");
-				verify(deleteUserMock).delete("userId");
+				userUseCaseHandler.delete("userReference");
+				verify(deleteUserMock).delete("userReference");
 		}
 
 		@Test
 		void throw_exception_when_create_new_user_without_mandatory_field() {
-				UserRequest userRequest = new UserRequest();
-				userRequest.setId(null);
-				userRequest.setName("name");
-				userRequest.setSurname("surname");
-
+				var userRequestWithoutIdentifier = new UserRequest(null, "name", "surname", false);
 				assertThatThrownBy(
-						() -> userUseCaseHandler.create(userRequest)
+						() -> userUseCaseHandler.create(userRequestWithoutIdentifier)
 				).isExactlyInstanceOf(UserNotValid.class);
 
-				userRequest.setId("id");
-				userRequest.setName(null);
+				var userRequestWithoutName = new UserRequest("identifier", null, "surname", false);
 				assertThatThrownBy(
-						() -> userUseCaseHandler.create(userRequest)
+						() -> userUseCaseHandler.create(userRequestWithoutName)
 				).isExactlyInstanceOf(UserNotValid.class);
 
-				userRequest.setName("name");
-				userRequest.setSurname(null);
+				var userRequestWithoutSurname = new UserRequest("identifier", "name", null, false);
 				assertThatThrownBy(
-						() -> userUseCaseHandler.create(userRequest)
+						() -> userUseCaseHandler.create(userRequestWithoutSurname)
 				).isExactlyInstanceOf(UserNotValid.class);
 		}
 
 		@Test
 		void verify_is_admin_user() {
-				userUseCaseHandler.isAdmin("userId");
-				verify(isAdminUserMock).isAdmin("userId");
+				userUseCaseHandler.isAdmin("userReference");
+				verify(isAdminUserMock).isAdmin("userReference");
 		}
 }

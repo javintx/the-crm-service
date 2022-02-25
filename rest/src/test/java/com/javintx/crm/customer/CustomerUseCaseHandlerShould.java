@@ -42,10 +42,10 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_customer_list_if_there_are_customers() {
-				Customer customer = new Customer("id", "name", "surname", "photo", "userId");
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(listAllCustomersMock.get()).thenReturn(List.of(customer));
 
-				List<CustomerResponse> customerResponseList = customerUseCaseHandler.get();
+				var customerResponseList = customerUseCaseHandler.get();
 
 				assertThat(customerResponseList).isNotEmpty();
 				assertThat(customerResponseList.get(0)).isInstanceOf(CustomerResponse.class);
@@ -54,34 +54,22 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void return_new_customer_created() {
-				CustomerRequest customerRequest = new CustomerRequest();
-				customerRequest.setId("id");
-				customerRequest.setName("name");
-				customerRequest.setSurname("name");
-				customerRequest.setPhoto("photo");
-				customerRequest.setUserId("userId");
-
-				Customer customerExpected = new Customer("id", "name", "surname", "photo", "userId");
+				var customerRequest = new CustomerRequest("identifier", "surname", "name", "photo", "userReference");
+				var customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(createNewCustomerMock.with(any(Customer.class))).thenReturn(customerExpected);
 
-				CustomerResponse customerResponse = customerUseCaseHandler.create(customerRequest);
+				var customerResponse = customerUseCaseHandler.create(customerRequest);
 
 				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
 		}
 
 		@Test
 		void return_customer_updated_when_updates_user_and_exists() {
-				CustomerRequest customerRequest = new CustomerRequest();
-				customerRequest.setId("id");
-				customerRequest.setName("name");
-				customerRequest.setSurname("name");
-				customerRequest.setPhoto("photo");
-				customerRequest.setUserId("userId");
-
-				Customer customerExpected = new Customer("id", "name", "surname", "photo", "userId");
+				var customerRequest = new CustomerRequest("identifier", "surname", "name", "photo", "userReference");
+				var customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(updateCustomerMock.update(any(Customer.class))).thenReturn(customerExpected);
 
-				CustomerResponse customerResponse = customerUseCaseHandler.update(customerRequest);
+				var customerResponse = customerUseCaseHandler.update(customerRequest);
 
 				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
 		}
@@ -94,32 +82,24 @@ class CustomerUseCaseHandlerShould {
 
 		@Test
 		void throw_exception_when_create_new_customer_without_mandatory_field() {
-				CustomerRequest customerRequest = new CustomerRequest();
-				customerRequest.setId(null);
-				customerRequest.setName("name");
-				customerRequest.setSurname("surname");
-				customerRequest.setUserId("userId");
-
+				var customerRequestWithoutId = new CustomerRequest(null, "name", "surname", null, "userReference");
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutId)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 
-				customerRequest.setId("id");
-				customerRequest.setName(null);
+				var customerRequestWithoutName = new CustomerRequest("identifier", null, "surname", null, "userReference");
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutName)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 
-				customerRequest.setName("name");
-				customerRequest.setSurname(null);
+				var customerRequestWithoutSurname = new CustomerRequest("identifier", "name", null, null, "userReference");
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutSurname)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 
-				customerRequest.setSurname("surname");
-				customerRequest.setUserId(null);
+				var customerRequestWithoutUserReference = new CustomerRequest("identifier", "name", "surname", null, null);
 				assertThatThrownBy(
-						() -> customerUseCaseHandler.create(customerRequest)
+						() -> customerUseCaseHandler.create(customerRequestWithoutUserReference)
 				).isExactlyInstanceOf(CustomerNotValid.class);
 		}
 }

@@ -35,8 +35,8 @@ class CreateNewUserShould {
 
 		@Test
 		void create_new_user() {
-				User userToCreate = User.buildUser().withId("id").withName("name").withSurname("surname").build();
-				User userExpected = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User userToCreate = new User("identifier", "name", "surname", false);
+				User userExpected = new User("identifier", "name", "surname", false);
 
 				when(userWriterMocked.writes(any(User.class))).thenReturn(userExpected);
 
@@ -47,8 +47,8 @@ class CreateNewUserShould {
 
 		@Test
 		void throw_exception_when_create_new_user_that_exists() {
-				User userToCreate = User.buildUser().withId("id").withName("name").withSurname("surname").build();
-				User user = User.buildUser().withId("id").withName("name").withSurname("surname").build();
+				User userToCreate = new User("identifier", "name", "surname", false);
+				User user = new User("identifier", "name", "surname", false);
 
 				when(userReaderMocked.readAll()).thenReturn(List.of(user));
 

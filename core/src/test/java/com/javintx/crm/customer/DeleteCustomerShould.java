@@ -34,19 +34,19 @@ class DeleteCustomerShould {
 
 		@Test
 		void delete_customer_if_customer_exists() {
-				Customer existingCustomer = new Customer("id", "name", "surname", "photo", "userId");
+				Customer existingCustomer = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
 
-				deleteCustomer.delete("id");
+				deleteCustomer.delete("identifier");
 
-				verify(customerDeleterMock).delete("id");
+				verify(customerDeleterMock).delete("identifier");
 		}
 
 		@Test
 		void throw_exception_if_customer_not_exists() {
 				when(customerReaderMock.readAll()).thenReturn(Collections.emptyList());
 
-				assertThatThrownBy(() -> deleteCustomer.delete("id")).isExactlyInstanceOf(CustomerNotExists.class);
+				assertThatThrownBy(() -> deleteCustomer.delete("identifier")).isExactlyInstanceOf(CustomerNotExists.class);
 		}
 }

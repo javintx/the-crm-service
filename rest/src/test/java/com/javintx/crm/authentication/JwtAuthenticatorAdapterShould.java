@@ -22,12 +22,12 @@ public class JwtAuthenticatorAdapterShould {
 
 		@Test
 		void return_true_when_request_is_authenticated() {
-				Authenticator authenticator = new JwtAuthenticatorAdapter("secret");
+				var authenticator = new JwtAuthenticatorAdapter("secret");
 
-				Request request = mock(Request.class);
-				Response response = mock(Response.class);
+				var request = mock(Request.class);
+				var response = mock(Response.class);
 
-				String token = "Bearer " + Jwts.builder()
+				var token = "Bearer " + Jwts.builder()
 						.setClaims(new DefaultClaims())
 						.setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10)))
 						.signWith(SignatureAlgorithm.HS512, "secret")
@@ -40,20 +40,20 @@ public class JwtAuthenticatorAdapterShould {
 
 		@Test
 		void return_false_when_request_not_contains_authorization_header() {
-				Authenticator authenticator = new JwtAuthenticatorAdapter("secret");
+				var authenticator = new JwtAuthenticatorAdapter("secret");
 
-				Request request = mock(Request.class);
-				Response response = mock(Response.class);
+				var request = mock(Request.class);
+				var response = mock(Response.class);
 
 				assertThrows(spark.HaltException.class, () -> authenticator.isAuthenticated(request, response));
 		}
 
 		@Test
 		void return_exception_when_request_contains_invalid_authorization_token() {
-				Authenticator authenticator = new JwtAuthenticatorAdapter("secret");
+				var authenticator = new JwtAuthenticatorAdapter("secret");
 
-				Request request = mock(Request.class);
-				Response response = mock(Response.class);
+				var request = mock(Request.class);
+				var response = mock(Response.class);
 
 				when(request.headers("Authorization")).thenReturn("invalid");
 
@@ -62,12 +62,12 @@ public class JwtAuthenticatorAdapterShould {
 
 		@Test
 		void return_exception_when_request_contains_expired_authorization_token() {
-				Authenticator authenticator = new JwtAuthenticatorAdapter("secret");
+				var authenticator = new JwtAuthenticatorAdapter("secret");
 
-				Request request = mock(Request.class);
-				Response response = mock(Response.class);
+				var request = mock(Request.class);
+				var response = mock(Response.class);
 
-				String token = "Bearer " + Jwts.builder()
+				var token = "Bearer " + Jwts.builder()
 						.setClaims(new DefaultClaims())
 						.setExpiration(new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(10)))
 						.signWith(SignatureAlgorithm.HS512, "secret")

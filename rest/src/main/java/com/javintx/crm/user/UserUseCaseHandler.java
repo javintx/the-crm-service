@@ -1,7 +1,5 @@
 package com.javintx.crm.user;
 
-import com.javintx.crm.domain.User;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +23,7 @@ public class UserUseCaseHandler {
 		}
 
 		public List<UserResponse> get() {
-				List<User> usersList = listAllUsers.get();
+				var usersList = listAllUsers.get();
 				return usersList.stream().map(UserResponse::from).collect(Collectors.toList());
 		}
 
