@@ -1,41 +1,29 @@
 package com.javintx.crm.user;
 
-import com.javintx.crm.inMemoryStorage.InMemoryStorage;
+import com.javintx.crm.in_memory_storage.InMemoryStorage;
 import com.javintx.crm.port.out.user.UserDeleter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class)
 class UserDeleterInMemoryAdapterShould {
 		private UserDeleter userDeleter;
 
-		@Mock
-		private InMemoryStorage inMemoryStorage;
-
 		@BeforeEach
 		public void setUp() {
-				userDeleter = new UserDeleterInMemoryAdapter(inMemoryStorage);
+				userDeleter = new UserDeleterInMemoryAdapter();
 		}
 
 		@Test
-		void return_user_write() {
-				final var USER_ID = "userReference";
+		void delete_user() {
+				final var USER_ID = "userId";
 
-				var mapMock = mock(Map.class);
-				when(inMemoryStorage.users()).thenReturn(mapMock);
+				InMemoryStorage.INSTANCE.users().put(USER_ID, new UserDto(USER_ID, "name", "surname", false));
 
 				assertDoesNotThrow(() -> userDeleter.delete(USER_ID));
-				verify(mapMock).remove(USER_ID);
+				assertTrue(InMemoryStorage.INSTANCE.users().isEmpty());
 		}
 
 }

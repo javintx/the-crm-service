@@ -13,7 +13,6 @@ import com.javintx.crm.customer.impl.CreateNewCustomerService;
 import com.javintx.crm.customer.impl.DeleteCustomerService;
 import com.javintx.crm.customer.impl.ListAllCustomersService;
 import com.javintx.crm.customer.impl.UpdateCustomerService;
-import com.javintx.crm.inMemoryStorage.InMemoryStorage;
 import com.javintx.crm.log.Slf4JApiRestLoggerAdapter;
 import com.javintx.crm.user.UserDeleterInMemoryAdapter;
 import com.javintx.crm.user.UserReaderInMemoryAdapter;
@@ -59,9 +58,8 @@ public class Application {
 		}
 
 		private static void initializeControllers(final int port, final String secret, final boolean createAdmin) {
-				final var inMemoryStorage = InMemoryStorage.getInstance();
-				final var userUseCaseHandler = initializeUserUseCaseHandler(inMemoryStorage);
-				final var customerUseCaseHandler = initializeCustomerUseCaseHandler(inMemoryStorage);
+				final var userUseCaseHandler = initializeUserUseCaseHandler();
+				final var customerUseCaseHandler = initializeCustomerUseCaseHandler();
 
 				initializeStorage(userUseCaseHandler, createAdmin);
 
@@ -88,11 +86,11 @@ public class Application {
 				}
 		}
 
-		private static UserUseCaseHandler initializeUserUseCaseHandler(final InMemoryStorage inMemoryStorage) {
-				final var userReader = new UserReaderInMemoryAdapter(inMemoryStorage);
-				final var userWriter = new UserWriterInMemoryAdapter(inMemoryStorage);
-				final var userUpdater = new UserUpdaterInMemoryAdapter(inMemoryStorage);
-				final var userDeleter = new UserDeleterInMemoryAdapter(inMemoryStorage);
+		private static UserUseCaseHandler initializeUserUseCaseHandler() {
+				final var userReader = new UserReaderInMemoryAdapter();
+				final var userWriter = new UserWriterInMemoryAdapter();
+				final var userUpdater = new UserUpdaterInMemoryAdapter();
+				final var userDeleter = new UserDeleterInMemoryAdapter();
 
 				final var listAllUsers = new ListAllUsersService(userReader);
 				final var createNewUser = new CreateNewUserService(userWriter, userReader);
@@ -103,11 +101,11 @@ public class Application {
 				return new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
 		}
 
-		private static CustomerUseCaseHandler initializeCustomerUseCaseHandler(final InMemoryStorage inMemoryStorage) {
-				final var customerReader = new CustomerReaderInMemoryAdapter(inMemoryStorage);
-				final var customerWriter = new CustomerWriterInMemoryAdapter(inMemoryStorage);
-				final var customerUpdater = new CustomerUpdaterInMemoryAdapter(inMemoryStorage);
-				final var customerDeleter = new CustomerDeleterInMemoryAdapter(inMemoryStorage);
+		private static CustomerUseCaseHandler initializeCustomerUseCaseHandler() {
+				final var customerReader = new CustomerReaderInMemoryAdapter();
+				final var customerWriter = new CustomerWriterInMemoryAdapter();
+				final var customerUpdater = new CustomerUpdaterInMemoryAdapter();
+				final var customerDeleter = new CustomerDeleterInMemoryAdapter();
 
 				final var listAllCustomers = new ListAllCustomersService(customerReader);
 				final var createNewCustomer = new CreateNewCustomerService(customerWriter, customerReader);

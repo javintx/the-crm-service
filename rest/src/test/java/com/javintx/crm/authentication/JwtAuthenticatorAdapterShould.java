@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class JwtAuthenticatorAdapterShould {
+class JwtAuthenticatorAdapterShould {
 
 		@Test
 		void return_true_when_request_is_authenticated() {

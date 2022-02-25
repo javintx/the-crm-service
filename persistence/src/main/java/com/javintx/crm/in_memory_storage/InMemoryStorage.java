@@ -1,4 +1,4 @@
-package com.javintx.crm.inMemoryStorage;
+package com.javintx.crm.in_memory_storage;
 
 import com.javintx.crm.customer.CustomerDto;
 import com.javintx.crm.user.UserDto;
@@ -6,23 +6,16 @@ import com.javintx.crm.user.UserDto;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryStorage {
+public enum InMemoryStorage {
 
-		private static InMemoryStorage INSTANCE;
+		INSTANCE;
 
 		private final Map<String, CustomerDto> customers;
 		private final Map<String, UserDto> users;
 
-		private InMemoryStorage() {
+		InMemoryStorage() {
 				this.customers = new HashMap<>();
 				this.users = new HashMap<>();
-		}
-
-		public static InMemoryStorage getInstance() {
-				if (INSTANCE == null) {
-						INSTANCE = new InMemoryStorage();
-				}
-				return INSTANCE;
 		}
 
 		public Map<String, CustomerDto> customers() {
