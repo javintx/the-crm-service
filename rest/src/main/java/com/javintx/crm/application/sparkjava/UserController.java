@@ -1,4 +1,4 @@
-package com.javintx.crm.application;
+package com.javintx.crm.application.sparkjava;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javintx.crm.user.UserRequest;
@@ -20,8 +20,8 @@ import static com.javintx.crm.user.UserEndPoints.DELETE_USER;
 import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
 import static com.javintx.crm.user.UserEndPoints.UPDATE_USER;
 import static com.javintx.crm.user.UserEndPoints.USER_PATH;
-import static com.javintx.crm.user.UserEndPointsBindNames.ADMIN_ID;
-import static com.javintx.crm.user.UserEndPointsBindNames.USER_ID;
+import static com.javintx.crm.user.UserEndPoints.BindNames.ADMIN_ID;
+import static com.javintx.crm.user.UserEndPoints.BindNames.USER_ID;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
@@ -48,11 +48,11 @@ public class UserController {
 		}
 
 		private void routes() {
-				before(USER_PATH.uri, this::handleIsAdminUser);
-				get(LIST_ALL_USERS.uri, this::handleListAllUsers, objectMapper::writeValueAsString);
-				post(CREATE_NEW_USER.uri, APPLICATION_JSON.asString(), this::handleCreateNewUser, objectMapper::writeValueAsString);
-				put(UPDATE_USER.uri, APPLICATION_JSON.asString(), this::handleUpdateUser, objectMapper::writeValueAsString);
-				delete(DELETE_USER.uri, this::handleDeleteUser, objectMapper::writeValueAsString);
+				before(USER_PATH, this::handleIsAdminUser);
+				get(LIST_ALL_USERS, this::handleListAllUsers, objectMapper::writeValueAsString);
+				post(CREATE_NEW_USER, APPLICATION_JSON.asString(), this::handleCreateNewUser, objectMapper::writeValueAsString);
+				put(UPDATE_USER, APPLICATION_JSON.asString(), this::handleUpdateUser, objectMapper::writeValueAsString);
+				delete(DELETE_USER, this::handleDeleteUser, objectMapper::writeValueAsString);
 				exceptions();
 		}
 
@@ -77,7 +77,7 @@ public class UserController {
 		}
 
 		private void handleIsAdminUser(final Request request, final Response response) {
-				userUseCaseHandler.isAdmin(request.headers(ADMIN_ID.bindName));
+				userUseCaseHandler.isAdmin(request.headers(ADMIN_ID));
 		}
 
 		private List<UserResponse> handleListAllUsers(final Request request, final Response response) {
@@ -97,7 +97,7 @@ public class UserController {
 		}
 
 		private String handleDeleteUser(final Request request, final Response response) {
-				userUseCaseHandler.delete(request.params(USER_ID.bindName));
+				userUseCaseHandler.delete(request.params(USER_ID));
 				response.status(SC_OK);
 				return "OK";
 		}

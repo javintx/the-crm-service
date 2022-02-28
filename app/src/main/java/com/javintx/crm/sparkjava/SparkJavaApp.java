@@ -1,8 +1,8 @@
-package com.javintx.crm;
+package com.javintx.crm.sparkjava;
 
-import com.javintx.crm.application.ApplicationController;
-import com.javintx.crm.application.CustomerController;
-import com.javintx.crm.application.UserController;
+import com.javintx.crm.application.sparkjava.ApplicationController;
+import com.javintx.crm.application.sparkjava.CustomerController;
+import com.javintx.crm.application.sparkjava.UserController;
 import com.javintx.crm.authentication.JwtAuthenticatorAdapter;
 import com.javintx.crm.customer.CustomerDeleterInMemoryAdapter;
 import com.javintx.crm.customer.CustomerReaderInMemoryAdapter;
@@ -26,7 +26,7 @@ import com.javintx.crm.user.impl.IsAdminUserService;
 import com.javintx.crm.user.impl.ListAllUsersService;
 import com.javintx.crm.user.impl.UpdateUserService;
 
-public class Application {
+public class SparkJavaApp {
 
 		private static final int STANDARD_PORT = 8080;
 		private static final String SECRET = "changeIt";

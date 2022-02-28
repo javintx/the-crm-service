@@ -1,4 +1,4 @@
-package com.javintx.crm.application;
+package com.javintx.crm.application.sparkjava;
 
 import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.log.ApiRestLogger;

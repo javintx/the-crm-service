@@ -4,13 +4,14 @@ plugins {
 }
 
 wrapper {
-  gradleVersion = "7.3.3"
+  gradleVersion = "7.4"
 }
 
 dependencies {
-  implementation project(":core")
   implementation project(":app")
+  implementation project(":core")
   implementation project(":persistence")
+  implementation project(":rest")
 }
 
 jar {

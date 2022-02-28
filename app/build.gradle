@@ -7,9 +7,13 @@ dependencies {
   implementation project(":rest")
   implementation project(":persistence")
 
-  implementation "org.slf4j:slf4j-simple:1.7.33"
+  implementation "org.springframework.boot:spring-boot-starter:2.6.3"
 
-  testImplementation "io.rest-assured:rest-assured:4.4.0"
+//  implementation "org.slf4j:slf4j-simple:1.7.36"
+
+  testRuntimeOnly "javax.xml.bind:jaxb-api:2.3.1"
+
+  testImplementation "io.rest-assured:rest-assured:4.5.0"
   testImplementation "com.sparkjava:spark-core:2.9.3"
   testImplementation "io.jsonwebtoken:jjwt:0.9.1"
 }

@@ -1,6 +1,6 @@
 package com.javintx.crm.customer;
 
-import com.javintx.crm.Application;
+import com.javintx.crm.sparkjava.SparkJavaApp;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
-import static com.javintx.crm.customer.CustomerEndPointsBindNames.CUSTOMER_ID;
+import static com.javintx.crm.customer.CustomerEndPoints.BindNames.CUSTOMER_ID;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -36,7 +36,7 @@ class CustomerEndPointsShould {
 
 		private static final int MAX_RANGE_PORT = 60000;
 		private static final int MIN_RANGE_PORT = 30000;
-		private static final String DELETE_URI = format("/customer/delete/{%s}", CUSTOMER_ID.bindName);
+		private static final String DELETE_URI = format("/customer/delete/{%s}", CUSTOMER_ID);
 		private static final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(10);
 		private static String secret;
 
@@ -52,7 +52,7 @@ class CustomerEndPointsShould {
 		static void startServer() {
 				final var port = port();
 				secret = secret();
-				Application.main(new String[]{String.valueOf(port), secret});
+				SparkJavaApp.main(new String[]{String.valueOf(port), secret});
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 				awaitInitialization();
 		}
@@ -68,7 +68,7 @@ class CustomerEndPointsShould {
 				var response = given()
 						.header(authenticationHeader())
 						.when()
-						.get(LIST_ALL_CUSTOMERS.uri)
+						.get(LIST_ALL_CUSTOMERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -86,7 +86,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -94,7 +94,7 @@ class CustomerEndPointsShould {
 				var jsonPath = given()
 						.header(authenticationHeader())
 						.when()
-						.get(LIST_ALL_CUSTOMERS.uri)
+						.get(LIST_ALL_CUSTOMERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -118,7 +118,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -131,7 +131,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_CONFLICT);
@@ -146,7 +146,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_BAD_REQUEST);
@@ -156,7 +156,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_BAD_REQUEST);
@@ -166,7 +166,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_BAD_REQUEST);
@@ -179,7 +179,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -189,7 +189,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.put(UPDATE_CUSTOMER.uri)
+						.put(UPDATE_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -197,7 +197,7 @@ class CustomerEndPointsShould {
 				var jsonPath = given()
 						.header(authenticationHeader())
 						.when()
-						.get(LIST_ALL_CUSTOMERS.uri)
+						.get(LIST_ALL_CUSTOMERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -221,7 +221,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.put(UPDATE_CUSTOMER.uri)
+						.put(UPDATE_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_NOT_FOUND);
@@ -234,7 +234,7 @@ class CustomerEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"userReference\":\"userReference\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_CUSTOMER.uri)
+						.post(CREATE_NEW_CUSTOMER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -254,7 +254,7 @@ class CustomerEndPointsShould {
 				var response = given()
 						.header(authenticationHeader())
 						.when()
-						.get(LIST_ALL_CUSTOMERS.uri)
+						.get(LIST_ALL_CUSTOMERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -269,7 +269,7 @@ class CustomerEndPointsShould {
 		void return_exception_when_no_authenticated_request() {
 				given()
 						.when()
-						.get(LIST_ALL_CUSTOMERS.uri)
+						.get(LIST_ALL_CUSTOMERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_UNAUTHORIZED);

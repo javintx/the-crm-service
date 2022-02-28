@@ -1,4 +1,4 @@
-package com.javintx.crm.application;
+package com.javintx.crm.application.sparkjava;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javintx.crm.customer.CustomerRequest;
@@ -18,7 +18,7 @@ import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.DELETE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
 import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
-import static com.javintx.crm.customer.CustomerEndPointsBindNames.CUSTOMER_ID;
+import static com.javintx.crm.customer.CustomerEndPoints.BindNames.CUSTOMER_ID;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
@@ -43,10 +43,10 @@ public class CustomerController {
 		}
 
 		private void routes() {
-				get(LIST_ALL_CUSTOMERS.uri, this::handleListAllCustomers, objectMapper::writeValueAsString);
-				post(CREATE_NEW_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
-				put(UPDATE_CUSTOMER.uri, APPLICATION_JSON.asString(), this::handleUpdateCustomer, objectMapper::writeValueAsString);
-				delete(DELETE_CUSTOMER.uri, this::handleDeleteCustomer, objectMapper::writeValueAsString);
+				get(LIST_ALL_CUSTOMERS, this::handleListAllCustomers, objectMapper::writeValueAsString);
+				post(CREATE_NEW_CUSTOMER, APPLICATION_JSON.asString(), this::handleCreateNewCustomer, objectMapper::writeValueAsString);
+				put(UPDATE_CUSTOMER, APPLICATION_JSON.asString(), this::handleUpdateCustomer, objectMapper::writeValueAsString);
+				delete(DELETE_CUSTOMER, this::handleDeleteCustomer, objectMapper::writeValueAsString);
 				exceptions();
 		}
 
@@ -82,7 +82,7 @@ public class CustomerController {
 		}
 
 		private String handleDeleteCustomer(final Request request, final Response response) {
-				customerUseCaseHandler.delete(request.params(CUSTOMER_ID.bindName));
+				customerUseCaseHandler.delete(request.params(CUSTOMER_ID));
 				response.status(SC_OK);
 				return "OK";
 		}
