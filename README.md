@@ -209,3 +209,4 @@ The request header `adminId` must be filled with the user identifier of an admin
 - The user reference in the customer could be validated with persistence and could be extracted from the request.
 - Check that if the only test are the e2e test, the coverage does not change.
 - Add a main Application that reads by parameter what application starts.
+- Customize e2e test to launch with all applications.
