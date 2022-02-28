@@ -1,17 +1,20 @@
 package com.javintx.crm.customer;
 
-import static com.javintx.crm.customer.CustomerEndPointsBindNames.CUSTOMER_ID;
-import static java.lang.String.format;
+import static com.javintx.crm.customer.CustomerEndPoints.BindNames.CUSTOMER_ID;
 
-public enum CustomerEndPoints {
-		LIST_ALL_CUSTOMERS("/customer/all"),
-		CREATE_NEW_CUSTOMER("/customer/create"),
-		UPDATE_CUSTOMER("/customer/update"),
-		DELETE_CUSTOMER(format("/customer/delete/:%s", CUSTOMER_ID.bindName));
+public final class CustomerEndPoints {
+		public static final String LIST_ALL_CUSTOMERS = "/customer/all";
+		public static final String CREATE_NEW_CUSTOMER = "/customer/create";
+		public static final String UPDATE_CUSTOMER = "/customer/update";
+		public static final String DELETE_CUSTOMER = "/customer/delete/:" + CUSTOMER_ID;
 
-		public final String uri;
+		private CustomerEndPoints() {
+		}
 
-		CustomerEndPoints(final String uri) {
-				this.uri = uri;
+		public static final class BindNames {
+				public static final String CUSTOMER_ID = "customerIdentifier";
+
+				private BindNames() {
+				}
 		}
 }

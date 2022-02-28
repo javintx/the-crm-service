@@ -61,23 +61,29 @@ charge of the API design and implementation. Here are the requirements for the A
 
 ### Application parameters
 
-- \#1: Port value. The port where to start the application server. By default, 8080.
-- \#2: Secret value. The secret used to generate and validate JWT tokens. By default, changeIt.
-- \#3: Create admin flag. Flag to create an admin user in the application start. By default, true.
+- \#1: Port value. The port where to start the application server. By default, `8080`.
+- \#2: Secret value. The secret used to generate and validate JWT tokens. By default, `changeIt`.
+- \#3: Create admin flag. Flag to create an admin user in the application start. By default, `true`.
 
 ---
 
 ## Architecture
 
 - Language code: Java 17 with [Gradle](https://gradle.org)
+- Gradle 7.4
 - Architecture: [Hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
   - App: The main application layer. Contains the initialization of the CRM service.
   - Core: The business logic layer. Contains the use cases and the domain objects for the CRM service.
   - Persistence layer: First approach with in-memory storage.
-  - Rest API layer: First approach with [SparkJava](https://sparkjava.com). Pending to publish API.
-    - Authentication: First approach with all call are authenticated.
-    - CORS is activated.
-    - Log: With [Slf4J](https://www.slf4j.org). This layer could be extracted to a module for all layers.
+  - Rest API layer:
+    - First approach with [SparkJava](https://sparkjava.com). Pending to publish API.
+      - Authentication: First approach with all call are authenticated.
+      - CORS is activated.
+      - Log: With [Slf4J](https://www.slf4j.org).
+    - Second approach with [SpringBoot](https://spring.io/projects/spring-boot). Pending to publish API.
+      - Authentication: Pending to implement.
+      - CORS is pending to implement.
+      - Log: Pending to implement.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
 - End-to-end test: JUnit5 with [RestAssured](https://rest-assured.io).
@@ -202,3 +208,5 @@ The request header `adminId` must be filled with the user identifier of an admin
 - It could be added a deletion flag for customer or user to do not make a physical delete and keep the historic data.
 - The user reference in the customer could be validated with persistence and could be extracted from the request.
 - Check that if the only test are the e2e test, the coverage does not change.
+- Add a main Application that reads by parameter what application starts.
+- Customize e2e test to launch with all applications.

@@ -1,6 +1,6 @@
 package com.javintx.crm.user;
 
-import com.javintx.crm.Application;
+import com.javintx.crm.sparkjava.SparkJavaApp;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 import static com.javintx.crm.user.UserEndPoints.CREATE_NEW_USER;
 import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
 import static com.javintx.crm.user.UserEndPoints.UPDATE_USER;
-import static com.javintx.crm.user.UserEndPointsBindNames.ADMIN_ID;
-import static com.javintx.crm.user.UserEndPointsBindNames.USER_ID;
+import static com.javintx.crm.user.UserEndPoints.BindNames.ADMIN_ID;
+import static com.javintx.crm.user.UserEndPoints.BindNames.USER_ID;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -39,7 +39,7 @@ class UserEndPointsShould {
 
 		private static final int MAX_RANGE_PORT = 60000;
 		private static final int MIN_RANGE_PORT = 30000;
-		private static final String DELETE_URI = format("/user/delete/{%s}", USER_ID.bindName);
+		private static final String DELETE_URI = format("/user/delete/{%s}", USER_ID);
 		private static final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(10);
 		private static String secret;
 
@@ -55,7 +55,7 @@ class UserEndPointsShould {
 		static void startServer() {
 				final var port = port();
 				secret = secret();
-				Application.main(new String[]{String.valueOf(port), secret});
+				SparkJavaApp.main(new String[]{String.valueOf(port), secret});
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 				awaitInitialization();
 		}
@@ -71,7 +71,7 @@ class UserEndPointsShould {
 				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.get(LIST_ALL_USERS.uri)
+						.get(LIST_ALL_USERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -91,7 +91,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -99,7 +99,7 @@ class UserEndPointsShould {
 				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.get(LIST_ALL_USERS.uri)
+						.get(LIST_ALL_USERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -121,7 +121,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -134,7 +134,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_CONFLICT);
@@ -149,7 +149,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_BAD_REQUEST);
@@ -159,7 +159,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_BAD_REQUEST);
@@ -169,7 +169,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_BAD_REQUEST);
@@ -182,7 +182,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -192,7 +192,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\"}")
 						.accept(ContentType.JSON)
-						.put(UPDATE_USER.uri)
+						.put(UPDATE_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -200,7 +200,7 @@ class UserEndPointsShould {
 				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.get(LIST_ALL_USERS.uri)
+						.get(LIST_ALL_USERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -222,7 +222,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\"}")
 						.accept(ContentType.JSON)
-						.put(UPDATE_USER.uri)
+						.put(UPDATE_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_NOT_FOUND);
@@ -235,7 +235,7 @@ class UserEndPointsShould {
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\"}")
 						.accept(ContentType.JSON)
-						.post(CREATE_NEW_USER.uri)
+						.post(CREATE_NEW_USER)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
@@ -255,7 +255,7 @@ class UserEndPointsShould {
 				var jsonPath = given()
 						.headers(Headers.headers(authenticationHeader(), adminHeader()))
 						.when()
-						.get(LIST_ALL_USERS.uri)
+						.get(LIST_ALL_USERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_OK)
@@ -273,7 +273,7 @@ class UserEndPointsShould {
 				given()
 						.header(authenticationHeader())
 						.when()
-						.get(LIST_ALL_USERS.uri)
+						.get(LIST_ALL_USERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_FORBIDDEN);
@@ -283,7 +283,7 @@ class UserEndPointsShould {
 		void return_exception_when_no_authenticated_request() {
 				given()
 						.when()
-						.get(LIST_ALL_USERS.uri)
+						.get(LIST_ALL_USERS)
 						.then()
 						.assertThat()
 						.statusCode(SC_UNAUTHORIZED);
@@ -310,7 +310,7 @@ class UserEndPointsShould {
 		}
 
 		private Header adminHeader() {
-				return new Header(ADMIN_ID.bindName, "admin");
+				return new Header(ADMIN_ID, "admin");
 		}
 
 }
