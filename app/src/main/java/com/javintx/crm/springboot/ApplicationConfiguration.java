@@ -11,6 +11,7 @@ import com.javintx.crm.customer.impl.ListAllCustomersService;
 import com.javintx.crm.customer.impl.UpdateCustomerService;
 import com.javintx.crm.user.UserDeleterInMemoryAdapter;
 import com.javintx.crm.user.UserReaderInMemoryAdapter;
+import com.javintx.crm.user.UserRequest;
 import com.javintx.crm.user.UserUpdaterInMemoryAdapter;
 import com.javintx.crm.user.UserUseCaseHandler;
 import com.javintx.crm.user.UserWriterInMemoryAdapter;
@@ -19,26 +20,35 @@ import com.javintx.crm.user.impl.DeleteUserService;
 import com.javintx.crm.user.impl.IsAdminUserService;
 import com.javintx.crm.user.impl.ListAllUsersService;
 import com.javintx.crm.user.impl.UpdateUserService;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApplicationConfiguration {
 
-		@Bean
-		public UserUseCaseHandler userUseCaseHandler() {
-				final var userReader = new UserReaderInMemoryAdapter();
-				final var userWriter = new UserWriterInMemoryAdapter();
-				final var userUpdater = new UserUpdaterInMemoryAdapter();
-				final var userDeleter = new UserDeleterInMemoryAdapter();
+		private static final boolean CREATE_ADMIN = true;
 
-				final var listAllUsers = new ListAllUsersService(userReader);
-				final var createNewUser = new CreateNewUserService(userWriter, userReader);
-				final var updateUser = new UpdateUserService(userReader, userUpdater);
-				final var deleteUser = new DeleteUserService(userReader, userDeleter);
-				final var isAdminUser = new IsAdminUserService(userReader);
+		private static boolean createAdminOrDefault(final String[] args) {
+				var createAdmin = CREATE_ADMIN;
+				if (args.length > 2)
+						createAdmin = Boolean.parseBoolean(args[2]);
+				return createAdmin;
+		}
 
-				return new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
+		private static void initializeStorage(final UserUseCaseHandler userUseCaseHandler, final boolean createAdmin) {
+				if (createAdmin) {
+						ensureEmptyDatabase(userUseCaseHandler);
+						var adminUserRequest = new UserRequest("admin", "first admin name", "first admin surname", true);
+						userUseCaseHandler.create(adminUserRequest);
+				}
+		}
+
+		private static void ensureEmptyDatabase(final UserUseCaseHandler userUseCaseHandler) {
+				// Ensure that there are no users before
+				if (!userUseCaseHandler.get().isEmpty()) {
+						userUseCaseHandler.delete("admin");
+				}
 		}
 
 		@Bean
@@ -54,5 +64,23 @@ public class ApplicationConfiguration {
 				final var deleteCustomer = new DeleteCustomerService(customerReader, customerDeleter);
 
 				return new CustomerUseCaseHandler(listAllCustomers, createNewCustomer, updateCustomer, deleteCustomer);
+		}
+
+		@Bean
+		public UserUseCaseHandler userUseCaseHandler(final ApplicationArguments arguments) {
+				final var userReader = new UserReaderInMemoryAdapter();
+				final var userWriter = new UserWriterInMemoryAdapter();
+				final var userUpdater = new UserUpdaterInMemoryAdapter();
+				final var userDeleter = new UserDeleterInMemoryAdapter();
+
+				final var listAllUsers = new ListAllUsersService(userReader);
+				final var createNewUser = new CreateNewUserService(userWriter, userReader);
+				final var updateUser = new UpdateUserService(userReader, userUpdater);
+				final var deleteUser = new DeleteUserService(userReader, userDeleter);
+				final var isAdminUser = new IsAdminUserService(userReader);
+
+				var userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
+				initializeStorage(userUseCaseHandler, ApplicationConfiguration.createAdminOrDefault(arguments.getSourceArgs()));
+				return userUseCaseHandler;
 		}
 }

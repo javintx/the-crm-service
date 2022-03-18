@@ -15,13 +15,13 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
-import static com.javintx.crm.user.UserEndPoints.CREATE_NEW_USER;
-import static com.javintx.crm.user.UserEndPoints.DELETE_USER;
-import static com.javintx.crm.user.UserEndPoints.LIST_ALL_USERS;
-import static com.javintx.crm.user.UserEndPoints.UPDATE_USER;
-import static com.javintx.crm.user.UserEndPoints.USER_PATH;
+import static com.javintx.crm.application.sparkjava.SparkJavaUserEndPoints.CREATE_NEW_USER;
+import static com.javintx.crm.application.sparkjava.SparkJavaUserEndPoints.DELETE_USER;
+import static com.javintx.crm.application.sparkjava.SparkJavaUserEndPoints.LIST_ALL_USERS;
+import static com.javintx.crm.application.sparkjava.SparkJavaUserEndPoints.UPDATE_USER;
 import static com.javintx.crm.user.UserEndPoints.BindNames.ADMIN_ID;
 import static com.javintx.crm.user.UserEndPoints.BindNames.USER_ID;
+import static com.javintx.crm.user.UserEndPoints.USERS_PATH;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
@@ -48,7 +48,7 @@ public class UserController {
 		}
 
 		private void routes() {
-				before(USER_PATH, this::handleIsAdminUser);
+				before(USERS_PATH, this::handleIsAdminUser);
 				get(LIST_ALL_USERS, this::handleListAllUsers, objectMapper::writeValueAsString);
 				post(CREATE_NEW_USER, APPLICATION_JSON.asString(), this::handleCreateNewUser, objectMapper::writeValueAsString);
 				put(UPDATE_USER, APPLICATION_JSON.asString(), this::handleUpdateUser, objectMapper::writeValueAsString);
@@ -92,13 +92,13 @@ public class UserController {
 
 		private UserResponse handleUpdateUser(final Request request, final Response response) throws IOException {
 				try (var parser = objectMapper.createParser(request.body())) {
-						return userUseCaseHandler.update(parser.readValueAs(UserRequest.class));
+						return userUseCaseHandler.update(request.params(USER_ID), parser.readValueAs(UserRequest.class));
 				}
 		}
 
-		private String handleDeleteUser(final Request request, final Response response) {
+		private Void handleDeleteUser(final Request request, final Response response) {
 				userUseCaseHandler.delete(request.params(USER_ID));
 				response.status(SC_OK);
-				return "OK";
+				return null;
 		}
 }

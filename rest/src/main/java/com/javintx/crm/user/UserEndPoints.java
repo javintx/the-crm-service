@@ -1,14 +1,8 @@
 package com.javintx.crm.user;
 
-import static com.javintx.crm.user.UserEndPoints.BindNames.USER_ID;
-import static java.lang.String.format;
-
 public final class UserEndPoints {
-		public static final String USER_PATH = "/user/*";
-		public static final String LIST_ALL_USERS = "/user/all";
-		public static final String CREATE_NEW_USER = "/user/create";
-		public static final String UPDATE_USER = "/user/update";
-		public static final String DELETE_USER = "/user/delete/:" + USER_ID;
+		public static final String USERS_BASE_URL = "/users";
+		public static final String USERS_PATH = "/*";
 
 		private UserEndPoints() {
 		}
