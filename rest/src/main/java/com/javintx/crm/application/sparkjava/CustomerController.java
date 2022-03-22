@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
-import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
-import static com.javintx.crm.customer.CustomerEndPoints.DELETE_CUSTOMER;
-import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
-import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
+import static com.javintx.crm.application.sparkjava.SparkJavaCustomerEndPoints.CREATE_NEW_CUSTOMER;
+import static com.javintx.crm.application.sparkjava.SparkJavaCustomerEndPoints.DELETE_CUSTOMER;
+import static com.javintx.crm.application.sparkjava.SparkJavaCustomerEndPoints.LIST_ALL_CUSTOMERS;
+import static com.javintx.crm.application.sparkjava.SparkJavaCustomerEndPoints.UPDATE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.BindNames.CUSTOMER_ID;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
@@ -77,13 +77,13 @@ public class CustomerController {
 
 		private CustomerResponse handleUpdateCustomer(final Request request, final Response response) throws IOException {
 				try (var parser = objectMapper.createParser(request.body())) {
-						return customerUseCaseHandler.update(parser.readValueAs(CustomerRequest.class));
+						return customerUseCaseHandler.update(request.params(CUSTOMER_ID), parser.readValueAs(CustomerRequest.class));
 				}
 		}
 
-		private String handleDeleteCustomer(final Request request, final Response response) {
+		private Void handleDeleteCustomer(final Request request, final Response response) {
 				customerUseCaseHandler.delete(request.params(CUSTOMER_ID));
 				response.status(SC_OK);
-				return "OK";
+				return null;
 		}
 }

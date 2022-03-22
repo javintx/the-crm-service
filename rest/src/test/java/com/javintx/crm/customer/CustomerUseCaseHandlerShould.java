@@ -69,7 +69,7 @@ class CustomerUseCaseHandlerShould {
 				var customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 				when(updateCustomerMock.update(any(Customer.class))).thenReturn(customerExpected);
 
-				var customerResponse = customerUseCaseHandler.update(customerRequest);
+				var customerResponse = customerUseCaseHandler.update("identifier", customerRequest);
 
 				assertThat(customerResponse).isEqualTo(CustomerResponse.from(customerExpected));
 		}

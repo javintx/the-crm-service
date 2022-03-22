@@ -264,7 +264,7 @@ abstract class UserEndPointsShould {
 						.then()
 						.assertThat()
 						.statusCode(SC_FORBIDDEN);
-
+// NOT WORKS with springboot
 				given()
 						.headers(Headers.headers(authenticationHeader()))
 						.contentType(ContentType.JSON)
@@ -302,6 +302,7 @@ abstract class UserEndPointsShould {
 						.then()
 						.assertThat()
 						.statusCode(SC_UNAUTHORIZED);
+				// NOT WORKS with springboot
 		}
 
 		private void deleteUser(final String userId) {

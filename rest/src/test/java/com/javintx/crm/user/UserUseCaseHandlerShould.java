@@ -71,7 +71,7 @@ class UserUseCaseHandlerShould {
 				var userExpected = new User("identifier", "name", "surname", false);
 				when(updateUserMock.update(any(User.class))).thenReturn(userExpected);
 
-				var userResponse = userUseCaseHandler.update(userRequest);
+				var userResponse = userUseCaseHandler.update("identifier", userRequest);
 
 				assertThat(userResponse).isEqualTo(UserResponse.from(userExpected));
 		}

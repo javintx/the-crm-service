@@ -11,21 +11,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.javintx.crm.application.springboot.SpringBootCustomerEndPoints.CREATE_NEW_CUSTOMER;
+import static com.javintx.crm.application.springboot.SpringBootCustomerEndPoints.DELETE_CUSTOMER;
+import static com.javintx.crm.application.springboot.SpringBootCustomerEndPoints.LIST_ALL_CUSTOMERS;
+import static com.javintx.crm.application.springboot.SpringBootCustomerEndPoints.UPDATE_CUSTOMER;
 import static com.javintx.crm.customer.CustomerEndPoints.BindNames.CUSTOMER_ID;
-import static com.javintx.crm.customer.CustomerEndPoints.CREATE_NEW_CUSTOMER;
-import static com.javintx.crm.customer.CustomerEndPoints.DELETE_CUSTOMER;
-import static com.javintx.crm.customer.CustomerEndPoints.LIST_ALL_CUSTOMERS;
-import static com.javintx.crm.customer.CustomerEndPoints.UPDATE_CUSTOMER;
 
 @RestController
 public class CustomerController {
@@ -42,17 +42,17 @@ public class CustomerController {
 		}
 
 		@PostMapping(CREATE_NEW_CUSTOMER)
-		public CustomerResponse createNewUser(@RequestBody final CustomerRequest customerRequest) {
+		public CustomerResponse createNewCustomer(@RequestBody final CustomerRequest customerRequest) {
 				return customerUseCaseHandler.create(customerRequest);
 		}
 
 		@PutMapping(UPDATE_CUSTOMER)
-		public CustomerResponse updateUser(@RequestBody final CustomerRequest customerRequest) {
-				return customerUseCaseHandler.update(customerRequest);
+		public CustomerResponse updateCustomer(@PathVariable(value = CUSTOMER_ID) final String identifier, @RequestBody final CustomerRequest customerRequest) {
+				return customerUseCaseHandler.update(identifier, customerRequest);
 		}
 
 		@DeleteMapping(DELETE_CUSTOMER)
-		public ResponseEntity<Void> delete(@RequestParam(value = CUSTOMER_ID) final String identifier) {
+		public ResponseEntity<Void> deleteCustomer(@PathVariable(value = CUSTOMER_ID) final String identifier) {
 				customerUseCaseHandler.delete(identifier);
 				return ResponseEntity.ok().build();
 		}

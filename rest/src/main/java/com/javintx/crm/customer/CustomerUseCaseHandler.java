@@ -27,7 +27,7 @@ public class CustomerUseCaseHandler {
 				return CustomerResponse.from(createNewCustomer.with(customer.toDomain()));
 		}
 
-		public CustomerResponse update(final CustomerRequest customer) {
+		public CustomerResponse update(String userId, final CustomerRequest customer) {
 				return CustomerResponse.from(updateCustomer.update(customer.toDomain()));
 		}
 

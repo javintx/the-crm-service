@@ -29,7 +29,7 @@ public class UserUseCaseHandler {
 				return UserResponse.from(createNewUser.with(user.toDomain()));
 		}
 
-		public UserResponse update(final UserRequest user) {
+		public UserResponse update(String userId, final UserRequest user) {
 				return UserResponse.from(updateUser.update(user.toDomain()));
 		}
 
