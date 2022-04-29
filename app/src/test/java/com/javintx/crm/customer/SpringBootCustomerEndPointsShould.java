@@ -18,7 +18,7 @@ class SpringBootCustomerEndPointsShould extends CustomerEndPointsShould {
 				DELETE_CUSTOMER_URI = SpringBootCustomerEndPoints.DELETE_CUSTOMER;
 
 				final var port = port();
-				SpringBootApp.main(new String[]{String.valueOf(port), secret});
+				new SpringBootApp(String.valueOf(port), secret);
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 		}
 

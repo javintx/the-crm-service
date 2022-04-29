@@ -18,7 +18,7 @@ class SpringBootUserEndPointsShould extends UserEndPointsShould {
 				DELETE_USER_URI = SpringBootUserEndPoints.DELETE_USER;
 
 				final var port = port();
-				SpringBootApp.main(new String[]{String.valueOf(port), secret});
+				new SpringBootApp(String.valueOf(port), secret);
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 		}
 

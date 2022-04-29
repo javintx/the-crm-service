@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static com.javintx.crm.user.UserEndPoints.BindNames.ADMIN_ID;
 import static io.restassured.RestAssured.given;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CONFLICT;
@@ -49,10 +50,15 @@ abstract class CustomerEndPointsShould {
 						.compact());
 		}
 
+		private static Header adminHeader() {
+				return new Header(ADMIN_ID, "admin");
+		}
+
 		@Test
 		void return_empty_customer_list_if_there_are_no_customers() {
 				var response = given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS_URI)
 						.then()
@@ -69,6 +75,7 @@ abstract class CustomerEndPointsShould {
 		void return_customer_list_with_new_created_customer() {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
@@ -80,6 +87,7 @@ abstract class CustomerEndPointsShould {
 
 				var jsonPath = given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS_URI)
 						.then()
@@ -102,6 +110,7 @@ abstract class CustomerEndPointsShould {
 		void return_exception_when_created_existing_customer() {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
@@ -115,6 +124,7 @@ abstract class CustomerEndPointsShould {
 
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
@@ -130,6 +140,7 @@ abstract class CustomerEndPointsShould {
 		void return_exception_when_created_invalid_customer() {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"name\":\"name\", \"surname\":\"surname\"}")
@@ -140,6 +151,7 @@ abstract class CustomerEndPointsShould {
 
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"surname\":\"surname\"}")
@@ -150,6 +162,7 @@ abstract class CustomerEndPointsShould {
 
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\"}")
@@ -163,6 +176,7 @@ abstract class CustomerEndPointsShould {
 		void return_customer_list_with_updated_customer() {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"userReference\":\"userReference\"}")
@@ -173,16 +187,18 @@ abstract class CustomerEndPointsShould {
 
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
-						.put(UPDATE_CUSTOMER_URI)
+						.put(UPDATE_CUSTOMER_URI, "identifier")
 						.then()
 						.assertThat()
 						.statusCode(SC_OK);
 
 				var jsonPath = given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS_URI)
 						.then()
@@ -205,10 +221,11 @@ abstract class CustomerEndPointsShould {
 		void return_exception_when_update_not_existing_customer() {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name_updated\", \"surname\":\"surname_updated\", \"photo\":\"photo\", \"userReference\":\"userReference\"}")
-						.put(UPDATE_CUSTOMER_URI)
+						.put(UPDATE_CUSTOMER_URI, "identifier")
 						.then()
 						.assertThat()
 						.statusCode(SC_NOT_FOUND);
@@ -218,6 +235,7 @@ abstract class CustomerEndPointsShould {
 		void return_customer_list_without_deleted_customer() {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.contentType(ContentType.JSON)
 						.when()
 						.body("{\"identifier\":\"identifier\", \"name\":\"name\", \"surname\":\"surname\", \"userReference\":\"userReference\"}")
@@ -226,21 +244,18 @@ abstract class CustomerEndPointsShould {
 						.assertThat()
 						.statusCode(SC_OK);
 
-				var deleteResponse = given()
+				given()
 						.header(authenticationHeader())
-						.contentType(ContentType.ANY)
+						.header(adminHeader())
 						.when()
 						.delete(DELETE_CUSTOMER_URI, "identifier")
 						.then()
 						.assertThat()
-						.statusCode(SC_OK)
-						.extract()
-						.response()
-						.asString();
-				assertThat(deleteResponse).isEqualTo("\"OK\"");
+						.statusCode(SC_OK);
 
 				var response = given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.when()
 						.get(LIST_ALL_CUSTOMERS_URI)
 						.then()
@@ -261,11 +276,13 @@ abstract class CustomerEndPointsShould {
 						.then()
 						.assertThat()
 						.statusCode(SC_UNAUTHORIZED);
+				// TODO: NOT WORKS with SpringBoot
 		}
 
 		private void deleteCustomer(final String customerId) {
 				given()
 						.header(authenticationHeader())
+						.header(adminHeader())
 						.when()
 						.delete(DELETE_CUSTOMER_URI, customerId)
 						.then()

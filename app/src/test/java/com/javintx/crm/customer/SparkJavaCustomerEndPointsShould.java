@@ -22,7 +22,7 @@ class SparkJavaCustomerEndPointsShould extends CustomerEndPointsShould {
 				DELETE_CUSTOMER_URI = SpringBootCustomerEndPoints.DELETE_CUSTOMER;
 
 				final var port = port();
-				SparkJavaApp.main(new String[]{String.valueOf(port), secret});
+				new SparkJavaApp(String.valueOf(port), secret);
 				awaitInitialization();
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 		}

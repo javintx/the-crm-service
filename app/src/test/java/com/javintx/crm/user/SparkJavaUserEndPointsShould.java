@@ -22,7 +22,7 @@ class SparkJavaUserEndPointsShould extends UserEndPointsShould {
 				DELETE_USER_URI = SpringBootUserEndPoints.DELETE_USER;
 
 				final var port = port();
-				SparkJavaApp.main(new String[]{String.valueOf(port), secret});
+				new SparkJavaApp(String.valueOf(port), secret);
 				awaitInitialization();
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 		}
