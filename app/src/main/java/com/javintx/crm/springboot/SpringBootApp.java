@@ -5,18 +5,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
-@ComponentScan({ "com.javintx.crm" })
+@ComponentScan({"com.javintx.crm"})
 public class SpringBootApp {
 
 		private static final int STANDARD_PORT = 8080;
 
-		public static void main(final String[] args) {
-				SpringApplication application = new SpringApplication(SpringBootApp.class);
+		public SpringBootApp() {
+				// Empty constructor that SpringBoot needs to start the application
+		}
+
+		public SpringBootApp(final String... args) {
+				var application = new SpringApplication(SpringBootApp.class);
 				application.setAddCommandLineProperties(false);
 
-				HashMap<String, Object> props = new HashMap<>();
+				Map<String, Object> props = new HashMap<>();
 				props.put("server.port", portFromOrDefault(args));
 
 				application.setDefaultProperties(props);

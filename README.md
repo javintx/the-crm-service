@@ -61,9 +61,11 @@ charge of the API design and implementation. Here are the requirements for the A
 
 ### Application parameters
 
-- \#1: Port value. The port where to start the application server. By default, `8080`.
-- \#2: Secret value. The secret used to generate and validate JWT tokens. By default, `changeIt`.
-- \#3: Create admin flag. Flag to create an admin user in the application start. By default, `true`.
+- #1: Application server. The application server to start with. By default, `Spark`. Other options: `SpringBoot`
+- #2: Port value. The port where to start the application server. By default, `8080`.
+- #3: Secret value. The secret used to generate and validate JWT tokens. By default, `changeIt`.
+- #4: Create admin flag. Flag to create an admin user in the application start. By default, `true`. Other
+  options: `false`
 
 ---
 

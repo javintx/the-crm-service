@@ -32,7 +32,7 @@ public class SparkJavaApp {
 		private static final String SECRET = "changeIt";
 		private static final boolean CREATE_ADMIN = true;
 
-		public static void main(final String[] args) {
+		public SparkJavaApp(final String... args) {
 				initializeControllers(portFromOrDefault(args), secretFromOrDefault(args), createAdminOrDefault(args));
 		}
 
