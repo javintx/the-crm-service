@@ -27,7 +27,7 @@ public class ApplicationController {
 		private void routes() {
 				enableCORS();
 				before(log::request);
-				before(authenticator::isAuthenticated);
+				before((request, response) -> authenticator.isAuthenticated(request.headers("Authorization")));
 				after(log::response);
 		}
 

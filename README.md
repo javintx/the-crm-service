@@ -83,9 +83,9 @@ charge of the API design and implementation. Here are the requirements for the A
       - CORS is activated.
       - Log: With [Slf4J](https://www.slf4j.org).
     - Second approach with [SpringBoot](https://spring.io/projects/spring-boot). Pending to publish API.
-      - Authentication: Pending to implement.
-      - CORS is pending to implement.
-      - Log: Pending to implement.
+      - Authentication: First approach with all call are authenticated.
+      - CORS is activated.
+      - Log: Pending to define.
 - Implementation: With Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 - Unit test: [JUnit5](https://junit.org/junit5/) with [Mockito](https://site.mockito.org).
 - End-to-end test: JUnit5 with [RestAssured](https://rest-assured.io).
@@ -210,5 +210,5 @@ The request header `adminId` must be filled with the user identifier of an admin
 - It could be added a deletion flag for customer or user to do not make a physical delete and keep the historic data.
 - The user reference in the customer could be validated with persistence and could be extracted from the request.
 - Check that if the only test are the e2e test, the coverage does not change.
-- Add a main Application that reads by parameter what application starts.
 - Customize e2e test to launch with all applications.
+- Add an arguments parser.

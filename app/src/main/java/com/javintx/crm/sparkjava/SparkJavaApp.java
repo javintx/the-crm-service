@@ -3,7 +3,7 @@ package com.javintx.crm.sparkjava;
 import com.javintx.crm.application.sparkjava.ApplicationController;
 import com.javintx.crm.application.sparkjava.CustomerController;
 import com.javintx.crm.application.sparkjava.UserController;
-import com.javintx.crm.authentication.JwtAuthenticatorAdapter;
+import com.javintx.crm.authentication.sparkjava.JwtSparkAuthenticatorAdapter;
 import com.javintx.crm.customer.CustomerDeleterInMemoryAdapter;
 import com.javintx.crm.customer.CustomerReaderInMemoryAdapter;
 import com.javintx.crm.customer.CustomerUpdaterInMemoryAdapter;
@@ -63,7 +63,7 @@ public class SparkJavaApp {
 
 				initializeStorage(userUseCaseHandler, createAdmin);
 
-				final var authenticator = new JwtAuthenticatorAdapter(secret);
+				final var authenticator = new JwtSparkAuthenticatorAdapter(secret);
 				final var applicationLog = new Slf4JApiRestLoggerAdapter(ApplicationController.class);
 
 				new ApplicationController(port, authenticator, applicationLog);
