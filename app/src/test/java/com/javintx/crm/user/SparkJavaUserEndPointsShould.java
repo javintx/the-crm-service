@@ -1,7 +1,7 @@
 package com.javintx.crm.user;
 
+import com.javintx.crm.application.sparkjava.SparkJavaApp;
 import com.javintx.crm.application.springboot.SpringBootUserEndPoints;
-import com.javintx.crm.sparkjava.SparkJavaApp;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

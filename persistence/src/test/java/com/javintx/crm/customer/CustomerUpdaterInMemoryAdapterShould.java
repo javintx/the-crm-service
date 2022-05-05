@@ -1,19 +1,22 @@
 package com.javintx.crm.customer;
 
 import com.javintx.crm.domain.Customer;
+import com.javintx.crm.exception.CommandCannotBeExecuted;
 import com.javintx.crm.in_memory_storage.InMemoryStorage;
 import com.javintx.crm.port.out.customer.CustomerUpdater;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CustomerUpdaterInMemoryAdapterShould {
-		private CustomerUpdater userUpdater;
+		private CustomerUpdater customerUpdater;
 
 		@BeforeEach
 		public void setUp() {
-				userUpdater = new CustomerUpdaterInMemoryAdapter();
+				customerUpdater = new CustomerUpdaterInMemoryAdapter();
+				InMemoryStorage.INSTANCE.customers().clear();
 		}
 
 		@Test
@@ -23,7 +26,14 @@ class CustomerUpdaterInMemoryAdapterShould {
 
 				InMemoryStorage.INSTANCE.customers().put(customerDto.identifier(), customerDto);
 
-				assertThat(userUpdater.update(customer)).isEqualTo(customer);
+				assertThat(customerUpdater.update(customer)).isEqualTo(customer);
+		}
+
+		@Test
+		void fail_when_customer_not_exists() {
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
+
+				assertThatThrownBy(() -> customerUpdater.update(customer)).isExactlyInstanceOf(CommandCannotBeExecuted.class);
 		}
 
 }

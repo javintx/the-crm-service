@@ -1,4 +1,4 @@
-package com.javintx.crm.springboot;
+package com.javintx.crm.application.springboot;
 
 import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.authentication.springboot.JwtSpringBootAuthenticatorAdapter;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ApplicationConfiguration {
+public class SpringBootAppConfiguration {
 
 		private static final boolean CREATE_ADMIN = true;
 		private static final String SECRET = "changeIt";

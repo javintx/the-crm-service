@@ -1,8 +1,5 @@
-package com.javintx.crm.sparkjava;
+package com.javintx.crm.application.sparkjava;
 
-import com.javintx.crm.application.sparkjava.ApplicationController;
-import com.javintx.crm.application.sparkjava.CustomerController;
-import com.javintx.crm.application.sparkjava.UserController;
 import com.javintx.crm.authentication.sparkjava.JwtSparkAuthenticatorAdapter;
 import com.javintx.crm.customer.CustomerDeleterInMemoryAdapter;
 import com.javintx.crm.customer.CustomerReaderInMemoryAdapter;

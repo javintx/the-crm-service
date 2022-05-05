@@ -37,13 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		public void configure(HttpSecurity http) throws Exception {
 				http
 						.addFilterAfter(authenticationFilter, BasicAuthenticationFilter.class)
-						.csrf()
-						.and()
-						.cors().configurationSource(corsConfigurationSource())
-						.and()
 						.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 						.and()
-						.authorizeRequests().antMatchers("/login").permitAll()
+						.csrf().disable()
+						.cors().configurationSource(corsConfigurationSource())
+						.and()
+						.authorizeRequests()
 						.anyRequest().authenticated()
 						.and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 		}

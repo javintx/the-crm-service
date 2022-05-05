@@ -1,7 +1,7 @@
 package com.javintx.crm;
 
-import com.javintx.crm.sparkjava.SparkJavaApp;
-import com.javintx.crm.springboot.SpringBootApp;
+import com.javintx.crm.application.sparkjava.SparkJavaApp;
+import com.javintx.crm.application.springboot.SpringBootApp;
 
 import java.util.Arrays;
 import java.util.function.Consumer;

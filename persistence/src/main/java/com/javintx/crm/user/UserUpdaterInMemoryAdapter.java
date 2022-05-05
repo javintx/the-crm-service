@@ -12,10 +12,11 @@ public class UserUpdaterInMemoryAdapter implements UserUpdater {
 		@Override
 		public User update(final User user) {
 				var userDto = UserDto.from(user);
-				if (InMemoryStorage.INSTANCE.users().containsKey(userDto.identifier())) {
-						return InMemoryStorage.INSTANCE.users().replace(userDto.identifier(), userDto).toDomain();
-				} else {
+				var newUserDto = InMemoryStorage.INSTANCE.users().replace(userDto.identifier(), userDto);
+				if (newUserDto == null) {
 						throw new CommandCannotBeExecuted(format("User %s does not exists", userDto.identifier()));
+				} else {
+						return newUserDto.toDomain();
 				}
 		}
 }

@@ -12,10 +12,11 @@ public class CustomerUpdaterInMemoryAdapter implements CustomerUpdater {
 		@Override
 		public Customer update(final Customer customer) {
 				var customerDto = CustomerDto.from(customer);
-				if (InMemoryStorage.INSTANCE.customers().containsKey(customerDto.identifier())) {
-						return InMemoryStorage.INSTANCE.customers().replace(customerDto.identifier(), customerDto).toDomain();
-				} else {
+				var newCustomerDto = InMemoryStorage.INSTANCE.customers().replace(customerDto.identifier(), customerDto);
+				if (newCustomerDto == null) {
 						throw new CommandCannotBeExecuted(format("Customer %s does not exists", customerDto.identifier()));
+				} else {
+						return newCustomerDto.toDomain();
 				}
 		}
 }

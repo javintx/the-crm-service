@@ -1,4 +1,4 @@
-package com.javintx.crm.springboot;
+package com.javintx.crm.application.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

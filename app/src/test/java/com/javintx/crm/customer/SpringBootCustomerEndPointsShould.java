@@ -1,7 +1,7 @@
 package com.javintx.crm.customer;
 
+import com.javintx.crm.application.springboot.SpringBootApp;
 import com.javintx.crm.application.springboot.SpringBootCustomerEndPoints;
-import com.javintx.crm.springboot.SpringBootApp;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
