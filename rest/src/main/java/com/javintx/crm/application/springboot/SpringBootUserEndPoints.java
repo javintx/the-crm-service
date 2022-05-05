@@ -9,4 +9,6 @@ public final class SpringBootUserEndPoints {
 		public static final String USER_ID_PATH_VARIABLE = "{" + USER_ID + "}";
 		public static final String UPDATE_USER = USERS_BASE_URL + "/" + USER_ID_PATH_VARIABLE;
 		public static final String DELETE_USER = USERS_BASE_URL + "/" + USER_ID_PATH_VARIABLE;
+		private SpringBootUserEndPoints() {
+		}
 }

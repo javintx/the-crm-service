@@ -9,5 +9,7 @@ public final class SparkJavaCustomerEndPoints {
 		public static final String CUSTOMER_ID_PATH_VARIABLE = ":" + CUSTOMER_ID;
 		public static final String UPDATE_CUSTOMER = CUSTOMERS_BASE_URL + "/" + CUSTOMER_ID_PATH_VARIABLE;
 		public static final String DELETE_CUSTOMER = CUSTOMERS_BASE_URL + "/" + CUSTOMER_ID_PATH_VARIABLE;
+		private SparkJavaCustomerEndPoints() {
+		}
 
 }

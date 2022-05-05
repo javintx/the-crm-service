@@ -65,24 +65,6 @@ public enum Arguments {
 				this.option = option;
 		}
 
-		public String getName() {
-				return name;
-		}
-
-		private String parse(final String... args) {
-				try {
-						return DefaultParser.builder()
-								.setAllowPartialMatching(false)
-								.build()
-								.parse(ALL_ARGUMENTS, args)
-								.getOptionValue(name);
-				} catch (ParseException e) {
-						new HelpFormatter().printHelp("AppMain", ALL_ARGUMENTS, true);
-						System.err.println("Unknown argument: " + e.getMessage());
-						return null;
-				}
-		}
-
 		public static Apps getAppOrDefault(final String... args) {
 				return Apps.valueFrom(APP_SERVER.parse(args), Apps.SPARK);
 		}
@@ -97,6 +79,23 @@ public enum Arguments {
 
 		public static boolean createAdminOrDefault(final String[] args) {
 				return Boolean.parseBoolean(Optional.ofNullable(CREATE_ADMIN.parse(args)).orElse("true"));
+		}
+
+		public String getName() {
+				return name;
+		}
+
+		private String parse(final String... args) {
+				try {
+						return DefaultParser.builder()
+								.setAllowPartialMatching(false)
+								.build()
+								.parse(ALL_ARGUMENTS, args)
+								.getOptionValue(name);
+				} catch (ParseException e) {
+						new HelpFormatter().printHelp("AppMain", "The CRM service", ALL_ARGUMENTS, "Unknown argument: " + e.getMessage(), true);
+						return null;
+				}
 		}
 
 }
