@@ -1,5 +1,6 @@
 package com.javintx.crm.customer;
 
+import com.javintx.crm.Arguments;
 import com.javintx.crm.application.springboot.SpringBootApp;
 import com.javintx.crm.application.springboot.SpringBootCustomerEndPoints;
 import io.restassured.RestAssured;
@@ -18,7 +19,7 @@ class SpringBootCustomerEndPointsShould extends CustomerEndPointsShould {
 				DELETE_CUSTOMER_URI = SpringBootCustomerEndPoints.DELETE_CUSTOMER;
 
 				final var port = port();
-				new SpringBootApp(String.valueOf(port), secret);
+				new SpringBootApp("-" + Arguments.PORT.getName(), String.valueOf(port), "-" + Arguments.SECRET.getName(), secret);
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 		}
 

@@ -1,5 +1,6 @@
 package com.javintx.crm.user;
 
+import com.javintx.crm.Arguments;
 import com.javintx.crm.application.sparkjava.SparkJavaApp;
 import com.javintx.crm.application.springboot.SpringBootUserEndPoints;
 import io.restassured.RestAssured;
@@ -22,7 +23,7 @@ class SparkJavaUserEndPointsShould extends UserEndPointsShould {
 				DELETE_USER_URI = SpringBootUserEndPoints.DELETE_USER;
 
 				final var port = port();
-				new SparkJavaApp(String.valueOf(port), secret);
+				new SparkJavaApp("-" + Arguments.PORT.getName(), String.valueOf(port), "-" + Arguments.SECRET.getName(), secret);
 				awaitInitialization();
 				RestAssured.baseURI = format("http://localhost:%s/", port);
 		}

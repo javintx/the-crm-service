@@ -65,6 +65,10 @@ public enum Arguments {
 				this.option = option;
 		}
 
+		public String getName() {
+				return name;
+		}
+
 		private String parse(final String... args) {
 				try {
 						return DefaultParser.builder()
