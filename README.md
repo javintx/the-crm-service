@@ -202,8 +202,8 @@ The request header `adminId` must be filled with the user identifier of an admin
 
 - The authentication package could be extracted to a module.
   - The current JWT adapter could be improved by defining more methods, classes and endpoints.
-- The authentication layer could implement an adapter for [OAuth2](https://oauth.net/code/java/).
-  - It should be generated an end point to generate the authorization token.
+  - This authentication layer could implement an adapter for [OAuth2](https://oauth.net/code/java/).
+    - It should be generated an end point to generate the authorization token.
 - The persistence layer could implement an adapter for [H2](https://www.h2database.com/html/main.html).
 - It could be added [OpenAPI](https://www.openapis.org) or [Swagger](https://swagger.io/specification/) to publish the
   REST API in a better way than in this README.md.
@@ -211,4 +211,3 @@ The request header `adminId` must be filled with the user identifier of an admin
 - The user reference in the customer could be validated with persistence and could be extracted from the request.
 - Check that if the only test are the e2e test, the coverage does not change.
 - Customize e2e test to launch with all applications.
-- Add an arguments parser.

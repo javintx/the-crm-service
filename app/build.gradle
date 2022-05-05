@@ -7,6 +7,8 @@ dependencies {
   implementation project(":rest")
   implementation project(":persistence")
 
+  implementation "commons-cli:commons-cli:1.5.0"
+
   implementation "org.springframework.boot:spring-boot-starter:2.6.7"
 
   testRuntimeOnly "javax.xml.bind:jaxb-api:2.3.1"

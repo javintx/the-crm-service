@@ -1,5 +1,6 @@
 package com.javintx.crm.application.sparkjava;
 
+import com.javintx.crm.Arguments;
 import com.javintx.crm.authentication.sparkjava.JwtSparkAuthenticatorAdapter;
 import com.javintx.crm.customer.CustomerDeleterInMemoryAdapter;
 import com.javintx.crm.customer.CustomerReaderInMemoryAdapter;
@@ -25,33 +26,8 @@ import com.javintx.crm.user.impl.UpdateUserService;
 
 public class SparkJavaApp {
 
-		private static final int STANDARD_PORT = 8080;
-		private static final String SECRET = "changeIt";
-		private static final boolean CREATE_ADMIN = true;
-
 		public SparkJavaApp(final String... args) {
-				initializeControllers(portFromOrDefault(args), secretFromOrDefault(args), createAdminOrDefault(args));
-		}
-
-		private static int portFromOrDefault(final String[] args) {
-				var port = STANDARD_PORT;
-				if (args.length > 0)
-						port = Integer.parseInt(args[0]);
-				return port;
-		}
-
-		private static String secretFromOrDefault(final String[] args) {
-				var secret = SECRET;
-				if (args.length > 1)
-						secret = args[1];
-				return secret;
-		}
-
-		private static boolean createAdminOrDefault(final String[] args) {
-				var createAdmin = CREATE_ADMIN;
-				if (args.length > 2)
-						createAdmin = Boolean.parseBoolean(args[2]);
-				return createAdmin;
+				initializeControllers(Arguments.portFromOrDefault(args), Arguments.secretFromOrDefault(args), Arguments.createAdminOrDefault(args));
 		}
 
 		private static void initializeControllers(final int port, final String secret, final boolean createAdmin) {

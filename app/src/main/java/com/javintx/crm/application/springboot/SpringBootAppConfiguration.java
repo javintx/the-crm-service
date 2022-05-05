@@ -1,5 +1,6 @@
 package com.javintx.crm.application.springboot;
 
+import com.javintx.crm.Arguments;
 import com.javintx.crm.authentication.Authenticator;
 import com.javintx.crm.authentication.springboot.JwtSpringBootAuthenticatorAdapter;
 import com.javintx.crm.customer.CustomerDeleterInMemoryAdapter;
@@ -28,23 +29,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringBootAppConfiguration {
-
-		private static final boolean CREATE_ADMIN = true;
-		private static final String SECRET = "changeIt";
-
-		private static boolean createAdminOrDefault(final String[] args) {
-				var createAdmin = CREATE_ADMIN;
-				if (args.length > 2)
-						createAdmin = Boolean.parseBoolean(args[2]);
-				return createAdmin;
-		}
-
-		private static String secretFromOrDefault(final String[] args) {
-				var secret = SECRET;
-				if (args.length > 1)
-						secret = args[1];
-				return secret;
-		}
 
 		private static void initializeStorage(final UserUseCaseHandler userUseCaseHandler, final boolean createAdmin) {
 				if (createAdmin) {
@@ -90,12 +74,12 @@ public class SpringBootAppConfiguration {
 				final var isAdminUser = new IsAdminUserService(userReader);
 
 				var userUseCaseHandler = new UserUseCaseHandler(listAllUsers, createNewUser, updateUser, deleteUser, isAdminUser);
-				initializeStorage(userUseCaseHandler, createAdminOrDefault(arguments.getSourceArgs()));
+				initializeStorage(userUseCaseHandler, Arguments.createAdminOrDefault(arguments.getSourceArgs()));
 				return userUseCaseHandler;
 		}
 
 		@Bean
 		public Authenticator authenticator(final ApplicationArguments arguments) {
-				return new JwtSpringBootAuthenticatorAdapter(secretFromOrDefault(arguments.getSourceArgs()));
+				return new JwtSpringBootAuthenticatorAdapter(Arguments.secretFromOrDefault(arguments.getSourceArgs()));
 		}
 }

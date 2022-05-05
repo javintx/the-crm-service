@@ -6,7 +6,7 @@ import com.javintx.crm.application.springboot.SpringBootApp;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-enum Apps {
+public enum Apps {
 		SPARK("spark", SparkJavaApp::new), SPRINGBOOT("springboot", SpringBootApp::new);
 
 		private final String name;
@@ -17,11 +17,15 @@ enum Apps {
 				this.executor = executor;
 		}
 
-		public static Apps valueFrom(final String appName) {
+		public String getName() {
+				return name;
+		}
+
+		public static Apps valueFrom(final String appName, final Apps defaultApp) {
 				return Arrays.stream(Apps.values())
 						.filter(apps -> apps.name.equalsIgnoreCase(appName))
 						.findFirst()
-						.orElseThrow(() -> new IllegalArgumentException("Invalid app name: " + appName));
+						.orElse(defaultApp);
 		}
 
 		void execute(final String... args) {
