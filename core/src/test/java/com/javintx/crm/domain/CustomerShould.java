@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CustomerShould {
+class CustomerShould {
 
 		@Test
 		void return_valid_customer_with_valid_values() {

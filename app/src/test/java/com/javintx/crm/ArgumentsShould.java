@@ -12,7 +12,7 @@ import static com.javintx.crm.Arguments.portFromOrDefault;
 import static com.javintx.crm.Arguments.secretFromOrDefault;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ArgumentsShould {
+class ArgumentsShould {
 
 		private static final String ARGUMENT_HYPHEN = "-";
 		private static final String INVALID_INPUT = "invalid";
@@ -59,16 +59,16 @@ public class ArgumentsShould {
 
 		@Test
 		void get_create_admin_for_valid_input() {
-				assertThat(createAdminOrDefault(ARGUMENT_HYPHEN + CREATE_ADMIN.getName(), "false")).isEqualTo(false);
+				assertThat(createAdminOrDefault(ARGUMENT_HYPHEN + CREATE_ADMIN.getName(), "false")).isFalse();
 		}
 
 		@Test
 		void get_create_admin_for_invalid_input() {
-				assertThat(createAdminOrDefault(ARGUMENT_HYPHEN + CREATE_ADMIN.getName(), INVALID_INPUT)).isEqualTo(false);
+				assertThat(createAdminOrDefault(ARGUMENT_HYPHEN + CREATE_ADMIN.getName(), INVALID_INPUT)).isFalse();
 		}
 
 		@Test
 		void get_default_create_admin_for_no_input() {
-				assertThat(createAdminOrDefault()).isEqualTo(true);
+				assertThat(createAdminOrDefault()).isTrue();
 		}
 }

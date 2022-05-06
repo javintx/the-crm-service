@@ -106,7 +106,7 @@ public enum Arguments {
 								.build()
 								.parse(ALL_ARGUMENTS, args)
 								.getOptionValue(name);
-						if (validator.apply(value)) {
+						if (Boolean.TRUE.equals(validator.apply(value))) {
 								return value;
 						} else {
 								throw new ParseException("Invalid argument type: " + value);

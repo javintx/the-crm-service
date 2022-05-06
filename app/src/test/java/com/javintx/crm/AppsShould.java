@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AppsShould {
+class AppsShould {
 
 		@Test
 		void return_app_for_valid_app_name() {

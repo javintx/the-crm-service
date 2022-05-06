@@ -49,12 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		private CorsConfigurationSource corsConfigurationSource() {
 				var configuration = new CorsConfiguration();
-				configuration.setAllowedMethods(List.of(
-						GET.name(),
-						PUT.name(),
-						POST.name(),
-						DELETE.name()
-				));
+				configuration.setAllowedMethods(List.of(GET.name(), PUT.name(), POST.name(), DELETE.name()));
+				configuration.setAllowedHeaders(
+						List.of("Content-Type", "Authorization", "X-Requested-With", "Content-Length", "Accept", "Origin")
+				);
+				configuration.setAllowCredentials(true);
+				configuration.setAllowedOrigins(List.of("*"));
 
 				var source = new UrlBasedCorsConfigurationSource();
 				source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());

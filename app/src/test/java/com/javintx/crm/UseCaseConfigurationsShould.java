@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class UseCaseConfigurationsShould {
+class UseCaseConfigurationsShould {
 		@Test
 		void return_valid_user_use_case_handler() {
 				assertNotNull(UseCaseConfigurations.initializeUserUseCaseHandler());
