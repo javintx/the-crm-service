@@ -35,20 +35,20 @@ class CreateNewUserShould {
 
 		@Test
 		void create_new_user() {
-				User userToCreate = new User("identifier", "name", "surname", false);
-				User userExpected = new User("identifier", "name", "surname", false);
+				var userToCreate = new User("identifier", "name", "surname", false);
+				var userExpected = new User("identifier", "name", "surname", false);
 
 				when(userWriterMocked.writes(any(User.class))).thenReturn(userExpected);
 
-				User userCreated = createNewUser.with(userToCreate);
+				var userCreated = createNewUser.with(userToCreate);
 
 				assertThat(userCreated).isEqualTo(userExpected);
 		}
 
 		@Test
 		void throw_exception_when_create_new_user_that_exists() {
-				User userToCreate = new User("identifier", "name", "surname", false);
-				User user = new User("identifier", "name", "surname", false);
+				var userToCreate = new User("identifier", "name", "surname", false);
+				var user = new User("identifier", "name", "surname", false);
 
 				when(userReaderMocked.readAll()).thenReturn(List.of(user));
 

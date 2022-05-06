@@ -35,20 +35,20 @@ class CreateNewCustomerShould {
 
 		@Test
 		void create_new_customer() {
-				Customer customerToCreate = new Customer("identifier", "name", "surname", "photo", "userReference");
-				Customer customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
+				var customerToCreate = new Customer("identifier", "name", "surname", "photo", "userReference");
+				var customerExpected = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerWriterMocked.writes(any(Customer.class))).thenReturn(customerExpected);
 
-				Customer customerCreated = createNewCustomer.with(customerToCreate);
+				var customerCreated = createNewCustomer.with(customerToCreate);
 
 				assertThat(customerCreated).isEqualTo(customerExpected);
 		}
 
 		@Test
 		void throw_exception_when_create_new_customer_that_exists() {
-				Customer customerToCreate = new Customer("identifier", "name", "surname", "photo", "userReference");
-				Customer customer = new Customer("identifier", "name", "surname", "photo", "userReference");
+				var customerToCreate = new Customer("identifier", "name", "surname", "photo", "userReference");
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerReaderMocked.readAll()).thenReturn(List.of(customer));
 

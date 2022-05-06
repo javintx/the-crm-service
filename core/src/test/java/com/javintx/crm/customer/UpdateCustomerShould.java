@@ -35,14 +35,14 @@ class UpdateCustomerShould {
 
 		@Test
 		void return_update_customer_if_customer_exists() {
-				Customer existingCustomer = new Customer("id1", "name1", "surname1", "photo1", "userId1");
-				Customer updatedCustomer = new Customer("id2", "name2", "surname2", "photo2", "userId2");
-				Customer customerExpected = new Customer("id2", "name2", "surname2", "photo2", "userId2");
+				var existingCustomer = new Customer("id1", "name1", "surname1", "photo1", "userId1");
+				var updatedCustomer = new Customer("id2", "name2", "surname2", "photo2", "userId2");
+				var customerExpected = new Customer("id2", "name2", "surname2", "photo2", "userId2");
 
 				when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
 				when(customerUpdaterMock.update(existingCustomer)).thenReturn(updatedCustomer);
 
-				Customer returnedCustomer = updateCustomer.update(existingCustomer);
+				var returnedCustomer = updateCustomer.update(existingCustomer);
 
 				assertThat(returnedCustomer).isEqualTo(customerExpected);
 				assertThat(returnedCustomer.identifier()).isEqualTo(customerExpected.identifier());
@@ -54,7 +54,7 @@ class UpdateCustomerShould {
 
 		@Test
 		void throw_exception_if_customer_not_exists() {
-				Customer customer = new Customer("identifier", "name", "surname", "photo", "userReference");
+				var customer = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerReaderMock.readAll()).thenReturn(Collections.emptyList());
 

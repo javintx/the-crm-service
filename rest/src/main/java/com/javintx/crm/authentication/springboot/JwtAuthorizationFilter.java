@@ -4,7 +4,6 @@ import com.javintx.crm.authentication.Authenticator;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,8 +27,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 		@Override
 		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 				if (jwtService.isAuthenticated(request.getHeader(HEADER_AUTHORIZATION))) {
-						UserDetails userDetails = User.builder().passwordEncoder(new BCryptPasswordEncoder()::encode).username("user").password("pass").roles("USER").build();
-						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+						var userDetails = User.builder().passwordEncoder(new BCryptPasswordEncoder()::encode).username("user").password("pass").roles("USER").build();
+						var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(authentication);
 						filterChain.doFilter(request, response);
 				} else {

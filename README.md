@@ -210,4 +210,3 @@ The request header `adminId` must be filled with the user identifier of an admin
 - It could be added a deletion flag for customer or user to do not make a physical delete and keep the historic data.
 - The user reference in the customer could be validated with persistence and could be extracted from the request.
 - Check that if the only test are the e2e test, the coverage does not change.
-- Customize e2e test to launch with all applications.

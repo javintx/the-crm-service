@@ -34,7 +34,7 @@ class DeleteUserShould {
 
 		@Test
 		void delete_user_if_user_exists() {
-				User existingUser = new User("identifier", "name", "surname", false);
+				var existingUser = new User("identifier", "name", "surname", false);
 
 				when(userReaderMock.readAll()).thenReturn(List.of(existingUser));
 

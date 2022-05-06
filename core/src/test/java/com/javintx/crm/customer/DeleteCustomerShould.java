@@ -34,7 +34,7 @@ class DeleteCustomerShould {
 
 		@Test
 		void delete_customer_if_customer_exists() {
-				Customer existingCustomer = new Customer("identifier", "name", "surname", "photo", "userReference");
+				var existingCustomer = new Customer("identifier", "name", "surname", "photo", "userReference");
 
 				when(customerReaderMock.readAll()).thenReturn(List.of(existingCustomer));
 

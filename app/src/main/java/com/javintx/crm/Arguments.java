@@ -7,6 +7,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 public enum Arguments {
 
@@ -19,7 +20,8 @@ public enum Arguments {
 						.required(false)
 						.type(String.class)
 						.desc("The application server")
-						.build()),
+						.build(),
+				s -> Apps.valueFrom(s, null) != null),
 		PORT(
 				"p",
 				Option.builder()
@@ -29,7 +31,15 @@ public enum Arguments {
 						.required(false)
 						.type(Integer.class)
 						.desc("The port number")
-						.build()),
+						.build(),
+				s -> {
+						try {
+								Integer.parseInt(s);
+								return true;
+						} catch (NumberFormatException e) {
+								return false;
+						}
+				}),
 		SECRET(
 				"s",
 				Option.builder()
@@ -39,7 +49,8 @@ public enum Arguments {
 						.required(false)
 						.type(String.class)
 						.desc("The secret for the JWT")
-						.build()),
+						.build(),
+				s -> true),
 		CREATE_ADMIN(
 				"ca",
 				Option.builder()
@@ -49,7 +60,8 @@ public enum Arguments {
 						.required(false)
 						.type(Boolean.class)
 						.desc("Flag to create a default admin user")
-						.build());
+						.build(),
+				s -> true);
 
 		public static final Options ALL_ARGUMENTS = new Options()
 				.addOption(APP_SERVER.option)
@@ -59,10 +71,12 @@ public enum Arguments {
 
 		private final String name;
 		private final Option option;
+		private final Function<String, Boolean> validator;
 
-		Arguments(final String name, final Option option) {
+		Arguments(final String name, final Option option, Function<String, Boolean> validator) {
 				this.name = name;
 				this.option = option;
+				this.validator = validator;
 		}
 
 		public static Apps getAppOrDefault(final String... args) {
@@ -77,7 +91,7 @@ public enum Arguments {
 				return Optional.ofNullable(SECRET.parse(args)).orElse("changeIt");
 		}
 
-		public static boolean createAdminOrDefault(final String[] args) {
+		public static boolean createAdminOrDefault(final String... args) {
 				return Boolean.parseBoolean(Optional.ofNullable(CREATE_ADMIN.parse(args)).orElse("true"));
 		}
 
@@ -87,11 +101,16 @@ public enum Arguments {
 
 		private String parse(final String... args) {
 				try {
-						return DefaultParser.builder()
+						var value = DefaultParser.builder()
 								.setAllowPartialMatching(false)
 								.build()
 								.parse(ALL_ARGUMENTS, args)
 								.getOptionValue(name);
+						if (validator.apply(value)) {
+								return value;
+						} else {
+								throw new ParseException("Invalid argument type: " + value);
+						}
 				} catch (ParseException e) {
 						new HelpFormatter().printHelp("AppMain", "The CRM service", ALL_ARGUMENTS, "Unknown argument: " + e.getMessage(), true);
 						return null;

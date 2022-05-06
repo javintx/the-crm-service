@@ -3,8 +3,9 @@ package com.javintx.crm;
 import com.javintx.crm.application.sparkjava.SparkJavaApp;
 import com.javintx.crm.application.springboot.SpringBootApp;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
+
+import static java.util.Arrays.stream;
 
 public enum Apps {
 		SPARK("spark", SparkJavaApp::new), SPRINGBOOT("springboot", SpringBootApp::new);
@@ -17,15 +18,15 @@ public enum Apps {
 				this.executor = executor;
 		}
 
-		public String getName() {
-				return name;
-		}
-
 		public static Apps valueFrom(final String appName, final Apps defaultApp) {
-				return Arrays.stream(Apps.values())
+				return stream(Apps.values())
 						.filter(apps -> apps.name.equalsIgnoreCase(appName))
 						.findFirst()
 						.orElse(defaultApp);
+		}
+
+		public String getName() {
+				return name;
 		}
 
 		void execute(final String... args) {

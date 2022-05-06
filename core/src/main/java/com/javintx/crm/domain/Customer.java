@@ -15,7 +15,7 @@ public record Customer(String identifier, String name, String surname, String ph
 		}
 
 		private String verify(final String value, final String field) {
-				if (value == null) {
+				if (value == null || value.isEmpty() || value.isBlank()) {
 						throw new CustomerNotValid(field);
 				}
 				return value;

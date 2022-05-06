@@ -35,14 +35,14 @@ class UpdateUserShould {
 
 		@Test
 		void return_update_user_if_user_exists() {
-				User existingUser = new User("id1", "name1", "surname1", false);
-				User updatedUser = new User("id2", "name2", "surname2", false);
-				User userExpected = new User("id2", "name2", "surname2", false);
+				var existingUser = new User("id1", "name1", "surname1", false);
+				var updatedUser = new User("id2", "name2", "surname2", false);
+				var userExpected = new User("id2", "name2", "surname2", false);
 
 				when(userReaderMock.readAll()).thenReturn(List.of(existingUser));
 				when(userUpdaterMock.update(existingUser)).thenReturn(updatedUser);
 
-				User returnedUser = updateUser.update(existingUser);
+				var returnedUser = updateUser.update(existingUser);
 
 				assertThat(returnedUser).isEqualTo(userExpected);
 				assertThat(returnedUser.identifier()).isEqualTo(userExpected.identifier());
@@ -52,7 +52,7 @@ class UpdateUserShould {
 
 		@Test
 		void throw_exception_if_user_not_exists() {
-				User user = new User("identifier", "name", "surname", false);
+				var user = new User("identifier", "name", "surname", false);
 
 				when(userReaderMock.readAll()).thenReturn(Collections.emptyList());
 

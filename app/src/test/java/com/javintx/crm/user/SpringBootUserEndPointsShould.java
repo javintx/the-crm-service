@@ -4,7 +4,6 @@ import com.javintx.crm.Arguments;
 import com.javintx.crm.application.springboot.SpringBootApp;
 import com.javintx.crm.application.springboot.SpringBootUserEndPoints;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import static java.lang.String.format;
@@ -21,12 +20,6 @@ class SpringBootUserEndPointsShould extends UserEndPointsShould {
 				final var port = port();
 				new SpringBootApp("-" + Arguments.PORT.getName(), String.valueOf(port), "-" + Arguments.SECRET.getName(), secret);
 				RestAssured.baseURI = format("http://localhost:%s/", port);
-		}
-
-		@AfterAll
-		static void stopServer() {
-//				stop();
-//				awaitStop();
 		}
 
 }

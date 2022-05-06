@@ -20,8 +20,8 @@ class IsAdminUserShould {
 
 		@Test
 		void throw_exception_if_is_not_admin_user() {
-				UserReader userReader = mock(UserReader.class);
-				IsAdminUser isAdminUser = new IsAdminUserService(userReader);
+				var userReader = mock(UserReader.class);
+				var isAdminUser = new IsAdminUserService(userReader);
 				when(userReader.readAll()).thenReturn(
 						List.of(
 								new User("userReference", "user", "user", false),
@@ -33,8 +33,8 @@ class IsAdminUserShould {
 
 		@Test
 		void do_nothing_is_admin_user() {
-				UserReader userReader = mock(UserReader.class);
-				IsAdminUser isAdminUser = new IsAdminUserService(userReader);
+				var userReader = mock(UserReader.class);
+				var isAdminUser = new IsAdminUserService(userReader);
 				when(userReader.readAll()).thenReturn(
 						List.of(
 								new User("userReference", "user", "user", false),

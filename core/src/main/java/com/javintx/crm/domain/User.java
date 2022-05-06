@@ -11,7 +11,7 @@ public record User(String identifier, String name, String surname, boolean isAdm
 		}
 
 		private String verify(final String value, final String field) {
-				if (value == null) {
+				if (value == null || value.isEmpty() || value.isBlank()) {
 						throw new UserNotValid(field);
 				}
 				return value;

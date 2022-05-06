@@ -2,7 +2,6 @@ package com.javintx.crm.customer;
 
 public final class CustomerEndPoints {
 		public static final String CUSTOMERS_BASE_URL = "/customers";
-		public static final String CUSTOMERS_PATH = "/*";
 
 		private CustomerEndPoints() {
 		}
