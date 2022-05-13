@@ -4,7 +4,7 @@
 [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=coverage)](https://sonarcloud.io/component_measures?metric=coverage&view=list&id=javintx_the-crm-service)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=bugs)](https://sonarcloud.io/component_measures?metric=Reliability&view=list&id=javintx_the-crm-service)
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=vulnerabilities)](https://sonarcloud.io/component_measures?metric=Security&view=list&id=javintx_the-crm-service)
-[![SonarCloud Code Smells](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=code_smells)](https://sonarcloud.io/component_measures?identifier=javintx_the-crm-service&metric=Maintainability&view=list)
+[![SonarCloud Code Smells](https://sonarcloud.io/api/project_badges/measure?project=javintx_the-crm-service&metric=code_smells)](https://sonarcloud.io/component_measures?metric=Maintainability&view=list&id=javintx_the-crm-service)
 
 ---
 
